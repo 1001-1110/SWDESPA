@@ -18,7 +18,7 @@ public class DayView extends JPanel{
 
 	public DayView(){
 		
-		setBounds(0,0,571,416);
+		setBounds(0,0,620,440);
 		
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -67,9 +67,19 @@ public class DayView extends JPanel{
 					.addContainerGap())
 		);
 		setLayout(groupLayout);
+		modelCalendarTable.addColumn("Time");
+		modelCalendarTable.addColumn("Event");
+		
 		modelCalendarTable.setColumnCount(2);
-		modelCalendarTable.setRowCount(80);
+		modelCalendarTable.setRowCount(48);
 
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(0,0,0,0,0));
+		for(int i = 0, j = 0 ; i < 48 ; i++) {
+			if(i % 2 == 0) {
+				modelCalendarTable.setValueAt(j, i, 0);
+				j += 100;
+			}
+		}
+		
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer());
 	}
 }
