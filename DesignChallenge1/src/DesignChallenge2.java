@@ -11,7 +11,7 @@ import java.util.Calendar;
  *
  * @author Arturo III
  */
-public class DesignChallenge1 {
+public class DesignChallenge2 {
 
     /**
      * @param args the command line arguments
@@ -33,6 +33,9 @@ public class DesignChallenge1 {
         cpc.attachObserver(sa);
         cpc.attachParser(epp);
         cpc.startInstructions();
+        
+        fv.setVisible(false);
+        sv.setVisible(false);
          
     }
 }
