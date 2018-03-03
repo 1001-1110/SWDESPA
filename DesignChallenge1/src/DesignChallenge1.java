@@ -33,8 +33,6 @@ public class DesignChallenge1 {
         cpc.attachObserver(sa);
         cpc.attachParser(epp);
         cpc.startInstructions();
-        
-        System.out.println("Testing github");
          
     }
 }
