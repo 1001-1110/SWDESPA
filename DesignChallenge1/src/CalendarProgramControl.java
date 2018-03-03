@@ -5,33 +5,6 @@ public class CalendarProgramControl implements CalendarControl{
 	CalendarModel cm;
 	CalendarView cv;
 	EventParser ep;
-	ArrayList<Observer> obs = new ArrayList<Observer>();
-	
-	public void startInstructions() {
-        
-		refreshCalendar();
-		
-        Thread instructions = new Thread() {
-        	public void run() {
-        		while(true) {
-        			
-            		try {
-                		Thread.sleep(1000);           			
-            		}catch(InterruptedException e) {} 
-            		
-            		ArrayList<Event> currentEvents = cm.checkCurrentEvents();
-            		
-        			if(currentEvents.size() > 0)
-        				for(int i = 0 ; i < currentEvents.size() ; i++)
-        					update(currentEvents.get(i));
-        			
-        		}
-        	}
-        };
-        
-        instructions.start();
-        
-	}
 
 	public void loadEvent(Event event) {
 		cm.addRecurEvent(event);
@@ -67,15 +40,6 @@ public class CalendarProgramControl implements CalendarControl{
 	
 	public void attachView(CalendarView cv) {
 		this.cv = cv;
-	}
-	
-	public void attachObserver(Observer ob) {
-		obs.add(ob);
-	}
-	
-	public void update(Event event) {
-		for(int i = 0 ; i < obs.size() ; i++)
-			obs.get(i).update(event);
 	}
 	
 }
