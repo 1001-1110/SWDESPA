@@ -9,7 +9,6 @@ public class CalendarProgramControl implements CalendarControl{
 	
 	public void startInstructions() {
         
-		ep.loadData();
 		refreshCalendar();
 		
         Thread instructions = new Thread() {
@@ -43,15 +42,11 @@ public class CalendarProgramControl implements CalendarControl{
 	}
 	
 	public void addEvent(Event event) {
-		if(cm.addEvent(event))
-			ep.saveEventData(event);
-		refreshCalendar();
+
 	}	
 	
 	public void addRecurEvent(Event event) {
-		if(cm.addRecurEvent(event))
-			ep.saveRecurData(event);
-		refreshCalendar();
+
 	}
 	
 	public ArrayList<Event> checkDateEvent(int month, int day, int year) {

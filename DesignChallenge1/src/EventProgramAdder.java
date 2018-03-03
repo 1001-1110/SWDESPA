@@ -17,10 +17,6 @@ public class EventProgramAdder extends JFrame implements EventAdder{
 	
 	private EventParser ep;
 	private JTextField info;
-	private JRadioButton rdbtnRecurCSV;
-	private JRadioButton rdbtnRecurPSV;
-	private JTextField CSVField;
-	private JTextField PSVField;
 
 	public EventProgramAdder(EventParser ep) {
 		this.ep = ep;
@@ -75,26 +71,6 @@ public class EventProgramAdder extends JFrame implements EventAdder{
 				ep.addEvent(info.getText(),(int)month.getSelectedItem(),(int)day.getSelectedItem(),(int)year.getSelectedItem(),(String)colorselect.getSelectedItem());
 			}
 		});
-		
-		CSVField = new JTextField();
-		CSVField.setColumns(10);
-		
-		PSVField = new JTextField();
-		PSVField.setColumns(10);
-		
-		JButton btnReadCSV = new JButton("Read CSV");
-		btnReadCSV.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ep.readCSV(CSVField.getText(),rdbtnRecurCSV.isSelected());
-			}
-		});
-		
-		JButton btnReadPSV = new JButton("Read PSV");
-		btnReadPSV.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ep.readPSV(PSVField.getText(),rdbtnRecurPSV.isSelected());
-			}
-		});
 
 		
 		
@@ -107,12 +83,6 @@ public class EventProgramAdder extends JFrame implements EventAdder{
 				ep.addRecurEvent(info.getText(),(int)month.getSelectedItem(),(int)day.getSelectedItem(),(int)year.getSelectedItem(),(String)colorselect.getSelectedItem());
 			}
 		});
-		
-		rdbtnRecurCSV = new JRadioButton("Recurring");
-		rdbtnRecurCSV.setSelected(true);
-		
-		rdbtnRecurPSV = new JRadioButton("Recurring");
-		rdbtnRecurPSV.setSelected(true);
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -146,22 +116,6 @@ public class EventProgramAdder extends JFrame implements EventAdder{
 						.addComponent(btnAddEvent)
 						.addComponent(btnAddRecurringEvent))
 					.addGap(86))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(CSVField, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnReadCSV)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(rdbtnRecurCSV))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(PSVField, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnReadPSV)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(rdbtnRecurPSV)))
-					.addContainerGap(15, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -192,17 +146,7 @@ public class EventProgramAdder extends JFrame implements EventAdder{
 							.addComponent(btnAddEvent)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnAddRecurringEvent)))
-					.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(CSVField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnReadCSV)
-						.addComponent(rdbtnRecurCSV))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(PSVField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnReadPSV)
-						.addComponent(rdbtnRecurPSV))
-					.addContainerGap())
+					.addContainerGap(137, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
 		setVisible(true);
