@@ -23,6 +23,6 @@ public class DesignChallenge2 {
         CalendarModel cpm = new CalendarProgramModel(cpc);
         cpc.attachView(cpv);
         cpc.attachModel(cpm);
-         
+        cpv.refreshView();
     }
 }

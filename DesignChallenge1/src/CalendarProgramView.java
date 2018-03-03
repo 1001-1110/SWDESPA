@@ -14,6 +14,7 @@ public class CalendarProgramView implements CalendarView{
 	
 	CalendarControl cc;
 	EventAdder ea;
+	DayView dv;
 	
         /**** Swing Components ****/
     public JLabel monthLabel;
@@ -41,6 +42,10 @@ public class CalendarProgramView implements CalendarView{
     private JButton btnByDay;
     private JButton btnNewButton_1;
     private JPanel infoPanel;
+    
+    public void refreshView() {
+    	frmMain.repaint();
+    }
     
     private void updateDateTitle(int day) {
     	String currentDate = new String();
@@ -205,7 +210,7 @@ public class CalendarProgramView implements CalendarView{
 		);
 		panel.setLayout(gl_panel);
 		
-		ea = new EventProgramAdder();
+		dv = new DayView();
 		
 		infoBorderPanel = new JPanel();
 		infoBorderPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -213,6 +218,8 @@ public class CalendarProgramView implements CalendarView{
 		frmMain.getContentPane().add(infoBorderPanel);
 		
 		infoPanel = new JPanel();
+		infoPanel.setLayout(null);
+		infoPanel.add(dv);
 		GroupLayout gl_infoBorderPanel = new GroupLayout(infoBorderPanel);
 		gl_infoBorderPanel.setHorizontalGroup(
 			gl_infoBorderPanel.createParallelGroup(Alignment.LEADING)
@@ -228,8 +235,6 @@ public class CalendarProgramView implements CalendarView{
 					.addComponent(infoPanel, GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
 					.addContainerGap())
 		);
-		infoPanel.add((Component) ea);
-		((JComponent) ea).setVisible(false);
 		
 		infoBorderPanel.setLayout(gl_infoBorderPanel);
 		
@@ -272,7 +277,12 @@ public class CalendarProgramView implements CalendarView{
                                 JButton btnCreate = new JButton("CREATE");
                                 btnCreate.addActionListener(new ActionListener() {
                                 	public void actionPerformed(ActionEvent e) {
-                                		((JComponent) ea).setVisible(true);
+                                		ea = new EventProgramAdder();
+                                		infoPanel.removeAll();
+                                		infoPanel.add((Component) ea);
+                                		infoPanel.revalidate();
+                                		infoPanel.setVisible(true);
+                                		refreshView();
                                 	}
                                 });
                                 btnCreate.setForeground(Color.RED);

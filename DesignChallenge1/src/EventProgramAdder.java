@@ -35,7 +35,7 @@ public class EventProgramAdder extends JPanel implements EventAdder{
 	}
 	
 	private void initialize() {
-		setBounds(100, 100, 450, 171);
+		setBounds(100, 100, 453, 190);
 		
 		GregorianCalendar cal = new GregorianCalendar();
 		int yearBound = cal.get(GregorianCalendar.YEAR);
