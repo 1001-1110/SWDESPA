@@ -13,6 +13,7 @@ public class CalendarProgramView implements CalendarView{
 	public int yearBound, monthBound, dayBound, yearToday, monthToday, currentSelectedDay, currentSelectedMonth, currentSelectedYear;
 	
 	CalendarControl cc;
+	EventAdder ea;
 	
         /**** Swing Components ****/
     public JLabel monthLabel;
@@ -30,7 +31,7 @@ public class CalendarProgramView implements CalendarView{
     private JPanel yearPanel;
     private JPanel filterPanel;
     private JPanel panel;
-    private JPanel panel_1;
+    private JPanel infoBorderPanel;
     private JPanel panel_2;
     private JLabel lblTitle;
     private JButton btnToday;
@@ -39,6 +40,7 @@ public class CalendarProgramView implements CalendarView{
     private JButton btnAgenda;
     private JButton btnByDay;
     private JButton btnNewButton_1;
+    private JPanel infoPanel;
     
     private void updateDateTitle(int day) {
     	String currentDate = new String();
@@ -203,10 +205,33 @@ public class CalendarProgramView implements CalendarView{
 		);
 		panel.setLayout(gl_panel);
 		
-		panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.setBounds(338, 98, 646, 463);
-		frmMain.getContentPane().add(panel_1);
+		ea = new EventProgramAdder();
+		
+		infoBorderPanel = new JPanel();
+		infoBorderPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		infoBorderPanel.setBounds(338, 98, 646, 463);
+		frmMain.getContentPane().add(infoBorderPanel);
+		
+		infoPanel = new JPanel();
+		GroupLayout gl_infoBorderPanel = new GroupLayout(infoBorderPanel);
+		gl_infoBorderPanel.setHorizontalGroup(
+			gl_infoBorderPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_infoBorderPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(infoPanel, GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_infoBorderPanel.setVerticalGroup(
+			gl_infoBorderPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_infoBorderPanel.createSequentialGroup()
+					.addGap(5)
+					.addComponent(infoPanel, GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		infoPanel.add((Component) ea);
+		((JComponent) ea).setVisible(false);
+		
+		infoBorderPanel.setLayout(gl_infoBorderPanel);
 		
 		panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -245,6 +270,11 @@ public class CalendarProgramView implements CalendarView{
                                 calendarTable.setRowHeight(29);
                                 
                                 JButton btnCreate = new JButton("CREATE");
+                                btnCreate.addActionListener(new ActionListener() {
+                                	public void actionPerformed(ActionEvent e) {
+                                		((JComponent) ea).setVisible(true);
+                                	}
+                                });
                                 btnCreate.setForeground(Color.RED);
                                 btnCreate.setBackground(Color.RED);
                                 
