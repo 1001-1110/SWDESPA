@@ -75,4 +75,4 @@ public class AgendaView extends JPanel{
 		
 		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer());
 	}
-}
+} //HENLO
