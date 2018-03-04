@@ -26,8 +26,8 @@ public abstract class Occasion {
 		
 		if(colorString.equals("blue"))
 			this.color = Color.BLUE;
-		else if(colorString.equals("red"))
-			this.color = Color.RED;
+		else if(colorString.equals("gray"))
+			this.color = Color.GRAY;
 		else if(colorString.equals("green"))
 			this.color = Color.GREEN;
 		
@@ -56,5 +56,5 @@ public abstract class Occasion {
 	public String getColorString() {
 			return colorString;
 	}	
-		
+	
 }
