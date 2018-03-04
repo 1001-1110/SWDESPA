@@ -3,14 +3,16 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.GregorianCalendar;
+import java.util.List;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
 public class CalendarProgramView implements CalendarView{
 
-	public int yearBound, monthBound, dayBound, yearToday, monthToday, currentSelectedDay, currentSelectedMonth, currentSelectedYear;
+	private int yearBound, monthBound, dayBound, yearToday, monthToday, dayToday;
+	private int currentSelectedMonth, currentSelectedDay, currentSelectedYear;
 	
 	CalendarControl cc;
 	EventAdderView ea;
@@ -20,7 +22,7 @@ public class CalendarProgramView implements CalendarView{
         /**** Swing Components ****/
     public JLabel monthLabel;
 	public JButton btnPrev, btnNext;
-    public JComboBox cmbYear;
+    public JComboBox<String> cmbYear;
 	public JFrame frmMain;
 	public Container pane;
 	public JScrollPane scrollCalendarTable;
@@ -48,24 +50,57 @@ public class CalendarProgramView implements CalendarView{
     	this.cc = cc;
     }
     
+    public void initialize() {
+    	refreshCalendar();
+		cc.updateDateTitle(yearToday, monthToday, dayToday);
+		refreshCalendar();
+    }
+    
+    public void updateEventAdder() {
+    	ea = new EventProgramAdderView(cc);
+		infoPanel.removeAll();
+		infoPanel.add((Component) ea);
+		infoPanel.revalidate();
+		infoPanel.setVisible(true);
+		refreshView();
+    }
+    
+    public void updateDayView(List<Occasion>occasions) {
+    	dv = new DayProgramView(cc);
+		infoPanel.removeAll();
+		infoPanel.add((Component) dv);
+		infoPanel.revalidate();
+		infoPanel.setVisible(true);
+		refreshView();    	
+    }
+    
+    public void updateAgendaView() {
+    	av = new AgendaProgramView(cc);
+		infoPanel.removeAll();
+		infoPanel.add((Component) av);
+		infoPanel.revalidate();
+		infoPanel.setVisible(true);
+		refreshView();   	
+    }
+    
     public void refreshView() {
     	frmMain.repaint();
     }
     
-    private void updateDateTitle(int day) {
+    public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+    	this.currentSelectedYear = currentSelectedYear;
+    	this.currentSelectedMonth = currentSelectedMonth;
+    	this.currentSelectedDay = currentSelectedDay;
     	String currentDate = new String();
-    	currentSelectedDay = day;
-    	currentSelectedMonth = monthToday;
-    	currentSelectedYear = yearToday;
     	currentDate += monthLabel.getText();
-    	currentDate += " "+day;
-    	currentDate += ", "+cmbYear.getSelectedItem();
+    	currentDate += " "+currentSelectedDay;
+    	currentDate += ", "+currentSelectedYear;
     	lblCurrentDate.setText(currentDate);
     }
-    
+
     public void refreshCalendar() {
-    	refreshCalendar(monthToday, yearToday);
-    }
+    	this.refreshCalendar(monthToday, yearToday);
+    }    
     
     public void refreshCalendar(int month, int year){
 		String[] months =  {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -76,13 +111,13 @@ public class CalendarProgramView implements CalendarView{
 		
 		btnPrev.setContentAreaFilled(false);
 		
-		if (month == 0 && year <= yearBound-10)
+		if (month == 0 && year <= yearBound-100)
                     btnPrev.setEnabled(false);
 		if (month == 11 && year >= yearBound+100)
                     btnNext.setEnabled(false);
                 
 		monthLabel.setText(months[month]);
-                
+
 		cmbYear.setSelectedItem(""+year);
 		
 		for (i = 0; i < 6; i++)
@@ -133,6 +168,7 @@ public class CalendarProgramView implements CalendarView{
 		yearBound = cal.get(GregorianCalendar.YEAR);
 		monthToday = monthBound; 
 		yearToday = yearBound;
+		dayToday = dayBound;
 		
 		String[] headers = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}; //All headers
 		for (int i=0; i<7; i++){
@@ -152,9 +188,10 @@ public class CalendarProgramView implements CalendarView{
 			public void actionPerformed(ActionEvent e) {
 				monthToday = cal.get(GregorianCalendar.MONTH);
 				yearToday = cal.get(GregorianCalendar.YEAR);
-				refreshCalendar();
-				updateDateTitle(cal.get(GregorianCalendar.DAY_OF_MONTH));
-				refreshCalendar();
+				dayToday = cal.get(GregorianCalendar.DATE);
+				refreshCalendar(monthToday,yearToday);
+				cc.updateDateTitle(yearToday,monthToday,dayToday);
+				refreshCalendar(monthToday,yearToday);
 			}
 		});
 		
@@ -162,6 +199,10 @@ public class CalendarProgramView implements CalendarView{
 		lblCurrentDate.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		
 		btnDay = new JButton("Day");
+		btnDay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		btnAgenda = new JButton("Agenda");
 		
@@ -213,9 +254,6 @@ public class CalendarProgramView implements CalendarView{
 		);
 		panel.setLayout(gl_panel);
 		
-		dv = new DayView();
-		av = new AgendaView(100);
-		
 		infoBorderPanel = new JPanel();
 		infoBorderPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		infoBorderPanel.setBounds(338, 98, 646, 463);
@@ -223,7 +261,6 @@ public class CalendarProgramView implements CalendarView{
 		
 		infoPanel = new JPanel();
 		infoPanel.setLayout(null);
-		infoPanel.add(av);
 		GroupLayout gl_infoBorderPanel = new GroupLayout(infoBorderPanel);
 		gl_infoBorderPanel.setHorizontalGroup(
 			gl_infoBorderPanel.createParallelGroup(Alignment.LEADING)
@@ -257,12 +294,13 @@ public class CalendarProgramView implements CalendarView{
 		        int row = calendarTable.getSelectedRow(); 
 		        if(modelCalendarTable.getValueAt(row, col) != null) {
 			        String day =  modelCalendarTable.getValueAt(row, col).toString().trim();
-				    updateDateTitle(Integer.parseInt(day));
+				    refreshCalendar();
+			        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
 				    refreshCalendar();				        	
 		        }
 		    }
 		});
-		
+
 		scrollCalendarTable = new JScrollPane(calendarTable);
 		calendarPanel = new JPanel(null);
         calendarPanel.setBorder(null);
@@ -281,12 +319,7 @@ public class CalendarProgramView implements CalendarView{
                                 JButton btnCreate = new JButton("CREATE");
                                 btnCreate.addActionListener(new ActionListener() {
                                 	public void actionPerformed(ActionEvent e) {
-                                		ea = new EventProgramAdderView(cc);
-                                		infoPanel.removeAll();
-                                		infoPanel.add((Component) ea);
-                                		infoPanel.revalidate();
-                                		infoPanel.setVisible(true);
-                                		refreshView();
+                                		updateEventAdder();
                                 	}
                                 });
                                 btnCreate.setForeground(Color.RED);
@@ -457,12 +490,11 @@ public class CalendarProgramView implements CalendarView{
 		modelCalendarTable.setRowCount(6);
 		
 		for (int i = yearBound-100; i <= yearBound+100; i++)
-                {
+        {
 			cmbYear.addItem(String.valueOf(i));
 		}
-		refreshCalendar (monthBound, yearBound); //Refresh calendar
-		updateDateTitle(dayBound);
-		refreshCalendar ();
+
+		this.refreshCalendar(monthBound, yearBound);
 	}
 	
 
@@ -510,4 +542,5 @@ public class CalendarProgramView implements CalendarView{
 			}
 		}
 	}
+
 }

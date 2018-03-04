@@ -9,6 +9,7 @@ public class DesignChallenge2 {
         cpv.attachController(cpc);
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
+        cpv.initialize();
         cpv.refreshView();
         cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
     	//com.mysql.jdbc.Driver

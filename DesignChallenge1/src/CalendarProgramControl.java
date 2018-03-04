@@ -17,5 +17,25 @@ public class CalendarProgramControl implements CalendarControl{
 	public void attachModel(CalendarModel cm) {
 		this.cm = cm;
 	}
+
+	public void updateEventAdder() {
+		cm.notifyEventAdder();
+	}
+
+	public void updateDayView() {
+		cm.notifyDayView();
+	}
+
+	public void updateAgendaView() {
+		cm.notifyAgendaView();
+	}
+
+	public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+		cm.notifyDateTitle(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+	}
+
+	public void refreshCalendar(int monthToday, int yearToday) {
+		cm.notifyCalendar(monthToday, yearToday);
+	}
 	
 }

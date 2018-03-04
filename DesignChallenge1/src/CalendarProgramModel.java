@@ -2,6 +2,8 @@ import java.util.List;
 
 public class CalendarProgramModel implements CalendarModel{
 
+	private int currentSelectedYear, currentSelectedMonth, currentSelectedDay;
+	
 	CalendarView cv;
 	DatabaseWriter dbw;
 	DatabaseReader dbr;
@@ -23,6 +25,29 @@ public class CalendarProgramModel implements CalendarModel{
 	
 	public void attachView(CalendarView cv) {
 		this.cv = cv;
+	}
+
+	public void notifyEventAdder() {
+		
+	}
+
+	public void notifyDayView() {
+		
+	}
+
+	public void notifyAgendaView() {
+		
+	}
+	
+	public void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+		this.currentSelectedYear = currentSelectedYear;
+		this.currentSelectedMonth = currentSelectedMonth;
+		this.currentSelectedDay = currentSelectedDay;
+		cv.updateDateTitle(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+	}
+	
+	public void notifyCalendar(int monthToday, int yearToday) {
+
 	}
 	
 
