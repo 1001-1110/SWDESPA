@@ -19,8 +19,8 @@ public class CalendarProgramModel implements CalendarModel{
 		d.addOccasion(occ);
 	}
 	
-	public List<Occasion> readDatabase() {
-		return d.getOccasions();
+	public List<Occasion> readDatabase(String dateFilter) {
+		return d.getOccasions(dateFilter);
 	}
 	
 	public void attachView(CalendarView cv) {
@@ -28,15 +28,15 @@ public class CalendarProgramModel implements CalendarModel{
 	}
 
 	public void notifyEventAdder() {
-		
+		cv.updateEventAdder();
 	}
 
-	public void notifyDayView() {
-		
+	public void notifyDayView(String dateFilter) {
+		cv.updateDayView(readDatabase(dateFilter));
 	}
 
-	public void notifyAgendaView() {
-		
+	public void notifyAgendaView(String dateFilter) {
+		cv.updateAgendaView(readDatabase(dateFilter));
 	}
 	
 	public void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {

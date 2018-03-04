@@ -22,12 +22,22 @@ public class CalendarProgramControl implements CalendarControl{
 		cm.notifyEventAdder();
 	}
 
-	public void updateDayView() {
-		cm.notifyDayView();
+	public void updateDayView(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+		String dateFilter = new String();
+		dateFilter += currentSelectedYear+"-";
+		dateFilter += currentSelectedMonth+"-";
+		dateFilter += currentSelectedDay;
+		
+		cm.notifyDayView(dateFilter);
 	}
 
-	public void updateAgendaView() {
-		cm.notifyAgendaView();
+	public void updateAgendaView(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+		String dateFilter = new String();
+		dateFilter += currentSelectedYear+"-";
+		dateFilter += currentSelectedMonth+"-";
+		dateFilter += currentSelectedDay;
+		
+		cm.notifyAgendaView(dateFilter);
 	}
 
 	public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {

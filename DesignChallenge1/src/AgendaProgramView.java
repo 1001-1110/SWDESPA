@@ -2,6 +2,8 @@
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.util.List;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
 
@@ -15,7 +17,7 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
 
-	public AgendaProgramView(CalendarControl cc){
+	public AgendaProgramView(CalendarControl cc, List<Occasion>occasions){
 		
 		setBounds(0,0,620,440);
 		
@@ -72,7 +74,17 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 		modelCalendarTable.addColumn("Event / Task");
 		
 		modelCalendarTable.setColumnCount(2);
-		modelCalendarTable.setRowCount(5);
+		modelCalendarTable.setRowCount(occasions.size());
+		
+		for(int i = 0 ; i < occasions.size() ; i++) {
+			if(occasions.get(i) instanceof Event) {
+				modelCalendarTable.setValueAt(((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo(), i, 0);	
+				modelCalendarTable.setValueAt(((Event)occasions.get(i)).getInfo(), i, 1);	
+			}else if (occasions.get(i) instanceof Task) {
+				modelCalendarTable.setValueAt(((Task)occasions.get(i)).getDurationFrom(), i, 0);	
+				modelCalendarTable.setValueAt(((Task)occasions.get(i)).getInfo(), i, 1);				
+			}
+		}
 		
 		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer());
 	}

@@ -14,7 +14,7 @@ public class DatabaseProgram implements Database{
 		this.connection = connection;
 	}	
 
-	public List<Occasion> getOccasions() {
+	public List<Occasion> getOccasions(String dateFilter) {
 		//Create empty list of contacts
 		List<Occasion>occasions = new ArrayList <Occasion>();
 		
@@ -22,7 +22,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions";
+		String query = "SELECT * FROM occasions";//WHERE CONTAINS(dateFrom, "+dateFilter+")";
 		
 		try {
 			//create prepared statement

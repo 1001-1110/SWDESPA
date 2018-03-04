@@ -4,7 +4,7 @@ public interface CalendarModel {
 
 	public abstract void attachView(CalendarView cv);
 	
-	public abstract List<Occasion> readDatabase();
+	public abstract List<Occasion> readDatabase(String dateFilter);
 
 	public abstract void writeDatabase(Occasion occ);
 	
@@ -12,9 +12,9 @@ public interface CalendarModel {
 
 	public abstract void notifyEventAdder();
 
-	public abstract void notifyDayView();
+	public abstract void notifyDayView(String dateFilter);
 
-	public abstract void notifyAgendaView();
+	public abstract void notifyAgendaView(String dateFilter);
 	
 	public abstract void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
 	

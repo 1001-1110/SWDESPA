@@ -10,9 +10,9 @@ public interface CalendarControl {
 
     public abstract void updateEventAdder();
     
-    public abstract void updateDayView();
+    public abstract void updateDayView(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
     
-    public abstract void updateAgendaView();
+    public abstract void updateAgendaView(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
     
     public abstract void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
  

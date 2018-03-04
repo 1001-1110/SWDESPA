@@ -74,8 +74,8 @@ public class CalendarProgramView implements CalendarView{
 		refreshView();    	
     }
     
-    public void updateAgendaView() {
-    	av = new AgendaProgramView(cc);
+    public void updateAgendaView(List<Occasion>occasions) {
+    	av = new AgendaProgramView(cc,occasions);
 		infoPanel.removeAll();
 		infoPanel.add((Component) av);
 		infoPanel.revalidate();
@@ -205,6 +205,11 @@ public class CalendarProgramView implements CalendarView{
 		});
 		
 		btnAgenda = new JButton("Agenda");
+		btnAgenda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateAgendaView(currentSelectedMonth, currentSelectedDay, currentSelectedYear);
+			}
+		});
 		
 		btnByDay = new JButton("Select by Day");
 		

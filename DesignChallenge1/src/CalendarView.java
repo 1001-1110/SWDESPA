@@ -16,7 +16,7 @@ public interface CalendarView {
     
     public abstract void updateDayView(List<Occasion>occasions);
     
-    public abstract void updateAgendaView();
+    public abstract void updateAgendaView(List<Occasion>occasions);
     
     public abstract void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
  	
