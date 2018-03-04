@@ -16,7 +16,7 @@ public class AgendaProgramView extends JPanel implements AgendaView{
         /**** Calendar Table Components ***/
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
-
+    
 	public AgendaProgramView(CalendarControl cc, List<Occasion>occasions){
 		
 		setBounds(0,0,620,440);

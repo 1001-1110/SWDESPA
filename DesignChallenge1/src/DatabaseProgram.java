@@ -22,7 +22,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions";//WHERE CONTAINS(dateFrom, "+dateFilter+")";
+		String query = "SELECT * FROM occasions WHERE dateFrom like \""+dateFilter+"%\"";
 		
 		try {
 			//create prepared statement

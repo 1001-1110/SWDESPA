@@ -54,32 +54,47 @@ public class CalendarProgramView implements CalendarView{
     	refreshCalendar();
 		cc.updateDateTitle(yearToday, monthToday, dayToday);
 		refreshCalendar();
+		cc.updateViews(yearToday, monthToday, dayToday);
     }
     
-    public void updateEventAdder() {
+    public void updateViews(List<Occasion>occasions) {
     	ea = new EventProgramAdderView(cc);
-		infoPanel.removeAll();
-		infoPanel.add((Component) ea);
+    	dv = new DayProgramView(cc);
+    	av = new AgendaProgramView(cc,occasions);
+    	if(infoPanel.getComponentCount() > 0) {
+    		Component comp = infoPanel.getComponent(0);
+    		infoPanel.removeAll();
+    		if(comp instanceof EventAdderView) {
+    			infoPanel.add((Component) ea);
+    		}if(comp instanceof DayView) {
+    			infoPanel.add((Component) dv);
+    		}if(comp instanceof AgendaView) {
+    			infoPanel.add((Component) av);
+    		}
+    	}
 		infoPanel.revalidate();
-		infoPanel.setVisible(true);
 		refreshView();
     }
     
-    public void updateDayView(List<Occasion>occasions) {
-    	dv = new DayProgramView(cc);
+    public void showEventAdder() {
+		infoPanel.removeAll();
+		infoPanel.add((Component) ea);
+		infoPanel.revalidate();
+		refreshView();
+    }
+    
+    public void showDayView() {
 		infoPanel.removeAll();
 		infoPanel.add((Component) dv);
 		infoPanel.revalidate();
-		infoPanel.setVisible(true);
 		refreshView();    	
     }
     
-    public void updateAgendaView(List<Occasion>occasions) {
-    	av = new AgendaProgramView(cc,occasions);
+    public void showAgendaView() {
+		cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
 		infoPanel.removeAll();
 		infoPanel.add((Component) av);
 		infoPanel.revalidate();
-		infoPanel.setVisible(true);
 		refreshView();   	
     }
     
@@ -192,6 +207,7 @@ public class CalendarProgramView implements CalendarView{
 				refreshCalendar(monthToday,yearToday);
 				cc.updateDateTitle(yearToday,monthToday,dayToday);
 				refreshCalendar(monthToday,yearToday);
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
 			}
 		});
 		
@@ -207,7 +223,7 @@ public class CalendarProgramView implements CalendarView{
 		btnAgenda = new JButton("Agenda");
 		btnAgenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cc.updateAgendaView(currentSelectedMonth, currentSelectedDay, currentSelectedYear);
+				showAgendaView();
 			}
 		});
 		
@@ -301,7 +317,8 @@ public class CalendarProgramView implements CalendarView{
 			        String day =  modelCalendarTable.getValueAt(row, col).toString().trim();
 				    refreshCalendar();
 			        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
-				    refreshCalendar();				        	
+				    refreshCalendar();		
+					cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
 		        }
 		    }
 		});
@@ -324,7 +341,7 @@ public class CalendarProgramView implements CalendarView{
                                 JButton btnCreate = new JButton("CREATE");
                                 btnCreate.addActionListener(new ActionListener() {
                                 	public void actionPerformed(ActionEvent e) {
-                                		updateEventAdder();
+                                		showEventAdder();
                                 	}
                                 });
                                 btnCreate.setForeground(Color.RED);
@@ -500,6 +517,7 @@ public class CalendarProgramView implements CalendarView{
 		}
 
 		this.refreshCalendar(monthBound, yearBound);
+
 	}
 	
 

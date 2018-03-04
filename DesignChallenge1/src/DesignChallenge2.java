@@ -7,11 +7,11 @@ public class DesignChallenge2 {
         CalendarModel cpm = new CalendarProgramModel();
         CalendarControl cpc = new CalendarProgramControl();
         cpv.attachController(cpc);
+        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
         cpv.initialize();
         cpv.refreshView();
-        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
     	//com.mysql.jdbc.Driver
     	//jdbc:mysql://127.0.0.1:3306/
     	//root (username)

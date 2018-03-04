@@ -18,26 +18,21 @@ public class CalendarProgramControl implements CalendarControl{
 		this.cm = cm;
 	}
 
-	public void updateEventAdder() {
-		cm.notifyEventAdder();
-	}
-
-	public void updateDayView(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
 		String dateFilter = new String();
 		dateFilter += currentSelectedYear+"-";
-		dateFilter += currentSelectedMonth+"-";
-		dateFilter += currentSelectedDay;
 		
-		cm.notifyDayView(dateFilter);
-	}
-
-	public void updateAgendaView(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
-		String dateFilter = new String();
-		dateFilter += currentSelectedYear+"-";
-		dateFilter += currentSelectedMonth+"-";
-		dateFilter += currentSelectedDay;
+		if(currentSelectedMonth < 10)
+			dateFilter += "0"+(currentSelectedMonth+1)+"-";
+		else
+			dateFilter += (currentSelectedMonth+1)+"-";
 		
-		cm.notifyAgendaView(dateFilter);
+		if(currentSelectedDay < 10)
+			dateFilter += "0"+currentSelectedDay;
+		else
+			dateFilter += currentSelectedDay;
+		
+		cm.notifyViews(dateFilter);
 	}
 
 	public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {

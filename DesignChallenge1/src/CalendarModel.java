@@ -10,11 +10,7 @@ public interface CalendarModel {
 	
 	public abstract void connectDatabase(String DRIVER_NAME, String URL, String USERNAME, String PASSWORD, String DATABASE);
 
-	public abstract void notifyEventAdder();
-
-	public abstract void notifyDayView(String dateFilter);
-
-	public abstract void notifyAgendaView(String dateFilter);
+	public abstract void notifyViews(String dateFilter);
 	
 	public abstract void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
 	

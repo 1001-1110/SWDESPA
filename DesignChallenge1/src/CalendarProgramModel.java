@@ -27,16 +27,8 @@ public class CalendarProgramModel implements CalendarModel{
 		this.cv = cv;
 	}
 
-	public void notifyEventAdder() {
-		cv.updateEventAdder();
-	}
-
-	public void notifyDayView(String dateFilter) {
-		cv.updateDayView(readDatabase(dateFilter));
-	}
-
-	public void notifyAgendaView(String dateFilter) {
-		cv.updateAgendaView(readDatabase(dateFilter));
+	public void notifyViews(String dateFilter) {
+		cv.updateViews(readDatabase(dateFilter));
 	}
 	
 	public void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
