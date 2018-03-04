@@ -7,4 +7,6 @@ public interface CalendarView {
 
 	public abstract void refreshView();
 	
+	public abstract void attachController(CalendarControl cc);
+	
 }

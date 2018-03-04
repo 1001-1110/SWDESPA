@@ -15,6 +15,7 @@ public class CalendarProgramView implements CalendarView{
 	CalendarControl cc;
 	EventAdder ea;
 	DayView dv;
+	AgendaView av;
 	
         /**** Swing Components ****/
     public JLabel monthLabel;
@@ -42,6 +43,10 @@ public class CalendarProgramView implements CalendarView{
     private JButton btnByDay;
     private JButton btnNewButton_1;
     private JPanel infoPanel;
+    
+    public void attachController(CalendarControl cc) {
+    	this.cc = cc;
+    }
     
     public void refreshView() {
     	frmMain.repaint();
@@ -98,10 +103,8 @@ public class CalendarProgramView implements CalendarView{
 		calendarTable.clearSelection();
     }
         
-	public CalendarProgramView(CalendarControl cc)
+	public CalendarProgramView()
         {
-		
-		this.cc = cc;
 		
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -211,6 +214,7 @@ public class CalendarProgramView implements CalendarView{
 		panel.setLayout(gl_panel);
 		
 		dv = new DayView();
+		av = new AgendaView(100);
 		
 		infoBorderPanel = new JPanel();
 		infoBorderPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -219,7 +223,7 @@ public class CalendarProgramView implements CalendarView{
 		
 		infoPanel = new JPanel();
 		infoPanel.setLayout(null);
-		infoPanel.add(dv);
+		infoPanel.add(av);
 		GroupLayout gl_infoBorderPanel = new GroupLayout(infoBorderPanel);
 		gl_infoBorderPanel.setHorizontalGroup(
 			gl_infoBorderPanel.createParallelGroup(Alignment.LEADING)
