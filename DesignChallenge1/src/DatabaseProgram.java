@@ -118,21 +118,11 @@ public class DatabaseProgram implements Database{
 		String dateFrom = rs.getString("dateFrom");
 		String dateTo = rs.getString("dateTo");
 		boolean isDone = rs.getBoolean("isDone");
-
-		String[] splitDateFrom = dateFrom.split(" ");
-		String[] splitDateTo = dateTo.split(" ");
-		
-		String[] mdyFrom = splitDateFrom[0].split("-");
-		//String[] mdyTo = splitDateTo[0].split("-");
-		
-		int year = Integer.parseInt(mdyFrom[0]);
-		int month = Integer.parseInt(mdyFrom[1]);
-		int day = Integer.parseInt(mdyFrom[2]);
 		
 		if(type.equals("Event")) {
-			occ = new Event(info,month,day,year,dateFrom,dateTo,isDone);			
+			occ = new Event(info,dateFrom,dateTo,isDone);			
 		}else if(type.equals("Task")) {
-		    occ = new Task(info,month,day,year,dateFrom,dateTo,isDone);	
+		    occ = new Task(info,dateFrom,dateTo,isDone);	
 		}
 		
 		return occ;

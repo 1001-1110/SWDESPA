@@ -25,7 +25,6 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 	private JTextField durationTo;
 	private JRadioButton rdbtnEvent;
 	private JRadioButton rdbtnTask;
-	private JComboBox colorSelect;
 
 	public EventProgramAdderView(CalendarControl cc) {
 		this.cc = cc;
@@ -39,7 +38,7 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cc.addOccasion(info.getText(), date.getText(), durationFrom.getText(), durationTo.getText(), (String) colorSelect.getSelectedItem(), rdbtnEvent.isSelected(), rdbtnTask.isSelected());
+				cc.addOccasion(info.getText(), date.getText(), durationFrom.getText(), durationTo.getText(), rdbtnEvent.isSelected(), rdbtnTask.isSelected());
 			}
 		});
 		
@@ -58,19 +57,19 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(inputPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addComponent(btnSave)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDiscard)))
+							.addComponent(btnDiscard))
+						.addComponent(inputPanel, GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(inputPanel, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(22)
+					.addComponent(inputPanel, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDiscard)
 						.addComponent(btnSave))
@@ -82,8 +81,6 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		JLabel lblDate = new JLabel("MM/DD/YYYY:");
 		
 		JLabel lblTime = new JLabel("Time:");
-		
-		JLabel lblColor = new JLabel("Color: ");
 		
 		info = new JTextField();
 		info.setColumns(10);
@@ -98,11 +95,6 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		
 		durationTo = new JTextField();
 		durationTo.setColumns(10);
-		
-		colorSelect = new JComboBox();
-		colorSelect.addItem("Blue");
-		colorSelect.addItem("Green");
-		colorSelect.addItem("Red");
 		
 		rdbtnEvent = new JRadioButton("Event");
 		rdbtnEvent.addMouseListener(new MouseAdapter() {
@@ -136,10 +128,6 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_inputPanel.createSequentialGroup()
-							.addComponent(lblColor)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(colorSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_inputPanel.createSequentialGroup()
 							.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_inputPanel.createSequentialGroup()
 									.addComponent(lblInfo)
@@ -153,7 +141,7 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 							.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(rdbtnTask)
 								.addComponent(rdbtnEvent))))
-					.addContainerGap(66, Short.MAX_VALUE))
+					.addContainerGap(120, Short.MAX_VALUE))
 		);
 		gl_inputPanel.setVerticalGroup(
 			gl_inputPanel.createParallelGroup(Alignment.LEADING)
@@ -174,11 +162,7 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 						.addComponent(durationFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTo)
 						.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_inputPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblColor)
-						.addComponent(colorSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(16, Short.MAX_VALUE))
+					.addContainerGap(36, Short.MAX_VALUE))
 		);
 		inputPanel.setLayout(gl_inputPanel);
 		this.setLayout(groupLayout);

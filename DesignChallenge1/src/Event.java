@@ -6,8 +6,8 @@ public class Event extends Occasion{
 	String durationTo;
 	boolean isDone;
 	
-	public Event(String info, int month, int day, int year, String durationFrom, String durationTo, boolean isDone) {
-		super(info, month, day, year, Color.BLUE);
+	public Event(String info, String durationFrom, String durationTo, boolean isDone) {
+		super(info, Color.BLUE);
 		this.durationFrom = durationFrom;
 		this.durationTo = durationTo;
 		this.isDone = isDone;
@@ -16,14 +16,13 @@ public class Event extends Occasion{
 	public String getDurationFrom() {
 		return durationFrom;
 	}
-	
+
 	public String getDurationTo() {
 		return durationTo;
 	}
-	
+
 	public boolean getIsDone() {
 		return isDone;
 	}
-		
 	
 }

@@ -10,14 +10,12 @@ public class DesignChallenge2 {
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
         cpv.refreshView();
+        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
     	//com.mysql.jdbc.Driver
     	//jdbc:mysql://127.0.0.1:3306/
-    	//root
-    	//july
-    	//SWDESPA
-        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
-        cpm.readDatabase();
-        cpm.writeDatabase(new Task("Due today", 1, 10, 1998, "9999-12-31 23:59:59", "9999-12-31 23:59:59", true));
+    	//root (username)
+    	//july (password)
+    	//SWDESPA (database)
     }
     
 }

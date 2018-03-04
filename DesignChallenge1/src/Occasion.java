@@ -2,25 +2,16 @@ import java.awt.Color;
 
 public abstract class Occasion {
 
-	private int month;
-	private int day;
-	private int year;
 	private String info;
 	private Color color;
 	private String colorString;
 	
-	public Occasion(String info, int month, int day, int year, Color color) {
-		this.month = month;
-		this.day = day;
-		this.year = year;
+	public Occasion(String info, Color color) {
 		this.info = info;
 		this.color = color;
 	}
 	
-	public Occasion(String info, int month, int day, int year, String colorString) {
-		this.month = month;
-		this.day = day;
-		this.year = year;
+	public Occasion(String info, String colorString) {
 		this.info = info;
 		colorString = colorString.toLowerCase();
 		
@@ -33,18 +24,7 @@ public abstract class Occasion {
 		
 		this.colorString = colorString;
 	}
-	
-	public int getMonth() {
-		return month;
-	}
-	
-	public int getDay() {
-		return day;
-	}
-	public int getYear() {
-		return year;
-	}
-	
+
 	public String getInfo() {
 		return info;
 	}
