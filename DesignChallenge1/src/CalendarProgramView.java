@@ -13,7 +13,7 @@ public class CalendarProgramView implements CalendarView{
 	public int yearBound, monthBound, dayBound, yearToday, monthToday, currentSelectedDay, currentSelectedMonth, currentSelectedYear;
 	
 	CalendarControl cc;
-	EventAdder ea;
+	EventAdderView ea;
 	DayView dv;
 	AgendaView av;
 	
@@ -281,7 +281,7 @@ public class CalendarProgramView implements CalendarView{
                                 JButton btnCreate = new JButton("CREATE");
                                 btnCreate.addActionListener(new ActionListener() {
                                 	public void actionPerformed(ActionEvent e) {
-                                		ea = new EventProgramAdder();
+                                		ea = new EventProgramAdderView(cc);
                                 		infoPanel.removeAll();
                                 		infoPanel.add((Component) ea);
                                 		infoPanel.revalidate();
