@@ -48,6 +48,40 @@ public class DatabaseProgram implements Database{
 		return occasions;
 	}		
 
+	public List<Occasion> getOccasions(String dateFilter, String typeFilter) {
+		//Create empty list of contacts
+		List<Occasion>occasions = new ArrayList <Occasion>();
+		
+		//get connection from db
+		Connection cnt = connection.getConnection();
+		
+		//create string query
+		String query = "SELECT * FROM occasions WHERE dateFrom like \""+dateFilter+"%\""+"AND type = '"+typeFilter+"' ORDER BY dateFrom";
+
+		try {
+			//create prepared statement
+			PreparedStatement ps = cnt.prepareStatement(query);
+			
+			//get result and store in result set
+			ResultSet rs = ps.executeQuery();
+			
+			//transform set into list
+			while(rs.next()) {
+				occasions.add(toOccasion(rs));
+			}
+			
+			//close all the resources
+			ps.close();
+			rs.close();
+			cnt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		return occasions;
+	}		
+	
 	public boolean addOccasion(Occasion occ) {
 		//get a connection
 				Connection cnt = connection.getConnection();

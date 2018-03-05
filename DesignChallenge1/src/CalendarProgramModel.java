@@ -29,9 +29,13 @@ public class CalendarProgramModel implements CalendarModel{
 		}	
 	}
 	
-	public List<Occasion> readDatabase(String dateFilter) {
+	private List<Occasion> readDatabase(String dateFilter) {
 		return d.getOccasions(dateFilter);
 	}
+
+	private List<Occasion> readDatabase(String dateFilter, String typeFilter) {
+		return d.getOccasions(dateFilter, typeFilter);
+	}	
 	
 	public void attachView(CalendarView cv) {
 		this.cv = cv;
@@ -39,6 +43,10 @@ public class CalendarProgramModel implements CalendarModel{
 
 	public void notifyViews(String dateFilter) {
 		cv.updateViews(readDatabase(dateFilter));
+	}
+
+	public void notifyFilteredViews(String dateFilter, String typeFilter) {
+		cv.updateViews(readDatabase(dateFilter,typeFilter));
 	}
 	
 	public void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
@@ -51,6 +59,5 @@ public class CalendarProgramModel implements CalendarModel{
 	public void notifyCalendar(int monthToday, int yearToday) {
 
 	}
-	
 
 }

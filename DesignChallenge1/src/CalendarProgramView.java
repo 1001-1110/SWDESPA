@@ -43,8 +43,10 @@ public class CalendarProgramView implements CalendarView{
     private JButton btnDay;
     private JButton btnAgenda;
     private JButton btnByDay;
-    private JButton btnNewButton_1;
+    private JButton btnByWeek;
     private JPanel infoPanel;
+    private JCheckBox eventFilter;
+    private JCheckBox taskFilter;
     
     public void attachController(CalendarControl cc) {
     	this.cc = cc;
@@ -54,7 +56,7 @@ public class CalendarProgramView implements CalendarView{
     	refreshCalendar();
 		cc.updateDateTitle(yearToday, monthToday, dayToday);
 		refreshCalendar();
-		cc.updateViews(yearToday, monthToday, dayToday);
+		cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
     }
     
     public void updateViews(List<Occasion>occasions) {
@@ -86,6 +88,7 @@ public class CalendarProgramView implements CalendarView{
 	}
     
     public void showEventAdder() {
+    	ea = new EventProgramAdderView(cc);
 		infoPanel.removeAll();
 		infoPanel.add((Component) ea);
 		infoPanel.revalidate();
@@ -100,8 +103,8 @@ public class CalendarProgramView implements CalendarView{
     }
     
     public void showAgendaView() {
-		cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
-		infoPanel.removeAll();
+    	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+    	infoPanel.removeAll();
 		infoPanel.add((Component) av);
 		infoPanel.revalidate();
 		refreshView();   	
@@ -216,7 +219,7 @@ public class CalendarProgramView implements CalendarView{
 				refreshCalendar(monthToday,yearToday);
 				cc.updateDateTitle(yearToday,monthToday,dayToday);
 				refreshCalendar(monthToday,yearToday);
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
 			}
 		});
 		
@@ -237,8 +240,10 @@ public class CalendarProgramView implements CalendarView{
 		});
 		
 		btnByDay = new JButton("Select by Day");
+		btnByDay.setEnabled(false);
+		btnByWeek = new JButton("Select by Week");
+		btnByWeek.setEnabled(false);
 		
-		btnNewButton_1 = new JButton("Select by Week");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -252,7 +257,7 @@ public class CalendarProgramView implements CalendarView{
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(btnByDay)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNewButton_1)))
+							.addComponent(btnByWeek)))
 					.addGap(48)
 					.addComponent(lblCurrentDate, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
 					.addGap(34)
@@ -279,7 +284,7 @@ public class CalendarProgramView implements CalendarView{
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(btnByDay)
-								.addComponent(btnNewButton_1))))
+								.addComponent(btnByWeek))))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
@@ -327,7 +332,7 @@ public class CalendarProgramView implements CalendarView{
 				    refreshCalendar();
 			        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
 				    refreshCalendar();		
-					cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+				    cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
 		        }
 		    }
 		});
@@ -461,10 +466,20 @@ public class CalendarProgramView implements CalendarView{
 		JLabel lblView = new JLabel("View");
 		lblView.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JCheckBox eventFilter = new JCheckBox("Event");
+		eventFilter = new JCheckBox("Event");
+		eventFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
 		eventFilter.setIconTextGap(10);
 		
-		JCheckBox taskFilter = new JCheckBox("Task");
+		taskFilter = new JCheckBox("Task");
+		taskFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
 		taskFilter.setIconTextGap(10);
 		GroupLayout gl_filterPanel = new GroupLayout(filterPanel);
 		gl_filterPanel.setHorizontalGroup(

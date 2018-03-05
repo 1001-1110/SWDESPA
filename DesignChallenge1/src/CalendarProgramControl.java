@@ -18,7 +18,7 @@ public class CalendarProgramControl implements CalendarControl{
 		this.cm = cm;
 	}
 
-	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay, boolean isEvent, boolean isTask) {
 		String dateFilter = new String();
 		dateFilter += currentSelectedYear+"-";
 		
@@ -32,9 +32,14 @@ public class CalendarProgramControl implements CalendarControl{
 		else
 			dateFilter += currentSelectedDay;
 		
-		cm.notifyViews(dateFilter);
-	}
-
+		if(isEvent && !isTask)
+			cm.notifyFilteredViews(dateFilter,"Event");
+		else if(!isEvent && isTask)
+			cm.notifyFilteredViews(dateFilter,"Task");
+		else
+			cm.notifyViews(dateFilter);
+	}	
+	
 	public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
 		cm.notifyDateTitle(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
 	}
