@@ -34,7 +34,7 @@ public class CalendarProgramView implements CalendarView{
     private JPanel buttonPanel;
     private JPanel yearPanel;
     private JPanel filterPanel;
-    private JPanel panel;
+    private JPanel interactPanel;
     private JPanel infoBorderPanel;
     private JPanel panel_2;
     private JLabel lblTitle;
@@ -202,10 +202,10 @@ public class CalendarProgramView implements CalendarView{
 			modelCalendarTable.addColumn(headers[i]);
 		}
 		
-		panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBounds(10, 11, 974, 81);
-		frmMain.getContentPane().add(panel);
+		interactPanel = new JPanel();
+		interactPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		interactPanel.setBounds(10, 11, 974, 81);
+		frmMain.getContentPane().add(interactPanel);
 		
 		lblTitle = new JLabel("Pr0ductivity t00Lz");
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -244,50 +244,60 @@ public class CalendarProgramView implements CalendarView{
 		btnByWeek = new JButton("Select by Week");
 		btnByWeek.setEnabled(false);
 		
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
+		JButton btnDelete = new JButton("Delete");
+		
+		JButton btnMarkDone = new JButton("Mark Done");
+		
+		GroupLayout gl_interactPanel = new GroupLayout(interactPanel);
+		gl_interactPanel.setHorizontalGroup(
+			gl_interactPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_interactPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
+					.addGroup(gl_interactPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_interactPanel.createSequentialGroup()
 							.addComponent(lblTitle)
 							.addGap(18)
 							.addComponent(btnToday))
-						.addGroup(gl_panel.createSequentialGroup()
+						.addGroup(gl_interactPanel.createSequentialGroup()
 							.addComponent(btnByDay)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnByWeek)))
 					.addGap(48)
 					.addComponent(lblCurrentDate, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
-					.addGap(34)
-					.addComponent(btnDay)
+					.addPreferredGap(ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
+					.addComponent(btnMarkDone)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnAgenda)
-					.addContainerGap(331, Short.MAX_VALUE))
+					.addComponent(btnDelete)
+					.addGap(51)
+					.addGroup(gl_interactPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnDay, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap())
 		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
+		gl_interactPanel.setVerticalGroup(
+			gl_interactPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_interactPanel.createSequentialGroup()
+					.addGroup(gl_interactPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_interactPanel.createSequentialGroup()
 							.addGap(27)
-							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblCurrentDate, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnDay)
-								.addComponent(btnAgenda)))
-						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblCurrentDate, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_interactPanel.createSequentialGroup()
 							.addContainerGap()
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(btnToday)
-								.addComponent(lblTitle))
+							.addGroup(gl_interactPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblTitle)
+								.addGroup(gl_interactPanel.createParallelGroup(Alignment.LEADING)
+									.addComponent(btnDay)
+									.addComponent(btnToday)))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addGroup(gl_interactPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(btnByDay)
-								.addComponent(btnByWeek))))
+								.addComponent(btnByWeek)
+								.addComponent(btnAgenda)
+								.addComponent(btnMarkDone)
+								.addComponent(btnDelete))))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		panel.setLayout(gl_panel);
+		interactPanel.setLayout(gl_interactPanel);
 		
 		infoBorderPanel = new JPanel();
 		infoBorderPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -589,5 +599,4 @@ public class CalendarProgramView implements CalendarView{
 			}
 		}
 	}
-
 }
