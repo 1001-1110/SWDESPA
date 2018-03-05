@@ -76,6 +76,15 @@ public class CalendarProgramView implements CalendarView{
 		refreshView();
     }
     
+	public void updateNotification(boolean success, String type) {
+		if(success) {
+			JOptionPane.showMessageDialog((Component) ea,type+" added successfully."); 	
+			ea.clearInputs();
+		}else {
+			JOptionPane.showMessageDialog((Component) ea,type+" overlaps with existing schedule.","Inane error", JOptionPane.ERROR_MESSAGE);			
+		}
+	}
+    
     public void showEventAdder() {
 		infoPanel.removeAll();
 		infoPanel.add((Component) ea);

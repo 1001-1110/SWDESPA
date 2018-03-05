@@ -22,7 +22,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions WHERE dateFrom like \""+dateFilter+"%\"";
+		String query = "SELECT * FROM occasions WHERE dateFrom like \""+dateFilter+"%\""+" ORDER BY dateFrom";
 		
 		try {
 			//create prepared statement
@@ -48,13 +48,19 @@ public class DatabaseProgram implements Database{
 		return occasions;
 	}		
 
-	public void addOccasion(Occasion occ) {
+	public boolean addOccasion(Occasion occ) {
 		//get a connection
 				Connection cnt = connection.getConnection();
 				
 				List<Occasion>occasions = new ArrayList<>();
-				String query2 = "SELECT * FROM occasions";
-			
+				String query2 = new String();
+				if(occ instanceof Event)
+					query2 = "SELECT * FROM occasions WHERE (dateFrom >= '"+((Event) occ).getDurationFrom()+"' AND dateFrom < '"+((Event) occ).getDurationTo()+"')"
+							+ " OR (dateTo > '"+((Event) occ).getDurationFrom()+"' AND dateTo <= '"+((Event) occ).getDurationTo()+"')";
+				else if(occ instanceof Task)
+					query2 = "SELECT * FROM occasions WHERE (dateFrom >= '"+((Task) occ).getDurationFrom()+"' AND dateFrom < '"+((Task) occ).getDurationTo()+"')"
+							+ " OR (dateTo > '"+((Task) occ).getDurationFrom()+"' AND dateTo < '"+((Task) occ).getDurationTo()+"')";
+
 				try {
 					//create a prepared statement
 					PreparedStatement ps = cnt.prepareStatement(query2);
@@ -73,6 +79,9 @@ public class DatabaseProgram implements Database{
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} 				
+				
+				if(occasions.size() > 0)
+					return false;
 				
 				//create a query
 				String query = "INSERT INTO occasions VALUES (?, ?, ?, ?, ?)";
@@ -106,6 +115,8 @@ public class DatabaseProgram implements Database{
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} 
+				
+				return true;
 				
 	}		
 	

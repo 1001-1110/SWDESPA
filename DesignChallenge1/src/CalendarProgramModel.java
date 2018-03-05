@@ -16,7 +16,17 @@ public class CalendarProgramModel implements CalendarModel{
 	}
 	
 	public void writeDatabase(Occasion occ) {
-		d.addOccasion(occ);
+		if(d.addOccasion(occ)) {
+			if(occ instanceof Event)
+				cv.updateNotification(true,"Event");
+			else if(occ instanceof Task)
+				cv.updateNotification(true,"Task");			
+		}else {
+			if(occ instanceof Event)
+				cv.updateNotification(false,"Event");
+			else if(occ instanceof Task)
+				cv.updateNotification(false,"Task");				
+		}	
 	}
 	
 	public List<Occasion> readDatabase(String dateFilter) {

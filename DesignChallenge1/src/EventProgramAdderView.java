@@ -1,7 +1,9 @@
 
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -30,6 +32,14 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		this.cc = cc;
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		initialize();
+		clearInputs();
+	}
+	
+	public void clearInputs() {
+		info.setText(null);
+		durationFrom.setText(null);
+		date.setText(null);
+		durationTo.setText(null);
 	}
 	
 	private void initialize() {
@@ -96,23 +106,16 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		durationTo = new JTextField();
 		durationTo.setColumns(10);
 		
-		rdbtnEvent = new JRadioButton("Event");
-		rdbtnEvent.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(rdbtnTask.isSelected())
-					rdbtnTask.setSelected(false);
-			}
-		});
+		ButtonGroup type = new ButtonGroup();
 		
+		rdbtnEvent = new JRadioButton("Event");
 		rdbtnTask = new JRadioButton("Task");
-		rdbtnTask.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(rdbtnEvent.isSelected())
-					rdbtnEvent.setSelected(false);
-			}
-		});
+		
+		type.add(rdbtnEvent);
+		type.add(rdbtnTask);
+
+		rdbtnEvent.setSelected(true);
+		
 		GroupLayout gl_inputPanel = new GroupLayout(inputPanel);
 		gl_inputPanel.setHorizontalGroup(
 			gl_inputPanel.createParallelGroup(Alignment.LEADING)
@@ -126,7 +129,7 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(lblTo)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE))
+							.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_inputPanel.createSequentialGroup()
 							.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_inputPanel.createSequentialGroup()
@@ -161,8 +164,8 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 						.addComponent(lblTime)
 						.addComponent(durationFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTo)
-						.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(36, Short.MAX_VALUE))
+						.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(13, Short.MAX_VALUE))
 		);
 		inputPanel.setLayout(gl_inputPanel);
 		this.setLayout(groupLayout);

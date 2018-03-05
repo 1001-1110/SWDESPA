@@ -16,4 +16,6 @@ public interface CalendarView {
  	
     public abstract void updateViews(List<Occasion>occasions);
     
+    public abstract void updateNotification(boolean success, String type);
+    
 }
