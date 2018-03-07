@@ -5,21 +5,19 @@
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-/**
- *
- * @author Arturo III
- */
 public class InfoTableRenderer extends DefaultTableCellRenderer
 {
-	
+	List<Occasion>occasions;
 	int selectedRow;
 	
-	public InfoTableRenderer(int row) {
+	public InfoTableRenderer(int row, List<Occasion>occasions) {
+		this.occasions = occasions;
 		this.selectedRow = row;
 	}
 	
@@ -30,6 +28,24 @@ public class InfoTableRenderer extends DefaultTableCellRenderer
             setBorder(null);
             setBackground(Color.WHITE);
             setForeground(Color.black);
+            
+            System.out.println(this.getText());
+            
+            if(this.getText().contains("<s>"))
+            	setBackground(Color.LIGHT_GRAY);
+
+            for(int i = 0 ; i < occasions.size(); i++) {
+            	if(occasions.get(i) instanceof Event) {
+                	if(this.getText().contains(((Event) occasions.get(i)).getDurationFrom())) {
+                		setForeground(Color.BLUE);
+                	}
+
+            	}else if(occasions.get(i) instanceof Task) {
+                	if(((Task) occasions.get(i)).getDurationFrom().equals(this.getText())) {
+                		setForeground(Color.GREEN);                    		
+                	}
+            	}
+            }
             
             if(selectedRow == row) {
             	setBorder(BorderFactory.createLineBorder(Color.RED));
