@@ -26,6 +26,10 @@ public class CalendarProgramControl implements CalendarControl{
 	public void updateIsDone(String dateFrom) {
 		cm.updateDatabase(dateFrom);
 	}
+
+	public void deleteIsDone(String dateFrom) {
+		cm.deleteDatabase(dateFrom);
+	}
 	
 	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay, boolean isEvent, boolean isTask) {
 		String dateFilter = new String();

@@ -14,6 +14,8 @@ public interface CalendarControl {
     
     public abstract void updateIsDone(String dateFrom);
     
+    public abstract void deleteIsDone(String dateFrom);
+    
 	public abstract void refreshCalendar(int monthToday, int yearToday);
     
 }

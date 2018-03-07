@@ -27,7 +27,12 @@ public class AgendaProgramView extends JPanel implements AgendaView{
     }
     
     public String getSelectedOccasion() {
-    	return ((String) calendarTable.getValueAt(currentRow,0)).substring(0,18);
+		String dateFrom = (String) calendarTable.getValueAt(currentRow,0);
+    	dateFrom = dateFrom.replaceAll("<html>", "");
+    	dateFrom = dateFrom.replaceAll("</html>", "");
+    	dateFrom = dateFrom.replaceAll("<s>", "");
+    	dateFrom = dateFrom.replaceAll("</s>", "");
+    	return dateFrom.substring(0,18);
     }
     
 	public AgendaProgramView(CalendarControl cc, List<Occasion>occasions){

@@ -10,4 +10,6 @@ public interface Database {
 
 	public abstract void updateIsDone(String dateFrom);
 	
+	public abstract void deleteOccasion(String dateFrom);
+	
 }

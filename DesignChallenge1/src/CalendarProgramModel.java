@@ -40,6 +40,10 @@ public class CalendarProgramModel implements CalendarModel{
 	public void updateDatabase(String dateFrom) {
 		d.updateIsDone(dateFrom);
 	}
+
+	public void deleteDatabase(String dateFrom) {
+		d.deleteOccasion(dateFrom);
+	}	
 	
 	public void attachView(CalendarView cv) {
 		this.cv = cv;

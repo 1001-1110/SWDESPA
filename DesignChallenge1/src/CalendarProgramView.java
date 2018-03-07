@@ -245,6 +245,12 @@ public class CalendarProgramView implements CalendarView{
 		btnByWeek.setEnabled(false);
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.deleteIsDone(av.getSelectedOccasion());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
 		
 		JButton btnMarkDone = new JButton("Mark Done");
 		btnMarkDone.addActionListener(new ActionListener() {
