@@ -71,14 +71,24 @@ public class DayProgramView extends JPanel implements DayView{
 		);
 		setLayout(groupLayout);
 		modelCalendarTable.addColumn("Time");
-		modelCalendarTable.addColumn("Event");
+		modelCalendarTable.addColumn("Event / Task");
 		
 		modelCalendarTable.setColumnCount(2);
 		modelCalendarTable.setRowCount(48);
 
 		for(int i = 0, j = 0 ; i < 48 ; i++) {
 			if(i % 2 == 0) {
-				modelCalendarTable.setValueAt(j, i, 0);
+				if(j >= 1000) {
+					String time = Integer.toString(j);
+					time = time.substring(0,2) + ":" + time.substring(2,4);
+					modelCalendarTable.setValueAt(time, i, 0);
+				}else if (j >= 100){
+					String time = Integer.toString(j);
+					time = "0" + time.charAt(0) + ":" + time.substring(1,3);
+					modelCalendarTable.setValueAt(time, i, 0);					
+				}else {
+					modelCalendarTable.setValueAt("00:00", i, 0);	
+				}
 				j += 100;
 			}
 		}

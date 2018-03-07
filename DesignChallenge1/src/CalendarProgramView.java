@@ -96,6 +96,7 @@ public class CalendarProgramView implements CalendarView{
     }
     
     public void showDayView() {
+    	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
 		infoPanel.removeAll();
 		infoPanel.add((Component) dv);
 		infoPanel.revalidate();
@@ -229,6 +230,7 @@ public class CalendarProgramView implements CalendarView{
 		btnDay = new JButton("Day");
 		btnDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				showDayView();
 			}
 		});
 		
