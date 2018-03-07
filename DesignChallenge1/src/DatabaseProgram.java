@@ -90,10 +90,14 @@ public class DatabaseProgram implements Database{
 				String query2 = new String();
 				if(occ instanceof Event)
 					query2 = "SELECT * FROM occasions WHERE (dateFrom >= '"+((Event) occ).getDurationFrom()+"' AND dateFrom < '"+((Event) occ).getDurationTo()+"')"
-							+ " OR (dateTo > '"+((Event) occ).getDurationFrom()+"' AND dateTo <= '"+((Event) occ).getDurationTo()+"')";
+							+ " OR (dateTo > '"+((Event) occ).getDurationFrom()+"' AND dateTo <= '"+((Event) occ).getDurationTo()+"')"
+							+  " OR (dateFrom < '"+((Event) occ).getDurationTo()+"' AND dateTo > '"+((Event) occ).getDurationFrom()+"')"
+							+  " OR (dateTo > '"+((Event) occ).getDurationFrom()+"' AND dateFrom < '"+((Event) occ).getDurationTo()+"')";
 				else if(occ instanceof Task)
 					query2 = "SELECT * FROM occasions WHERE (dateFrom >= '"+((Task) occ).getDurationFrom()+"' AND dateFrom < '"+((Task) occ).getDurationTo()+"')"
-							+ " OR (dateTo > '"+((Task) occ).getDurationFrom()+"' AND dateTo < '"+((Task) occ).getDurationTo()+"')";
+							+ " OR (dateTo > '"+((Task) occ).getDurationFrom()+"' AND dateTo < '"+((Task) occ).getDurationTo()+"')"
+							+  " OR (dateFrom < '"+((Task) occ).getDurationTo()+"' AND dateTo > '"+((Task) occ).getDurationFrom()+"')"
+							+  " OR (dateTo > '"+((Task) occ).getDurationFrom()+"' AND dateFrom < '"+((Task) occ).getDurationTo()+"')";
 
 				try {
 					//create a prepared statement
