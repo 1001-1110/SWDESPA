@@ -301,7 +301,7 @@ public class CalendarProgramView implements CalendarView{
 		
 		infoBorderPanel = new JPanel();
 		infoBorderPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		infoBorderPanel.setBounds(338, 98, 646, 463);
+		infoBorderPanel.setBounds(338, 103, 646, 463);
 		frmMain.getContentPane().add(infoBorderPanel);
 		
 		infoPanel = new JPanel();

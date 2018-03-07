@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AgendaProgramView extends JPanel implements AgendaView{
 	
@@ -16,6 +18,11 @@ public class AgendaProgramView extends JPanel implements AgendaView{
         /**** Calendar Table Components ***/
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
+    
+    private void refreshInfoTable() {
+    	calendarTable.repaint();
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
+    }
     
 	public AgendaProgramView(CalendarControl cc, List<Occasion>occasions){
 		
@@ -37,6 +44,13 @@ public class AgendaProgramView extends JPanel implements AgendaView{
                 };      
                 
 		calendarTable = new JTable(modelCalendarTable);
+		calendarTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				refreshInfoTable();
+				calendarTable.clearSelection();
+			}
+		});
                 
 		scrollCalendarTable = new JScrollPane(calendarTable);
 		scrollCalendarTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -86,6 +100,6 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 			}
 		}
 		
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer());
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
 	}
 }

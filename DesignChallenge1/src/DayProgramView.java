@@ -83,6 +83,6 @@ public class DayProgramView extends JPanel implements DayView{
 			}
 		}
 		
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer());
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
 	}
 }
