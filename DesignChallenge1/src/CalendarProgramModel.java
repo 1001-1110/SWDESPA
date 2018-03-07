@@ -37,6 +37,10 @@ public class CalendarProgramModel implements CalendarModel{
 		return d.getOccasions(dateFilter, typeFilter);
 	}	
 	
+	public void updateDatabase(String dateFrom) {
+		d.updateIsDone(dateFrom);
+	}
+	
 	public void attachView(CalendarView cv) {
 		this.cv = cv;
 	}

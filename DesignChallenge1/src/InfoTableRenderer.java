@@ -28,11 +28,6 @@ public class InfoTableRenderer extends DefaultTableCellRenderer
             setBorder(null);
             setBackground(Color.WHITE);
             setForeground(Color.black);
-            
-            System.out.println(this.getText());
-            
-            if(this.getText().contains("<s>"))
-            	setBackground(Color.LIGHT_GRAY);
 
             for(int i = 0 ; i < occasions.size(); i++) {
             	if(occasions.get(i) instanceof Event) {
@@ -47,6 +42,11 @@ public class InfoTableRenderer extends DefaultTableCellRenderer
             	}
             }
             
+            if(this.getText().contains("<s>")) {
+            	setBackground(Color.LIGHT_GRAY);
+            	setForeground(Color.BLACK);
+            }
+ 
             if(selectedRow == row) {
             	setBorder(BorderFactory.createLineBorder(Color.RED));
             }else {

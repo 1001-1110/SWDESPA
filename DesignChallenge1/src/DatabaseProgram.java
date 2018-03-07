@@ -158,31 +158,14 @@ public class DatabaseProgram implements Database{
 				
 	}		
 	
-	private Occasion toOccasion(ResultSet rs) throws SQLException {
+	public void updateIsDone(String dateFrom) {
+		//UPDATE occasions SET isDone = true
+		//WHERE dateFrom = dateFrom;
 		
-		Occasion occ = null;
-		
-		String type = rs.getString("type");
-		String info = rs.getString("info");
-		String dateFrom = rs.getString("dateFrom");
-		String dateTo = rs.getString("dateTo");
-		boolean isDone = rs.getBoolean("isDone");
-		
-		if(type.equals("Event")) {
-			occ = new Event(info,dateFrom,dateTo,isDone);			
-		}else if(type.equals("Task")) {
-		    occ = new Task(info,dateFrom,dateTo,isDone);	
-		}
-		
-		return occ;
-	}
-	/*
-	public void delete() {
-		//get a connection
 		Connection cnt = connection.getConnection();
 		
 		//create a query
-		String query = "DELETE FROM " + Product.TABLE + " WHERE 1 == 1";
+		String query = "UPDATE occasions SET isDone = true WHERE dateFrom = '"+dateFrom+"'";
 		
 		try {
 			//create a prepared statement
@@ -194,13 +177,56 @@ public class DatabaseProgram implements Database{
 			//close resource
 			ps.close();
 			cnt.close();
-			
-			System.out.println("DELETE SUCCESS!");
+
 		} catch (SQLException e) {
-			System.out.println("DELETE FAILED!");
 			e.printStackTrace();
 		} 
-		
+
 	}
-	*/
+	
+	private Occasion toOccasion(ResultSet rs) throws SQLException {
+		
+		Occasion occ = null;
+		
+		String type = rs.getString("type");
+		String info = rs.getString("info");
+		String dateFrom = rs.getString("dateFrom");
+		dateFrom = dateFrom.substring(0, dateFrom.length()-2);
+		String dateTo = rs.getString("dateTo");
+		dateTo = dateTo.substring(0, dateTo.length()-2);
+		boolean isDone = rs.getBoolean("isDone");
+		
+		if(type.equals("Event")) {
+			occ = new Event(info,dateFrom,dateTo,isDone);			
+		}else if(type.equals("Task")) {
+		    occ = new Task(info,dateFrom,dateTo,isDone);	
+		}
+		
+		return occ;
+	}
+	
+	public void deleteOccasion(String dateFrom) {
+		
+		Connection cnt = connection.getConnection();
+		
+		//create a query
+		String query = "DELETE FROM occasions WHERE dateFrom = '"+dateFrom+"'";
+		
+		try {
+			//create a prepared statement
+			PreparedStatement ps = cnt.prepareStatement(query);
+			
+			//execute the update
+			ps.executeUpdate();
+			
+			//close resource
+			ps.close();
+			cnt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+
+	}
+	
 }

@@ -13,6 +13,8 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 	
 	CalendarControl cc;
 	
+	int currentRow;
+	
 	JScrollPane scrollCalendarTable;    
 	
         /**** Calendar Table Components ***/
@@ -22,6 +24,10 @@ public class AgendaProgramView extends JPanel implements AgendaView{
     private void refreshInfoTable(List<Occasion>occasions) {
     	calendarTable.repaint();
 		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow(),occasions));
+    }
+    
+    public String getSelectedOccasion() {
+    	return ((String) calendarTable.getValueAt(currentRow,0)).substring(0,18);
     }
     
 	public AgendaProgramView(CalendarControl cc, List<Occasion>occasions){
@@ -48,6 +54,8 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				refreshInfoTable(occasions);
+				
+				currentRow = (int) calendarTable.getSelectedRow();
 				calendarTable.clearSelection();
 			}
 		});

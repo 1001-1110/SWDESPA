@@ -8,6 +8,8 @@ public interface CalendarModel {
 	
 	public abstract void connectDatabase(String DRIVER_NAME, String URL, String USERNAME, String PASSWORD, String DATABASE);
 
+	public abstract void updateDatabase(String dateFrom);
+	
 	public abstract void notifyViews(String dateFilter);
 	
 	public abstract void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);

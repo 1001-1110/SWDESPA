@@ -7,6 +7,11 @@ public class CalendarProgramControl implements CalendarControl{
 		String[] splitDate = date.split("/");
 		date = splitDate[2]+"-"+splitDate[0]+"-"+splitDate[1];
 		
+		info = info.replaceAll("<html>", "");
+		info = info.replaceAll("</html>", "");
+		info = info.replaceAll("<s>", "");
+		info = info.replaceAll("</s>", "");
+		
 		if(isEvent) {
 			cm.writeDatabase(new Event(info,date+" "+timeFrom,date+" "+timeTo,false));
 		}else if(isTask) {
@@ -18,6 +23,10 @@ public class CalendarProgramControl implements CalendarControl{
 		this.cm = cm;
 	}
 
+	public void updateIsDone(String dateFrom) {
+		cm.updateDatabase(dateFrom);
+	}
+	
 	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay, boolean isEvent, boolean isTask) {
 		String dateFilter = new String();
 		dateFilter += currentSelectedYear+"-";

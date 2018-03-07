@@ -247,6 +247,12 @@ public class CalendarProgramView implements CalendarView{
 		JButton btnDelete = new JButton("Delete");
 		
 		JButton btnMarkDone = new JButton("Mark Done");
+		btnMarkDone.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateIsDone(av.getSelectedOccasion());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
 		
 		GroupLayout gl_interactPanel = new GroupLayout(interactPanel);
 		gl_interactPanel.setHorizontalGroup(
