@@ -28,21 +28,21 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 	private JRadioButton rdbtnEvent;
 	private JRadioButton rdbtnTask;
 
-	public EventProgramAdderView(CalendarControl cc) {
+	public EventProgramAdderView(CalendarControl cc, int currentSelectedMonth, int currentSelectedDay, int currentSelectedYear) {
 		this.cc = cc;
 		setBorder(new LineBorder(new Color(0, 0, 0)));
-		initialize();
+		initialize(currentSelectedMonth, currentSelectedDay, currentSelectedYear);
 		clearInputs();
 	}
 	
 	public void clearInputs() {
 		info.setText(null);
 		durationFrom.setText(null);
-		date.setText(null);
+		//date.setText(null);
 		durationTo.setText(null);
 	}
 	
-	private void initialize() {
+	private void initialize(int currentSelectedMonth, int currentSelectedDay, int currentSelectedYear) {
 		setBounds(100, 100, 450, 190);
 		
 		JButton btnSave = new JButton("Save");
@@ -169,6 +169,9 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		);
 		inputPanel.setLayout(gl_inputPanel);
 		this.setLayout(groupLayout);
+		
+		date.setText(currentSelectedMonth+"/"+currentSelectedDay+"/"+currentSelectedYear);
+		
 		setVisible(true);
 	}
 }

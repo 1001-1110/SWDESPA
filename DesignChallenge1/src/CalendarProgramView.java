@@ -60,7 +60,7 @@ public class CalendarProgramView implements CalendarView{
     }
     
     public void updateViews(List<Occasion>occasions) {
-    	ea = new EventProgramAdderView(cc);
+    	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
     	dv = new DayProgramView(cc);
     	av = new AgendaProgramView(cc,occasions);
     	if(infoPanel.getComponentCount() > 0) {
@@ -88,7 +88,7 @@ public class CalendarProgramView implements CalendarView{
 	}
     
     public void showEventAdder() {
-    	ea = new EventProgramAdderView(cc);
+    	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
 		infoPanel.removeAll();
 		infoPanel.add((Component) ea);
 		infoPanel.revalidate();
