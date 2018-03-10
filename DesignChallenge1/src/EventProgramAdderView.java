@@ -31,7 +31,7 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 	public EventProgramAdderView(CalendarControl cc, int currentSelectedMonth, int currentSelectedDay, int currentSelectedYear) {
 		this.cc = cc;
 		setBorder(new LineBorder(new Color(0, 0, 0)));
-		initialize(currentSelectedMonth, currentSelectedDay, currentSelectedYear);
+		initialize(currentSelectedMonth+1, currentSelectedDay, currentSelectedYear);
 		clearInputs();
 	}
 	

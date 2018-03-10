@@ -47,6 +47,9 @@ public class CalendarProgramView implements CalendarView{
     private JPanel infoPanel;
     private JCheckBox eventFilter;
     private JCheckBox taskFilter;
+    private JButton btnMarkDone;
+    private JButton btnMarkUndone;
+    private JButton btnDelete;
     
     public void attachController(CalendarControl cc) {
     	this.cc = cc;
@@ -57,6 +60,8 @@ public class CalendarProgramView implements CalendarView{
 		cc.updateDateTitle(yearToday, monthToday, dayToday);
 		refreshCalendar();
 		cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+		showAgendaView();
+		frmMain.setVisible(true);
     }
     
     public void updateViews(List<Occasion>occasions) {
@@ -89,7 +94,8 @@ public class CalendarProgramView implements CalendarView{
     
     public void showEventAdder() {
     	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
-		infoPanel.removeAll();
+		disableSelectButtons();
+    	infoPanel.removeAll();
 		infoPanel.add((Component) ea);
 		infoPanel.revalidate();
 		refreshView();
@@ -97,6 +103,7 @@ public class CalendarProgramView implements CalendarView{
     
     public void showDayView() {
     	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+    	disableSelectButtons();
 		infoPanel.removeAll();
 		infoPanel.add((Component) dv);
 		infoPanel.revalidate();
@@ -105,6 +112,7 @@ public class CalendarProgramView implements CalendarView{
     
     public void showAgendaView() {
     	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+    	disableSelectButtons();
     	infoPanel.removeAll();
 		infoPanel.add((Component) av);
 		infoPanel.revalidate();
@@ -188,7 +196,6 @@ public class CalendarProgramView implements CalendarView{
                 };
                 
 		frmMain.setResizable(false);
-		frmMain.setVisible(true);
 		
 		GregorianCalendar cal = new GregorianCalendar();
 		dayBound = cal.get(GregorianCalendar.DAY_OF_MONTH);
@@ -246,7 +253,7 @@ public class CalendarProgramView implements CalendarView{
 		btnByWeek = new JButton("Select by Week");
 		btnByWeek.setEnabled(false);
 		
-		JButton btnDelete = new JButton("Delete");
+		btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.deleteIsDone(av.getSelectedOccasion());
@@ -254,13 +261,15 @@ public class CalendarProgramView implements CalendarView{
 			}
 		});
 		
-		JButton btnMarkDone = new JButton("Mark Done");
+		btnMarkDone = new JButton("Mark Done");
 		btnMarkDone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.updateIsDone(av.getSelectedOccasion());
 				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
 			}
 		});
+		
+		btnMarkUndone = new JButton("Mark Undone");
 		
 		GroupLayout gl_interactPanel = new GroupLayout(interactPanel);
 		gl_interactPanel.setHorizontalGroup(
@@ -278,7 +287,9 @@ public class CalendarProgramView implements CalendarView{
 							.addComponent(btnByWeek)))
 					.addGap(48)
 					.addComponent(lblCurrentDate, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+					.addComponent(btnMarkUndone)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnMarkDone)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnDelete)
@@ -308,7 +319,8 @@ public class CalendarProgramView implements CalendarView{
 								.addComponent(btnByWeek)
 								.addComponent(btnAgenda)
 								.addComponent(btnMarkDone)
-								.addComponent(btnDelete))))
+								.addComponent(btnDelete)
+								.addComponent(btnMarkUndone))))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		interactPanel.setLayout(gl_interactPanel);
@@ -491,6 +503,7 @@ public class CalendarProgramView implements CalendarView{
 		lblView.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		eventFilter = new JCheckBox("Event");
+		eventFilter.setSelected(true);
 		eventFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
@@ -499,6 +512,7 @@ public class CalendarProgramView implements CalendarView{
 		eventFilter.setIconTextGap(10);
 		
 		taskFilter = new JCheckBox("Task");
+		taskFilter.setSelected(true);
 		taskFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
@@ -565,10 +579,21 @@ public class CalendarProgramView implements CalendarView{
 		}
 
 		this.refreshCalendar(monthBound, yearBound);
-
+		
 	}
 	
+	private void disableSelectButtons() {
+		btnMarkDone.setEnabled(false);
+		btnMarkUndone.setEnabled(false);
+		btnDelete.setEnabled(false);
+	}
 
+	private void enableSelectButtons() {
+		btnMarkDone.setEnabled(true);
+		btnMarkUndone.setEnabled(true);
+		btnDelete.setEnabled(true);
+	}	
+	
 	class btnPrev_Action implements ActionListener
         {
 		public void actionPerformed (ActionEvent e)

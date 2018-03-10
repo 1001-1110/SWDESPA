@@ -45,12 +45,14 @@ public class CalendarProgramControl implements CalendarControl{
 		else
 			dateFilter += currentSelectedDay;
 		
-		if(isEvent && !isTask)
-			cm.notifyFilteredViews(dateFilter,"Event");
+		if(isEvent && isTask)
+			cm.notifyViews(dateFilter);
 		else if(!isEvent && isTask)
 			cm.notifyFilteredViews(dateFilter,"Task");
+		else if(isEvent && !isTask)
+			cm.notifyFilteredViews(dateFilter,"Event");
 		else
-			cm.notifyViews(dateFilter);
+			cm.notifyFilteredViews(dateFilter,"");
 	}	
 	
 	public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
