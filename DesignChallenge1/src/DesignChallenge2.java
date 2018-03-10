@@ -12,6 +12,7 @@ public class DesignChallenge2 {
         cpc.attachModel(cpm);
         cpv.initialize();
         cpv.refreshView();
+        cpm.timeCheck();
     	//com.mysql.jdbc.Driver
     	//jdbc:mysql://127.0.0.1:3306/
     	//root (username)

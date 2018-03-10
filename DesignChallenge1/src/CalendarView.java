@@ -1,10 +1,11 @@
 import java.awt.Component;
 import java.awt.Container;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface CalendarView {
 	
-	public abstract void refreshCalendar();
+	public abstract void refreshCalendar(int monthToday, int yearToday, ArrayList<Integer> days);
 
 	public abstract void initialize();
 	
@@ -17,5 +18,7 @@ public interface CalendarView {
     public abstract void updateViews(List<Occasion>occasions);
     
     public abstract void updateNotification(boolean success, String type);
+    
+    public abstract void enableSelectButtons();
     
 }

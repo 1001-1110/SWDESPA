@@ -11,8 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class InfoTableRenderer extends DefaultTableCellRenderer
-{
+public class InfoTableRenderer extends DefaultTableCellRenderer{
 	List<Occasion>occasions;
 	int selectedRow;
 	
@@ -48,7 +47,8 @@ public class InfoTableRenderer extends DefaultTableCellRenderer
             }
  
             if(selectedRow == row) {
-            	setBorder(BorderFactory.createLineBorder(Color.RED));
+            	//setBorder(BorderFactory.createLineBorder(Color.RED));
+            	setBackground(Color.MAGENTA);
             }else {
             	setBorder(null);
             }

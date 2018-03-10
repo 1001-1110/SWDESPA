@@ -3,6 +3,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.GroupLayout.Alignment;
@@ -56,6 +57,75 @@ public class CalendarProgramView implements CalendarView{
     }
     
     public void initialize() {
+    	
+		for (int i = yearBound-100; i <= yearBound+100; i++)
+        {
+			cmbYear.addItem(String.valueOf(i));
+		}    	
+
+		monthToday = monthBound;
+		yearToday = yearBound;
+    	
+		btnToday.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GregorianCalendar cal = new GregorianCalendar();
+				monthToday = cal.get(GregorianCalendar.MONTH);
+				yearToday = cal.get(GregorianCalendar.YEAR);
+				dayToday = cal.get(GregorianCalendar.DATE);
+				refreshCalendar();
+				cc.updateDateTitle(yearToday,monthToday,dayToday);
+				refreshCalendar();
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
+		taskFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
+		
+		eventFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		}); 
+		
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.deleteIsDone(av.getSelectedOccasion());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
+		
+		btnMarkDone.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateIsDone(av.getSelectedOccasion(),true);
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});
+
+		btnMarkUndone.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateIsDone(av.getSelectedOccasion(),false);
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			}
+		});		
+		
+		calendarTable.addMouseListener(new MouseAdapter() {  
+		    public void mouseClicked(MouseEvent evt)  
+		    {  
+		        int col = calendarTable.getSelectedColumn();  
+		        int row = calendarTable.getSelectedRow(); 
+		        if(modelCalendarTable.getValueAt(row, col) != null) {
+			        String day =  modelCalendarTable.getValueAt(row, col).toString().trim();
+				    refreshCalendar();
+			        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
+				    refreshCalendar();		
+				    cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+		        }
+		    }
+		});
+		
     	refreshCalendar();
 		cc.updateDateTitle(yearToday, monthToday, dayToday);
 		refreshCalendar();
@@ -67,7 +137,8 @@ public class CalendarProgramView implements CalendarView{
     public void updateViews(List<Occasion>occasions) {
     	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
     	dv = new DayProgramView(cc);
-    	av = new AgendaProgramView(cc,occasions);
+    	av = new AgendaProgramView(this,occasions);
+    	disableSelectButtons();
     	if(infoPanel.getComponentCount() > 0) {
     		Component comp = infoPanel.getComponent(0);
     		infoPanel.removeAll();
@@ -103,7 +174,6 @@ public class CalendarProgramView implements CalendarView{
     
     public void showDayView() {
     	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-    	disableSelectButtons();
 		infoPanel.removeAll();
 		infoPanel.add((Component) dv);
 		infoPanel.revalidate();
@@ -112,7 +182,6 @@ public class CalendarProgramView implements CalendarView{
     
     public void showAgendaView() {
     	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-    	disableSelectButtons();
     	infoPanel.removeAll();
 		infoPanel.add((Component) av);
 		infoPanel.revalidate();
@@ -135,10 +204,10 @@ public class CalendarProgramView implements CalendarView{
     }
 
     public void refreshCalendar() {
-    	this.refreshCalendar(monthToday, yearToday);
+    	cc.refreshCalendar(monthToday, yearToday);
     }    
     
-    public void refreshCalendar(int month, int year){
+    public void refreshCalendar(int month, int year, ArrayList<Integer> days){
 		String[] months =  {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 		int nod, som, i, j;
 			
@@ -170,7 +239,7 @@ public class CalendarProgramView implements CalendarView{
 			modelCalendarTable.setValueAt(" "+i, row, column);
         }
 
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(month, year, currentSelectedMonth, currentSelectedDay, currentSelectedYear));
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(month, year, currentSelectedMonth, currentSelectedDay, currentSelectedYear,days));
 		calendarTable.clearSelection();
     }
         
@@ -219,17 +288,7 @@ public class CalendarProgramView implements CalendarView{
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		
 		btnToday = new JButton("Go to Today");
-		btnToday.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				monthToday = cal.get(GregorianCalendar.MONTH);
-				yearToday = cal.get(GregorianCalendar.YEAR);
-				dayToday = cal.get(GregorianCalendar.DATE);
-				refreshCalendar(monthToday,yearToday);
-				cc.updateDateTitle(yearToday,monthToday,dayToday);
-				refreshCalendar(monthToday,yearToday);
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-			}
-		});
+
 		
 		lblCurrentDate = new JLabel();
 		lblCurrentDate.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -253,22 +312,8 @@ public class CalendarProgramView implements CalendarView{
 		btnByWeek = new JButton("Select by Week");
 		btnByWeek.setEnabled(false);
 		
-		btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cc.deleteIsDone(av.getSelectedOccasion());
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-			}
-		});
-		
+		btnDelete = new JButton("Delete");	
 		btnMarkDone = new JButton("Mark Done");
-		btnMarkDone.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cc.updateIsDone(av.getSelectedOccasion());
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-			}
-		});
-		
 		btnMarkUndone = new JButton("Mark Undone");
 		
 		GroupLayout gl_interactPanel = new GroupLayout(interactPanel);
@@ -357,21 +402,6 @@ public class CalendarProgramView implements CalendarView{
 		
 		calendarTable = new JTable(modelCalendarTable);
 		calendarTable.clearSelection();
-		calendarTable.addMouseListener(new MouseAdapter()   
-		{  
-		    public void mouseClicked(MouseEvent evt)  
-		    {  
-		        int col = calendarTable.getSelectedColumn();  
-		        int row = calendarTable.getSelectedRow(); 
-		        if(modelCalendarTable.getValueAt(row, col) != null) {
-			        String day =  modelCalendarTable.getValueAt(row, col).toString().trim();
-				    refreshCalendar();
-			        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
-				    refreshCalendar();		
-				    cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-		        }
-		    }
-		});
 
 		scrollCalendarTable = new JScrollPane(calendarTable);
 		calendarPanel = new JPanel(null);
@@ -504,20 +534,12 @@ public class CalendarProgramView implements CalendarView{
 		
 		eventFilter = new JCheckBox("Event");
 		eventFilter.setSelected(true);
-		eventFilter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-			}
-		});
+
 		eventFilter.setIconTextGap(10);
 		
 		taskFilter = new JCheckBox("Task");
 		taskFilter.setSelected(true);
-		taskFilter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-			}
-		});
+
 		taskFilter.setIconTextGap(10);
 		GroupLayout gl_filterPanel = new GroupLayout(filterPanel);
 		gl_filterPanel.setHorizontalGroup(
@@ -573,13 +595,6 @@ public class CalendarProgramView implements CalendarView{
 		modelCalendarTable.setColumnCount(7);
 		modelCalendarTable.setRowCount(6);
 		
-		for (int i = yearBound-100; i <= yearBound+100; i++)
-        {
-			cmbYear.addItem(String.valueOf(i));
-		}
-
-		this.refreshCalendar(monthBound, yearBound);
-		
 	}
 	
 	private void disableSelectButtons() {
@@ -588,7 +603,7 @@ public class CalendarProgramView implements CalendarView{
 		btnDelete.setEnabled(false);
 	}
 
-	private void enableSelectButtons() {
+	public void enableSelectButtons() {
 		btnMarkDone.setEnabled(true);
 		btnMarkUndone.setEnabled(true);
 		btnDelete.setEnabled(true);
@@ -607,7 +622,7 @@ public class CalendarProgramView implements CalendarView{
                         {
 				monthToday -= 1;
 			}
-			refreshCalendar(monthToday, yearToday);
+			refreshCalendar();
 		}
 	}
 	class btnNext_Action implements ActionListener
@@ -623,7 +638,7 @@ public class CalendarProgramView implements CalendarView{
                         {
 				monthToday += 1;
 			}
-			refreshCalendar(monthToday, yearToday);
+			refreshCalendar();
 		}
 	}
 	class cmbYear_Action implements ActionListener
@@ -634,7 +649,7 @@ public class CalendarProgramView implements CalendarView{
                         {
 				String b = cmbYear.getSelectedItem().toString();
 				yearToday = Integer.parseInt(b);
-				refreshCalendar(monthToday, yearToday);
+				refreshCalendar();
 			}
 		}
 	}

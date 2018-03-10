@@ -23,10 +23,10 @@ public class CalendarProgramControl implements CalendarControl{
 		this.cm = cm;
 	}
 
-	public void updateIsDone(String dateFrom) {
-		cm.updateDatabase(dateFrom);
+	public void updateIsDone(String dateFrom, boolean isDone) {
+		cm.updateDatabase(dateFrom, isDone);
 	}
-
+	
 	public void deleteIsDone(String dateFrom) {
 		cm.deleteDatabase(dateFrom);
 	}
@@ -60,7 +60,12 @@ public class CalendarProgramControl implements CalendarControl{
 	}
 
 	public void refreshCalendar(int monthToday, int yearToday) {
-		cm.notifyCalendar(monthToday, yearToday);
+		String month = new String();
+		month = month + (monthToday+1);
+		if(monthToday < 10)
+			month = "0" + month;
+		String dateFilter = yearToday + "-" + month;
+		cm.notifyCalendar(monthToday, yearToday, dateFilter);
 	}
 	
 }

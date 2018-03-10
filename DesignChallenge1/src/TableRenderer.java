@@ -5,6 +5,7 @@
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
@@ -14,12 +15,24 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author Arturo III
  */
-public class TableRenderer extends DefaultTableCellRenderer
-{
+public class TableRenderer extends DefaultTableCellRenderer{
 
 	String day;
+	ArrayList<Integer> days;
 	
-	public TableRenderer(int month, int year, int selectedMonth, int selectedDay, int selectedYear) {
+	private boolean checkIfOccasion(String day) {
+		for(int i = 0 ; i < days.size() ; i++) {
+			if(day.equals(" "+days.get(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public TableRenderer(int month, int year, int selectedMonth, int selectedDay, int selectedYear, ArrayList<Integer> days) {
+		
+		this.days = days;
+
 		if(month == selectedMonth && year == selectedYear) {
 			this.day = " "+selectedDay;
 		} else {
@@ -43,8 +56,12 @@ public class TableRenderer extends DefaultTableCellRenderer
             }else{
             	setBackground(Color.WHITE);           	
             }
-
-            setForeground(Color.black);
+            
+            if(checkIfOccasion(this.getText()))
+            	setForeground(Color.RED);
+            else
+            	setForeground(Color.BLACK);	
+            
             return this;  
     }
 }

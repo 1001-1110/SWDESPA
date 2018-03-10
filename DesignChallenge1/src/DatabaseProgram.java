@@ -23,7 +23,7 @@ public class DatabaseProgram implements Database{
 		
 		//create string query
 		String query = "SELECT * FROM occasions WHERE dateFrom like \""+dateFilter+"%\""+" ORDER BY dateFrom";
-		
+
 		try {
 			//create prepared statement
 			PreparedStatement ps = cnt.prepareStatement(query);
@@ -47,7 +47,7 @@ public class DatabaseProgram implements Database{
 		
 		return occasions;
 	}		
-
+	
 	public List<Occasion> getOccasions(String dateFilter, String typeFilter) {
 		//Create empty list of contacts
 		List<Occasion>occasions = new ArrayList <Occasion>();
@@ -158,14 +158,18 @@ public class DatabaseProgram implements Database{
 				
 	}		
 	
-	public void updateIsDone(String dateFrom) {
+	public void updateIsDone(String dateFrom, boolean isDone) {
 		//UPDATE occasions SET isDone = true
 		//WHERE dateFrom = dateFrom;
 		
 		Connection cnt = connection.getConnection();
 		
 		//create a query
-		String query = "UPDATE occasions SET isDone = true WHERE dateFrom = '"+dateFrom+"'";
+		String query;
+		if(isDone)
+			query = "UPDATE occasions SET isDone = true WHERE dateFrom = '"+dateFrom+"'";
+		else
+			query = "UPDATE occasions SET isDone = false WHERE dateFrom = '"+dateFrom+"'";
 		
 		try {
 			//create a prepared statement

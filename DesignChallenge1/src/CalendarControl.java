@@ -12,10 +12,10 @@ public interface CalendarControl {
     
     public abstract void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay, boolean isEvent, boolean isTask);
     
-    public abstract void updateIsDone(String dateFrom);
+    public abstract void updateIsDone(String dateFrom, boolean isDone);
     
     public abstract void deleteIsDone(String dateFrom);
     
-	public abstract void refreshCalendar(int monthToday, int yearToday);
+    public abstract void refreshCalendar(int monthToday, int yearToday);
     
 }

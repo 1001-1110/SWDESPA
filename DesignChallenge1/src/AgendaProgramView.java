@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class AgendaProgramView extends JPanel implements AgendaView{
 	
-	CalendarControl cc;
+	CalendarView cv;
 	
 	int currentRow;
 	
@@ -35,11 +35,11 @@ public class AgendaProgramView extends JPanel implements AgendaView{
     	return dateFrom.substring(0,18);
     }
     
-	public AgendaProgramView(CalendarControl cc, List<Occasion>occasions){
+	public AgendaProgramView(CalendarView cv, List<Occasion>occasions){
 		
 		setBounds(0,0,620,440);
 		
-		this.cc = cc;
+		this.cv =  cv;
 		
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -59,7 +59,7 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				refreshInfoTable(occasions);
-				
+				cv.enableSelectButtons();
 				currentRow = (int) calendarTable.getSelectedRow();
 				calendarTable.clearSelection();
 			}
@@ -130,7 +130,6 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 				}
 			}
 		}
-		
 		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow(), occasions));
 	}
 }
