@@ -27,13 +27,12 @@ public class DatabaseProgram implements Database{
 	}	
 
 	public boolean readOccasion(String monthFilter) {
-		//Create empty list of contacts
-		List<Occasion>occasions = new ArrayList <Occasion>();
+		
 		//get connection from db
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+monthFilter+" 23:59:00' AND dateTo >= '"+monthFilter+" 00:00:00'"+" ORDER BY dateFrom";
+		String query = "SELECT id FROM occasions WHERE dateFrom <= '"+monthFilter+" 23:59:00' AND dateTo >= '"+monthFilter+" 00:00:00'"+" ORDER BY dateFrom";
 		//System.out.println(query);
 		try {
 			//create prepared statement
@@ -41,25 +40,26 @@ public class DatabaseProgram implements Database{
 			
 			//get result and store in result set
 			ResultSet rs = ps.executeQuery();
+			//transform set into list		
+			//close all the resources
 			
-			//transform set into list
-			while(rs.next()) {
-				occasions.add(toOccasion(rs));
+			if(rs.next()) {
+				ps.close();
+				rs.close();
+				cnt.close();
+				return true;
+			}else {
+				ps.close();
+				rs.close();
+				cnt.close();
+				return false;
 			}
 			
-			//close all the resources
-			ps.close();
-			rs.close();
-			cnt.close();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
-		
-		if(occasions.size() > 0)
-			return true;
-		else
 			return false;
+		} 
+
 	}		
 	
 	public List<Occasion> getOccasions(String dateFilter) {
@@ -104,7 +104,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions WHERE dateFrom < '"+dateFilter+" 00:00:00' AND dateTo > '"+dateFilter+" 23:59:59'"+" AND type = '"+typeFilter+"' ORDER BY dateFrom";
+		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+dateFilter+" 23:59:00' AND dateTo >= '"+dateFilter+" 00:00:00'"+" AND type = '"+typeFilter+"' ORDER BY dateFrom";
 
 		try {
 			//create prepared statement

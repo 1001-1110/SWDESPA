@@ -20,7 +20,7 @@ public class CalendarProgramControl implements CalendarControl{
 		timeTo = timeTo.trim();		
 		
 		if(isEvent) {
-			if(info.equals("") || timeFrom.equals("") || timeTo.equals("") || dateFrom.equals("") || dateTo.equals("") || timeFrom.equals(timeTo)) 
+			if(info.equals("") || timeFrom.equals("") || timeTo.equals("") || dateFrom.equals("") || dateTo.equals("") || timeFrom.equals(timeTo) && dateFrom.equals(dateTo)) 
 				return false;	
 			String[] splitTime = timeFrom.split(":");
 			if(Integer.parseInt(splitTime[0]) >= 24 || (!splitTime[1].equals("00") && !splitTime[1].equals("30")))

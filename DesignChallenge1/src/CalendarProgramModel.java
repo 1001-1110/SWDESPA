@@ -144,7 +144,7 @@ public class CalendarProgramModel implements CalendarModel{
 	        		refreshDays();
 	        		notifyCalendar(monthToday, yearToday, monthFilter);
 		        	try {
-						sleep(2500);
+						sleep(2000);
 					} catch (InterruptedException e) {}
 	        	}
 

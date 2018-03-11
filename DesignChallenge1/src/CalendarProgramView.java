@@ -37,7 +37,7 @@ public class CalendarProgramView implements CalendarView{
     private JPanel filterPanel;
     private JPanel interactPanel;
     private JPanel infoBorderPanel;
-    private JPanel panel_2;
+    private JPanel datePanel;
     private JLabel lblTitle;
     private JButton btnToday;
     private JLabel lblCurrentDate;
@@ -405,10 +405,10 @@ public class CalendarProgramView implements CalendarView{
 		
 		infoBorderPanel.setLayout(gl_infoBorderPanel);
 		
-		panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.setBounds(10, 98, 318, 463);
-		frmMain.getContentPane().add(panel_2);
+		datePanel = new JPanel();
+		datePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		datePanel.setBounds(10, 98, 318, 463);
+		frmMain.getContentPane().add(datePanel);
 		
 		calendarTable = new JTable(modelCalendarTable);
 		calendarTable.clearSelection();
@@ -578,29 +578,29 @@ public class CalendarProgramView implements CalendarView{
 					.addGap(82))
 		);
 		filterPanel.setLayout(gl_filterPanel);
-		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(
-			gl_panel_2.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel_2.createSequentialGroup()
+		GroupLayout gl_datePanel = new GroupLayout(datePanel);
+		gl_datePanel.setHorizontalGroup(
+			gl_datePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_datePanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_2.createSequentialGroup()
+					.addGroup(gl_datePanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_datePanel.createSequentialGroup()
 							.addComponent(calendarPanel, GroupLayout.PREFERRED_SIZE, 301, Short.MAX_VALUE)
 							.addGap(5))
-						.addGroup(gl_panel_2.createSequentialGroup()
+						.addGroup(gl_datePanel.createSequentialGroup()
 							.addComponent(filterPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap(19, Short.MAX_VALUE))))
 		);
-		gl_panel_2.setVerticalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup()
+		gl_datePanel.setVerticalGroup(
+			gl_datePanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_datePanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(calendarPanel, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(filterPanel, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(35, Short.MAX_VALUE))
 		);
-		panel_2.setLayout(gl_panel_2);
+		datePanel.setLayout(gl_datePanel);
 		
 		modelCalendarTable.setColumnCount(7);
 		modelCalendarTable.setRowCount(6);
@@ -639,7 +639,7 @@ public class CalendarProgramView implements CalendarView{
 			else
                         {
 				monthToday -= 1;
-			}
+			}				
 			refreshCalendar();
 			cc.refreshCalendarDays();
 			refreshCalendar();
@@ -657,7 +657,7 @@ public class CalendarProgramView implements CalendarView{
 			else
                         {
 				monthToday += 1;
-			}
+			}				
 			refreshCalendar();
 			cc.refreshCalendarDays();
 			refreshCalendar();
@@ -671,6 +671,8 @@ public class CalendarProgramView implements CalendarView{
                         {
 				String b = cmbYear.getSelectedItem().toString();
 				yearToday = Integer.parseInt(b);
+				refreshCalendar();
+				cc.refreshCalendarDays();
 				refreshCalendar();
 			}
 		}
