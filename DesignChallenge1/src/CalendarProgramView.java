@@ -41,16 +41,16 @@ public class CalendarProgramView implements CalendarView{
     private JLabel lblTitle;
     private JButton btnToday;
     private JLabel lblCurrentDate;
-    private JButton btnDay;
+    private JButton btnTime;
     private JButton btnAgenda;
-    private JButton btnByDay;
-    private JButton btnByWeek;
     private JPanel infoPanel;
     private JCheckBox eventFilter;
     private JCheckBox taskFilter;
     private JButton btnMarkDone;
     private JButton btnMarkUndone;
     private JButton btnDelete;
+    private JRadioButton rdbtnDay;
+    private JRadioButton rdbtnWeek;
     
     public void attachController(CalendarControl cc) {
     	this.cc = cc;
@@ -134,22 +134,9 @@ public class CalendarProgramView implements CalendarView{
 		frmMain.setVisible(true);
     }
     
-    public void updateViews(List<Occasion>occasions) {
+    public void update() {
     	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
-    	dv = new DayProgramView(this,occasions);
-    	av.refreshInfoTable(occasions);
     	disableSelectButtons();
-    	if(infoPanel.getComponentCount() > 0) {
-    		Component comp = infoPanel.getComponent(0);
-    		infoPanel.removeAll();
-    		if(comp instanceof EventAdderView) {
-    			infoPanel.add((Component) ea);
-    		}if(comp instanceof DayView) {
-    			infoPanel.add((Component) dv);
-    		}if(comp instanceof AgendaView) {
-    			infoPanel.add((Component) av);
-    		}
-    	}
 		infoPanel.revalidate();
 		refreshView();
     }
@@ -245,9 +232,7 @@ public class CalendarProgramView implements CalendarView{
         
 	public CalendarProgramView()
         {
-		
-    	av = new AgendaProgramView(this);
-		
+    	
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 }
@@ -295,8 +280,8 @@ public class CalendarProgramView implements CalendarView{
 		lblCurrentDate = new JLabel();
 		lblCurrentDate.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		
-		btnDay = new JButton("Day");
-		btnDay.addActionListener(new ActionListener() {
+		btnTime = new JButton("Time");
+		btnTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showDayView();
 			}
@@ -309,14 +294,20 @@ public class CalendarProgramView implements CalendarView{
 			}
 		});
 		
-		btnByDay = new JButton("Select by Day");
-		btnByDay.setEnabled(false);
-		btnByWeek = new JButton("Select by Week");
-		btnByWeek.setEnabled(false);
-		
 		btnDelete = new JButton("Delete");	
 		btnMarkDone = new JButton("Mark Done");
 		btnMarkUndone = new JButton("Mark Undone");
+		
+		ButtonGroup selectView = new ButtonGroup();
+		
+		rdbtnDay = new JRadioButton("View by day");
+		rdbtnWeek = new JRadioButton("View by week");
+		
+		selectView.add(rdbtnDay);
+		selectView.add(rdbtnWeek);
+		
+		rdbtnDay.setSelected(true);
+		rdbtnWeek.setEnabled(false);
 		
 		GroupLayout gl_interactPanel = new GroupLayout(interactPanel);
 		gl_interactPanel.setHorizontalGroup(
@@ -329,9 +320,9 @@ public class CalendarProgramView implements CalendarView{
 							.addGap(18)
 							.addComponent(btnToday))
 						.addGroup(gl_interactPanel.createSequentialGroup()
-							.addComponent(btnByDay)
+							.addComponent(rdbtnDay)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnByWeek)))
+							.addComponent(rdbtnWeek)))
 					.addGap(48)
 					.addComponent(lblCurrentDate, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
@@ -343,7 +334,7 @@ public class CalendarProgramView implements CalendarView{
 					.addGap(51)
 					.addGroup(gl_interactPanel.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnDay, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(btnTime, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_interactPanel.setVerticalGroup(
@@ -358,16 +349,16 @@ public class CalendarProgramView implements CalendarView{
 							.addGroup(gl_interactPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblTitle)
 								.addGroup(gl_interactPanel.createParallelGroup(Alignment.LEADING)
-									.addComponent(btnDay)
+									.addComponent(btnTime)
 									.addComponent(btnToday)))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_interactPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnByDay)
-								.addComponent(btnByWeek)
 								.addComponent(btnAgenda)
 								.addComponent(btnMarkDone)
 								.addComponent(btnDelete)
-								.addComponent(btnMarkUndone))))
+								.addComponent(btnMarkUndone)
+								.addComponent(rdbtnDay)
+								.addComponent(rdbtnWeek))))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		interactPanel.setLayout(gl_interactPanel);
@@ -609,6 +600,14 @@ public class CalendarProgramView implements CalendarView{
 		btnMarkDone.setEnabled(true);
 		btnMarkUndone.setEnabled(true);
 		btnDelete.setEnabled(true);
+	}	
+	
+	public void attachDayView(DayView dv) {
+       	this.dv = dv;
+	}
+
+	public void attachAgendaView(AgendaView av) {
+       	this.av = av;
 	}	
 	
 	class btnPrev_Action implements ActionListener

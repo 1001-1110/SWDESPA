@@ -34,12 +34,12 @@ public class CalendarProgramControl implements CalendarControl{
 		this.cm = cm;
 	}
 
-	public void updateIsDone(String dateFrom, boolean isDone) {
-		cm.updateDatabase(dateFrom, isDone);
+	public void updateIsDone(int occasionID, boolean isDone) {
+		cm.updateDatabase(occasionID, isDone);
 	}
 	
-	public void deleteIsDone(String dateFrom) {
-		cm.deleteDatabase(dateFrom);
+	public void deleteIsDone(int occasionID) {
+		cm.deleteDatabase(occasionID);
 	}
 	
 	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay, boolean isEvent, boolean isTask) {
@@ -57,13 +57,13 @@ public class CalendarProgramControl implements CalendarControl{
 			dateFilter += currentSelectedDay;
 		
 		if(isEvent && isTask)
-			cm.notifyViews(dateFilter);
+			cm.notifyObservers(dateFilter);
 		else if(!isEvent && isTask)
-			cm.notifyFilteredViews(dateFilter,"Task");
+			cm.notifyObservers(dateFilter,"Task");
 		else if(isEvent && !isTask)
-			cm.notifyFilteredViews(dateFilter,"Event");
+			cm.notifyObservers(dateFilter,"Event");
 		else
-			cm.notifyFilteredViews(dateFilter,"");
+			cm.notifyObservers(dateFilter,"");
 	}	
 	
 	public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {

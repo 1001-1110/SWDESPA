@@ -8,8 +8,8 @@ public interface Database {
 	
 	public abstract boolean addOccasion(Occasion occ);
 
-	public abstract void updateIsDone(String dateFrom, boolean isDone);
+	public abstract void updateIsDone(int occasionID, boolean isDone);
 	
-	public abstract void deleteOccasion(String dateFrom);
+	public abstract void deleteOccasion(int occasionID);
 	
 }

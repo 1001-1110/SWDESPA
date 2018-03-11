@@ -2,6 +2,7 @@
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.GroupLayout.Alignment;
@@ -9,10 +10,11 @@ import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class AgendaProgramView extends JPanel implements AgendaView{
+public class AgendaProgramView extends JPanel implements AgendaView, ObserverView{
 	
 	CalendarView cv;
 	
+	List<Integer> rowAssignment;
 	int currentRow;
 	
 	JScrollPane scrollCalendarTable;    
@@ -21,20 +23,25 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
     
-    public void refreshInfoTable(List<Occasion>occasions) {
+    public void update(List<Occasion>occasions) {
 
     	currentRow = -1;
 		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
     	
+		rowAssignment = new ArrayList<>();
+		
 		modelCalendarTable.setColumnCount(2);
 		modelCalendarTable.setRowCount(occasions.size());
     	
 		for(int i = 0 ; i < occasions.size() ; i++) {
+			
+			rowAssignment.add(occasions.get(i).getID());
+			
 			if(occasions.get(i) instanceof Event) {
 				if(((Event) occasions.get(i)).getIsDone()) {
 					modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo()+"</s></html>", i, 0);	
 				}else {
-					modelCalendarTable.setValueAt(((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo(), i, 0);
+					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo(), i, 0);
 				}
 				
 				if(((Event) occasions.get(i)).getIsDone()) {
@@ -46,7 +53,7 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 				if(((Task) occasions.get(i)).getIsDone()) {
 					modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(i)).getDurationFrom()+"</s></html>", i, 0);
 				}else {
-					modelCalendarTable.setValueAt(((Task)occasions.get(i)).getDurationFrom(), i, 0);
+					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Task)occasions.get(i)).getDurationFrom(), i, 0);
 				}
 				
 				if(((Task) occasions.get(i)).getIsDone()) {
@@ -59,13 +66,8 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 
     }
     
-    public String getSelectedOccasion() {
-		String dateFrom = (String) calendarTable.getValueAt(currentRow,0);
-    	dateFrom = dateFrom.replaceAll("<html>", "");
-    	dateFrom = dateFrom.replaceAll("</html>", "");
-    	dateFrom = dateFrom.replaceAll("<s>", "");
-    	dateFrom = dateFrom.replaceAll("</s>", "");
-    	return dateFrom.substring(0,18);
+    public int getSelectedOccasion() {
+    	return rowAssignment.get(currentRow);
     }
     
 	public AgendaProgramView(CalendarView cv){

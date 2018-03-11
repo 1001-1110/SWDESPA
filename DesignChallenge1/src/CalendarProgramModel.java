@@ -12,6 +12,12 @@ public class CalendarProgramModel implements CalendarModel{
 	DatabaseConnector dc;
 	Database d;
 	
+	ArrayList<ObserverView> observers;
+	
+	public CalendarProgramModel() {
+		observers = new ArrayList<>();
+	}
+	
 	public void connectDatabase(String DRIVER_NAME, String URL, String USERNAME, String PASSWORD, String DATABASE) {
 		dc = new DatabaseProgramConnector(DRIVER_NAME,URL,USERNAME,PASSWORD,DATABASE);
 		d = new DatabaseProgram(dc);
@@ -41,27 +47,35 @@ public class CalendarProgramModel implements CalendarModel{
 		return d.getOccasions(dateFilter, typeFilter);
 	}	
 	
-	public void updateDatabase(String dateFrom, boolean isDone) {
-		d.updateIsDone(dateFrom, isDone);
+	public void updateDatabase(int occasionID, boolean isDone) {
+		d.updateIsDone(occasionID, isDone);
 	}	
 	
-	public void deleteDatabase(String dateFrom) {
-		d.deleteOccasion(dateFrom);
+	public void deleteDatabase(int occasionID) {
+		d.deleteOccasion(occasionID);
 	}	
 	
 	public void attachView(CalendarView cv) {
 		this.cv = cv;
 	}
-
-	public void notifyViews(String dateFilter) {
-		this.dateFilter = dateFilter;
-		cv.updateViews(readDatabase(dateFilter));
+	
+	public void attachObserver(ObserverView ov) {
+		observers.add(ov);
 	}
 
-	public void notifyFilteredViews(String dateFilter, String typeFilter) {
+	public void notifyObservers(String dateFilter) {
+		this.dateFilter = dateFilter;
+		for(int i = 0 ; i < observers.size() ; i++)
+			observers.get(i).update(readDatabase(dateFilter));
+		cv.update();
+	}
+
+	public void notifyObservers(String dateFilter, String typeFilter) {
 		this.dateFilter = dateFilter;
 		this.typeFilter = typeFilter;
-		cv.updateViews(readDatabase(dateFilter,typeFilter));
+		for(int i = 0 ; i < observers.size() ; i++)
+			observers.get(i).update(readDatabase(dateFilter,typeFilter));
+		cv.update();
 	}
 	
 	public void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {

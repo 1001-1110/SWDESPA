@@ -12,10 +12,14 @@ public interface CalendarView {
 	public abstract void refreshView();
 	
 	public abstract void attachController(CalendarControl cc);
-    
+
+	public abstract void attachAgendaView(AgendaView av);
+	
+	public abstract void attachDayView(DayView dv);	
+	
+	public abstract void update();
+	
     public abstract void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
- 	
-    public abstract void updateViews(List<Occasion>occasions);
     
     public abstract void updateNotification(boolean success, String type);
     

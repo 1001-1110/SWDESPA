@@ -182,7 +182,7 @@ public class DatabaseProgram implements Database{
 				
 	}		
 	
-	public void updateIsDone(String dateFrom, boolean isDone) {
+	public void updateIsDone(int occasionID, boolean isDone) {
 		//UPDATE occasions SET isDone = true
 		//WHERE dateFrom = dateFrom;
 		
@@ -191,9 +191,9 @@ public class DatabaseProgram implements Database{
 		//create a query
 		String query;
 		if(isDone)
-			query = "UPDATE occasions SET isDone = true WHERE dateFrom = '"+dateFrom+"'";
+			query = "UPDATE occasions SET isDone = true WHERE id = "+occasionID;
 		else
-			query = "UPDATE occasions SET isDone = false WHERE dateFrom = '"+dateFrom+"'";
+			query = "UPDATE occasions SET isDone = false WHERE id = "+occasionID;
 		
 		try {
 			//create a prepared statement
@@ -234,12 +234,12 @@ public class DatabaseProgram implements Database{
 		return occ;
 	}
 	
-	public void deleteOccasion(String dateFrom) {
+	public void deleteOccasion(int occasionID) {
 		
 		Connection cnt = connection.getConnection();
 		
 		//create a query
-		String query = "DELETE FROM occasions WHERE dateFrom = '"+dateFrom+"'";
+		String query = "DELETE FROM occasions WHERE id = "+occasionID;
 		
 		try {
 			//create a prepared statement

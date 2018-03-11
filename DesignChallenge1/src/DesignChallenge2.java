@@ -6,10 +6,16 @@ public class DesignChallenge2 {
         CalendarView cpv = new CalendarProgramView();
         CalendarModel cpm = new CalendarProgramModel();
         CalendarControl cpc = new CalendarProgramControl();
+        AgendaView apv = new AgendaProgramView(cpv);
+        DayView dpv = new DayProgramView(cpv);
         cpv.attachController(cpc);
+        cpv.attachAgendaView(apv);
+        cpv.attachDayView(dpv);
         cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
+        cpm.attachObserver((ObserverView) apv);
+        cpm.attachObserver((ObserverView) dpv);
         cpv.initialize();
         cpv.refreshView();
         cpm.timeCheck();

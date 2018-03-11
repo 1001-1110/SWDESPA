@@ -48,7 +48,8 @@ public class TableRenderer extends DefaultTableCellRenderer{
             setBackground(Color.WHITE);
             
             if (this.getText().equals(day)) {
-            	setBorder(BorderFactory.createLineBorder(Color.RED));  
+            	setBackground(Color.PINK);
+            	//setBorder(BorderFactory.createLineBorder(Color.RED));  
             }else if (this.getText().equals("Unselected")) {
                 setBackground(Color.WHITE); 
             }else if (this.getText().equals(new String())) {

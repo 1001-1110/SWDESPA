@@ -10,16 +10,103 @@ import java.util.List;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
 
-public class DayProgramView extends JPanel implements DayView{
+public class DayProgramView extends JPanel implements DayView, ObserverView{
 	
 	CalendarView cv;
+	
+	List<Integer> rowAssignment;
+	int currentRow;	
+	
 	JScrollPane scrollCalendarTable;    
 	
         /**** Calendar Table Components ***/
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
 
-	public DayProgramView(CalendarView cv, List<Occasion>occasions){
+    public void update(List<Occasion>occasions) {
+    	
+		modelCalendarTable.setColumnCount(2);
+		modelCalendarTable.setRowCount(48);
+		
+		for(int i = 0, j = 0 ; i < 48 ; i++) {
+			if(i % 2 == 0) {
+				if(j >= 1000) {
+					String time = Integer.toString(j);
+					time = time.substring(0,2) + ":" + time.substring(2,4);
+					modelCalendarTable.setValueAt(time, i, 0);
+				}else if (j >= 100){
+					String time = Integer.toString(j);
+					time = "0" + time.charAt(0) + ":" + time.substring(1,3);
+					modelCalendarTable.setValueAt(time, i, 0);					
+				}else {
+					modelCalendarTable.setValueAt("00:00", i, 0);	
+				}
+				j += 100;
+			}
+		}    	
+    	
+		for(int i = 0, j = 0, k = 0; i < 48 ; i++) {
+			
+			int compare;
+			
+			if(i % 2 == 0) {
+				compare = j;
+			}else {
+				compare = k;
+			}
+			
+			modelCalendarTable.setValueAt(null, i, 1);
+			
+			for(int x = 0 ; x < occasions.size() ; x ++) {
+				if(occasions.get(x) instanceof Event) {
+					String timeFrom = ((Event) occasions.get(x)).getDurationFrom().substring(11,16);
+					String[] timeFromPart = timeFrom.split(":");
+					int intTimeFrom = (Integer.parseInt(timeFromPart[0])*100) + Integer.parseInt(timeFromPart[1]);
+					
+					String timeTo = ((Event) occasions.get(x)).getDurationTo().substring(11,16);
+					String[] timeToPart = timeTo.split(":");
+					int intTimeTo = (Integer.parseInt(timeToPart[0])*100) + Integer.parseInt(timeToPart[1]);
+					
+					if(intTimeFrom <= compare && intTimeTo > compare) {
+						if(((Event) occasions.get(x)).getIsDone()) {
+							modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(x)).getInfo()+"</s></html>", i, 1);					
+						}else {
+							modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(x).getColorString()+"\">"+((Event)occasions.get(x)).getInfo(), i, 1);					
+						}
+					}
+					
+				}else if(occasions.get(x) instanceof Task) {
+					String timeFrom = ((Task) occasions.get(x)).getDurationFrom().substring(11,16);
+					String[] timeFromPart = timeFrom.split(":");
+					int intTimeFrom = (Integer.parseInt(timeFromPart[0])*100) + Integer.parseInt(timeFromPart[1]);
+					
+					String timeTo = ((Task) occasions.get(x)).getDurationTo().substring(11,16);
+					String[] timeToPart = timeTo.split(":");
+					int intTimeTo = (Integer.parseInt(timeToPart[0])*100) + Integer.parseInt(timeToPart[1]);
+
+					if(intTimeFrom <= compare && intTimeTo > compare) {
+						if(((Task) occasions.get(x)).getIsDone()) {
+							modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(x)).getInfo()+"</s></html>", i, 1);
+						}else {
+							modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(x).getColorString()+"\">"+((Task)occasions.get(x)).getInfo(), i, 1);	
+						}
+					}
+				
+				}
+
+			}
+			
+			if(i % 2 == 0) {
+				j += 100;				
+			}else {
+				k = j + 30;
+			}
+
+		}
+		
+    }
+    
+	public DayProgramView(CalendarView cv){
 		
 		setBounds(0,0,620,440);
 		
@@ -74,26 +161,6 @@ public class DayProgramView extends JPanel implements DayView{
 		setLayout(groupLayout);
 		modelCalendarTable.addColumn("Time");
 		modelCalendarTable.addColumn("Event / Task");
-		
-		modelCalendarTable.setColumnCount(2);
-		modelCalendarTable.setRowCount(48);
-
-		for(int i = 0, j = 0 ; i < 48 ; i++) {
-			if(i % 2 == 0) {
-				if(j >= 1000) {
-					String time = Integer.toString(j);
-					time = time.substring(0,2) + ":" + time.substring(2,4);
-					modelCalendarTable.setValueAt(time, i, 0);
-				}else if (j >= 100){
-					String time = Integer.toString(j);
-					time = "0" + time.charAt(0) + ":" + time.substring(1,3);
-					modelCalendarTable.setValueAt(time, i, 0);					
-				}else {
-					modelCalendarTable.setValueAt("00:00", i, 0);	
-				}
-				j += 100;
-			}
-		}
 		
 		//calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
 	}
