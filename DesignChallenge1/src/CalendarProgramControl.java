@@ -100,4 +100,8 @@ public class CalendarProgramControl implements CalendarControl{
 		cm.notifyCalendar(monthToday, yearToday, monthFilter);
 	}
 	
+	public void refreshCalendarDays() {
+		cm.refreshDays();
+	}
+	
 }

@@ -24,6 +24,8 @@ public interface CalendarModel {
 	
 	public abstract void attachObserver(ObserverView obs);
 	
+	public abstract void refreshDays();
+	
 	public abstract void timeCheck();
 	
 }

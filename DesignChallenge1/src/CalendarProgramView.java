@@ -123,7 +123,9 @@ public class CalendarProgramView implements CalendarView{
 		        int row = calendarTable.getSelectedRow(); 
 		        try {
 			        if(modelCalendarTable.getValueAt(row, col) != null) {
-				        String day =  modelCalendarTable.getValueAt(row, col).toString().trim();
+			        	String day = modelCalendarTable.getValueAt(row, col).toString().replace("<html>","");
+			            day = day.replace("<font color = \"red\">&#160","");
+			            day = day.trim();
 					    refreshCalendar();
 				        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
 					    refreshCalendar();		
@@ -230,10 +232,18 @@ public class CalendarProgramView implements CalendarView{
 		for (i = 1; i <= nod; i++){
 			int row = new Integer((i+som-2)/7);
 			int column  =  (i+som-2)%7;
-			modelCalendarTable.setValueAt(" "+i, row, column);
+			boolean isMarked = false;
+			for(int x = 0 ; x < days.size() && !isMarked; x++) {
+				if(days.get(x) == i) {
+					modelCalendarTable.setValueAt("<html><font color = \"red\">&#160 "+i, row, column);
+					isMarked = true;
+				}
+			}
+			if(!isMarked)
+				modelCalendarTable.setValueAt("  "+i, row, column);
         }
 
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(month, year, currentSelectedMonth, currentSelectedDay, currentSelectedYear,days));
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(month, year, currentSelectedMonth, currentSelectedDay, currentSelectedYear));
 		calendarTable.clearSelection();
     }
         
@@ -631,6 +641,8 @@ public class CalendarProgramView implements CalendarView{
 				monthToday -= 1;
 			}
 			refreshCalendar();
+			cc.refreshCalendarDays();
+			refreshCalendar();
 		}
 	}
 	class btnNext_Action implements ActionListener
@@ -646,6 +658,8 @@ public class CalendarProgramView implements CalendarView{
                         {
 				monthToday += 1;
 			}
+			refreshCalendar();
+			cc.refreshCalendarDays();
 			refreshCalendar();
 		}
 	}

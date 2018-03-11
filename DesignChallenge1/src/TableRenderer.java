@@ -18,23 +18,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class TableRenderer extends DefaultTableCellRenderer{
 
 	String day;
-	ArrayList<Integer> days;
 	
-	private boolean checkIfOccasion(String day) {
-		for(int i = 0 ; i < days.size() ; i++) {
-			if(day.equals(" "+days.get(i))) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public TableRenderer(int month, int year, int selectedMonth, int selectedDay, int selectedYear, ArrayList<Integer> days) {
-		
-		this.days = days;
+	public TableRenderer(int month, int year, int selectedMonth, int selectedDay, int selectedYear) {
 
 		if(month == selectedMonth && year == selectedYear) {
-			this.day = " "+selectedDay;
+			this.day = Integer.toString(selectedDay);
 		} else {
 			this.day = "Unselected";
 		}
@@ -46,22 +34,22 @@ public class TableRenderer extends DefaultTableCellRenderer{
             
             setBorder(null);
             setBackground(Color.WHITE);
+            setForeground(Color.BLACK);
             
-            if (this.getText().equals(day)) {
+            String dayText = this.getText().replace("<html>","");
+            dayText = dayText.replace("<font color = \"red\">&#160","");
+            dayText = dayText.trim();
+            
+            if (dayText.equals(day)) {
             	setBackground(Color.PINK);
             	//setBorder(BorderFactory.createLineBorder(Color.RED));  
-            }else if (this.getText().equals("Unselected")) {
+            }else if (dayText.equals("Unselected")) {
                 setBackground(Color.WHITE); 
-            }else if (this.getText().equals(new String())) {
+            }else if (dayText.equals(new String())) {
                 setBackground(Color.LIGHT_GRAY); 
             }else{
             	setBackground(Color.WHITE);           	
             }
-            
-            if(checkIfOccasion(this.getText()))
-            	setForeground(Color.RED);
-            else
-            	setForeground(Color.BLACK);	
             
             return this;  
     }

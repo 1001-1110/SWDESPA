@@ -34,7 +34,7 @@ public class DatabaseProgram implements Database{
 		
 		//create string query
 		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+monthFilter+" 00:00:00' AND dateTo >= '"+monthFilter+" 23:59:59'"+" ORDER BY dateFrom";
-		
+		//System.out.println(query);
 		try {
 			//create prepared statement
 			PreparedStatement ps = cnt.prepareStatement(query);

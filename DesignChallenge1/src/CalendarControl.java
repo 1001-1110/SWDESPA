@@ -18,4 +18,6 @@ public interface CalendarControl {
     
     public abstract void refreshCalendar(int monthToday, int yearToday);
     
+    public abstract void refreshCalendarDays();
+    
 }

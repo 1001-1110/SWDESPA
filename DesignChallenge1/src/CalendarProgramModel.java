@@ -8,6 +8,7 @@ public class CalendarProgramModel implements CalendarModel{
 	String dateFilter, typeFilter, monthFilter;
 	boolean isFiltered;
 	int monthToday, yearToday;
+	List<Integer>days;
 	
 	CalendarView cv;
 	DatabaseWriter dbw;
@@ -101,7 +102,13 @@ public class CalendarProgramModel implements CalendarModel{
 		this.monthToday = monthToday;
 		this.yearToday = yearToday;
 		this.monthFilter = monthFilter;
-		List<Integer>days = new ArrayList<>();
+		if(days == null)
+			refreshDays();
+		cv.refreshCalendar(monthToday, yearToday, (ArrayList<Integer>) days);
+	}
+	
+	public void refreshDays() {
+		days = new ArrayList<>();
 		for(int i = 0 ; i <= 31 ; i++) {
 			String day;
 			if(i < 10)
@@ -112,7 +119,6 @@ public class CalendarProgramModel implements CalendarModel{
 				days.add(i);				
 			}
 		}
-		cv.refreshCalendar(monthToday, yearToday, (ArrayList<Integer>) days);
 	}
 	
 	public void timeCheck() {
@@ -135,9 +141,10 @@ public class CalendarProgramModel implements CalendarModel{
 		        			notifyObservers(dateFilter);	        			
 	        		}
         		
-	        		notifyCalendar(monthToday,yearToday,monthFilter);
+	        		refreshDays();
+	        		notifyCalendar(monthToday, yearToday, monthFilter);
 		        	try {
-						sleep(1000);
+						sleep(2500);
 					} catch (InterruptedException e) {}
 	        	}
 
