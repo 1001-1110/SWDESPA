@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -36,11 +37,14 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 	private JLabel lblDateTo;
 	private JLabel lblTimeTo;
 
-	public EventProgramAdderView(CalendarControl cc, int currentSelectedMonth, int currentSelectedDay, int currentSelectedYear) {
+	public EventProgramAdderView(CalendarControl cc) {
 		this.cc = cc;
 		setBorder(new LineBorder(new Color(0, 0, 0)));
-		initialize(currentSelectedMonth+1, currentSelectedDay, currentSelectedYear);
-		clearInputs();
+	}
+	
+	public void updateCurrentDate(int currentSelectedYear,int currentSelectedMonth, int currentSelectedDay) {
+		dateFrom.setText(currentSelectedMonth+1+"/"+currentSelectedDay+"/"+currentSelectedYear);
+		dateTo.setText(currentSelectedMonth+1+"/"+currentSelectedDay+"/"+currentSelectedYear);		
 	}
 	
 	public void updateInvalidInput() {
@@ -53,7 +57,8 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		durationTo.setText(null);
 	}
 	
-	private void initialize(int currentSelectedMonth, int currentSelectedDay, int currentSelectedYear) {
+	public void initialize() {
+		
 		setBounds(100, 100, 450, 190);
 		
 		JButton btnSave = new JButton("Save");
@@ -103,7 +108,7 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		
 		JLabel lblDate = new JLabel("MM/DD/YYYY:");
 		
-		JLabel lblTime = new JLabel("Time:");
+		JLabel lblTime = new JLabel("Time (24-Hour):");
 		
 		info = new JTextField();
 		info.setColumns(10);
@@ -213,9 +218,6 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		);
 		inputPanel.setLayout(gl_inputPanel);
 		this.setLayout(groupLayout);
-		
-		dateFrom.setText(currentSelectedMonth+"/"+currentSelectedDay+"/"+currentSelectedYear);
-		dateTo.setText(currentSelectedMonth+"/"+currentSelectedDay+"/"+currentSelectedYear);
 		
 		setVisible(true);
 	}

@@ -1,10 +1,13 @@
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class CalendarProgramModel implements CalendarModel{
 
-	String dateFilter, typeFilter;
+	String dateFilter, typeFilter, monthFilter;
 	boolean isFiltered;
+	int monthToday, yearToday;
 	
 	CalendarView cv;
 	DatabaseWriter dbw;
@@ -50,6 +53,10 @@ public class CalendarProgramModel implements CalendarModel{
 	public void updateDatabase(int occasionID, boolean isDone) {
 		d.updateIsDone(occasionID, isDone);
 	}	
+
+	private boolean updateEventDatabase(String currentDateTime) {
+		return d.updateEventIsDone(currentDateTime);
+	}		
 	
 	public void deleteDatabase(int occasionID) {
 		d.deleteOccasion(occasionID);
@@ -67,7 +74,6 @@ public class CalendarProgramModel implements CalendarModel{
 		this.dateFilter = dateFilter;
 		for(int i = 0 ; i < observers.size() ; i++)
 			observers.get(i).update(readDatabase(dateFilter));
-		cv.update();
 	}
 
 	public void notifyObservers(String dateFilter, String typeFilter) {
@@ -75,6 +81,11 @@ public class CalendarProgramModel implements CalendarModel{
 		this.typeFilter = typeFilter;
 		for(int i = 0 ; i < observers.size() ; i++)
 			observers.get(i).update(readDatabase(dateFilter,typeFilter));
+	}
+	
+	public void notifyDeselect() {
+		for(int i = 0 ; i < observers.size() ; i++)
+			observers.get(i).deselect();		
 		cv.update();
 	}
 	
@@ -82,7 +93,10 @@ public class CalendarProgramModel implements CalendarModel{
 		cv.updateDateTitle(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
 	}
 	
-	public void notifyCalendar(int monthToday, int yearToday, String dateFilter) {
+	public void notifyCalendar(int monthToday, int yearToday, String monthFilter) {
+		this.monthToday = monthToday;
+		this.yearToday = yearToday;
+		this.monthFilter = monthFilter;
 		List<Occasion>occasions = readDatabase(dateFilter);
 		List<Integer>days = new ArrayList<>();
 		for(int i = 0 ; i < occasions.size() ; i++) {
@@ -95,13 +109,26 @@ public class CalendarProgramModel implements CalendarModel{
 	}
 	
 	public void timeCheck() {
-		/*Thread tc = new Thread(){
+		Thread tc = new Thread(){
 	        public void run(){  
 	        	while(true) {
-	        		if(isFiltered)
-	        			notifyFilteredViews(dateFilter, typeFilter);
+	        		GregorianCalendar cal = new GregorianCalendar();
+	        		String currentDateTime = cal.get(Calendar.YEAR) +"-"+ (cal.get(Calendar.MONTH)+1) +"-"+ cal.get(Calendar.DATE)
+	        		+" "+ cal.get(Calendar.HOUR_OF_DAY);
+	        		
+	        		if(cal.get(Calendar.MINUTE) < 10)
+	        			currentDateTime += ":0"+cal.get(Calendar.MINUTE)+":00";
 	        		else
-	        			notifyViews(dateFilter);
+	        			currentDateTime += ":"+cal.get(Calendar.MINUTE)+":00";
+
+	        		if(updateEventDatabase(currentDateTime)) {
+		        		if(isFiltered)
+		        			notifyObservers(dateFilter, typeFilter);
+		        		else
+		        			notifyObservers(dateFilter);	        			
+	        		}
+	        		
+	        		notifyCalendar(monthToday,yearToday,monthFilter);
 		        	try {
 						sleep(1000);
 					} catch (InterruptedException e) {}
@@ -109,7 +136,7 @@ public class CalendarProgramModel implements CalendarModel{
 
 	        }			
 		};
-		tc.start();*/
+		tc.start();
 	}
 
 }

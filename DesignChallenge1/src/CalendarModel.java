@@ -20,6 +20,8 @@ public interface CalendarModel {
 	
 	public abstract void notifyObservers(String dateFilter, String typeFilter);
 	
+	public abstract void notifyDeselect();
+	
 	public abstract void attachObserver(ObserverView obs);
 	
 	public abstract void timeCheck();

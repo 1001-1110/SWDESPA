@@ -58,6 +58,10 @@ public class CalendarProgramView implements CalendarView{
     
     public void initialize() {
     	
+		ea = new EventProgramAdderView(cc);
+		ea.initialize();
+		ea.updateCurrentDate(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+    	
 		for (int i = yearBound-100; i <= yearBound+100; i++)
         {
 			cmbYear.addItem(String.valueOf(i));
@@ -93,6 +97,7 @@ public class CalendarProgramView implements CalendarView{
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.deleteIsDone(av.getSelectedOccasion());
+				cc.refreshCalendar(monthToday, yearToday);
 				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
 			}
 		});
@@ -135,7 +140,7 @@ public class CalendarProgramView implements CalendarView{
     }
     
     public void update() {
-    	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
+    	ea.updateCurrentDate(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
     	disableSelectButtons();
 		infoPanel.revalidate();
 		refreshView();
@@ -151,7 +156,7 @@ public class CalendarProgramView implements CalendarView{
 	}
     
     public void showEventAdder() {
-    	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
+    	((Component) ea).setVisible(true);
 		disableSelectButtons();
     	infoPanel.removeAll();
 		infoPanel.add((Component) ea);
@@ -232,7 +237,7 @@ public class CalendarProgramView implements CalendarView{
         
 	public CalendarProgramView()
         {
-    	
+		
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 }

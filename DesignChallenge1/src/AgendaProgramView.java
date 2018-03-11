@@ -23,11 +23,13 @@ public class AgendaProgramView extends JPanel implements AgendaView, ObserverVie
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
     
-    public void update(List<Occasion>occasions) {
-
+    public void deselect() {
     	currentRow = -1;
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
-    	
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));    	
+    }
+    
+    public void update(List<Occasion>occasions) {
+		
 		rowAssignment = new ArrayList<>();
 		
 		modelCalendarTable.setColumnCount(2);

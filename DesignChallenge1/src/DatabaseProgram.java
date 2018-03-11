@@ -211,6 +211,58 @@ public class DatabaseProgram implements Database{
 		} 
 
 	}
+
+	public boolean updateEventIsDone(String currentDateTime) {
+		//UPDATE occasions SET isDone = true
+		//WHERE dateFrom = dateFrom;
+		List<Occasion>occasions = new ArrayList <Occasion>();
+		
+		//get connection from db
+		Connection cnt = connection.getConnection();
+		
+		//create string query
+		String query = "SELECT * FROM occasions WHERE dateTo < '"+currentDateTime+"' AND type = 'Event' AND isDone = false";
+
+		try {
+			//create prepared statement
+			PreparedStatement ps = cnt.prepareStatement(query);
+			
+			//get result and store in result set
+			ResultSet rs = ps.executeQuery();
+			
+			//transform set into list
+			while(rs.next()) {
+				occasions.add(toOccasion(rs));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+
+		if(occasions.size() > 0) {
+			query = "UPDATE occasions SET isDone = true WHERE dateTo < '"+currentDateTime+"' AND type = 'Event'";
+			
+			try {
+				//create a prepared statement
+				PreparedStatement ps = cnt.prepareStatement(query);
+				
+				//execute the update
+				ps.executeUpdate();
+				
+				//close resource
+				ps.close();
+				cnt.close();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} 	
+			return true;
+		}else {
+			return false;
+		}
+
+
+	}	
 	
 	private Occasion toOccasion(ResultSet rs) throws SQLException {
 		

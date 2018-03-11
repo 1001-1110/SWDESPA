@@ -23,6 +23,10 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
 
+    public void deselect() {
+    	
+    }
+    
     public void update(List<Occasion>occasions) {
     	
 		modelCalendarTable.setColumnCount(2);

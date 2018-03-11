@@ -10,6 +10,8 @@ public interface Database {
 
 	public abstract void updateIsDone(int occasionID, boolean isDone);
 	
+	public abstract boolean updateEventIsDone(String dateFilter);
+	
 	public abstract void deleteOccasion(int occasionID);
 	
 }

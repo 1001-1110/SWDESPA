@@ -20,6 +20,8 @@ public class CalendarProgramControl implements CalendarControl{
 		timeTo = timeTo.trim();		
 		
 		if(isEvent) {
+			if(info.equals("") || timeFrom.equals("") || timeTo.equals("") || dateFrom.equals("") || dateTo.equals("") || timeFrom.equals(timeTo)) 
+				return false;	
 			String[] splitTime = timeFrom.split(":");
 			if(Integer.parseInt(splitTime[0]) >= 24 || (!splitTime[1].equals("00") && !splitTime[1].equals("30")))
 				return false;
@@ -27,8 +29,6 @@ public class CalendarProgramControl implements CalendarControl{
 			splitTime = timeTo.split(":");
 			if(Integer.parseInt(splitTime[0]) >= 24 || (!splitTime[1].equals("00") && !splitTime[1].equals("30")))
 				return false;		
-			if(info.equals("") || timeFrom.equals("") || timeTo.equals("") || dateFrom.equals("") || dateTo.equals("") || timeFrom.equals(timeTo)) 
-				return false;	
 			cm.writeDatabase(new Event(0,info,dateFrom+" "+timeFrom,dateTo+" "+timeTo,false));
 		}else if(isTask) {
 			if(info.equals("") || timeFrom.equals("") || dateFrom.equals("")) 
@@ -83,6 +83,8 @@ public class CalendarProgramControl implements CalendarControl{
 			cm.notifyObservers(dateFilter,"Event");
 		else
 			cm.notifyObservers(dateFilter,"");
+		
+		cm.notifyDeselect();
 	}	
 	
 	public void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
