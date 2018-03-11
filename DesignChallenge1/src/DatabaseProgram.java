@@ -33,7 +33,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+monthFilter+" 00:00:00' AND dateTo >= '"+monthFilter+" 23:59:59'"+" ORDER BY dateFrom";
+		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+monthFilter+" 23:59:00' AND dateTo >= '"+monthFilter+" 00:00:00'"+" ORDER BY dateFrom";
 		//System.out.println(query);
 		try {
 			//create prepared statement
@@ -70,7 +70,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+dateFilter+" 00:00:00' AND dateTo >= '"+dateFilter+" 23:59:59'"+" ORDER BY dateFrom";
+		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+dateFilter+" 23:59:00' AND dateTo >= '"+dateFilter+" 00:00:00'"+" ORDER BY dateFrom";
 
 		try {
 			//create prepared statement
