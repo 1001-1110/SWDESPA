@@ -121,13 +121,15 @@ public class CalendarProgramView implements CalendarView{
 		    {  
 		        int col = calendarTable.getSelectedColumn();  
 		        int row = calendarTable.getSelectedRow(); 
-		        if(modelCalendarTable.getValueAt(row, col) != null) {
-			        String day =  modelCalendarTable.getValueAt(row, col).toString().trim();
-				    refreshCalendar();
-			        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
-				    refreshCalendar();		
-				    cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
-		        }
+		        try {
+			        if(modelCalendarTable.getValueAt(row, col) != null) {
+				        String day =  modelCalendarTable.getValueAt(row, col).toString().trim();
+					    refreshCalendar();
+				        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
+					    refreshCalendar();		
+					    cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+			        }		        	
+		        }catch(Exception e){}
 		    }
 		});
 		

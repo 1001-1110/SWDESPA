@@ -62,6 +62,7 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
 			modelCalendarTable.setValueAt(null, i, 1);
 			
 			for(int x = 0 ; x < occasions.size() ; x ++) {
+				
 				if(occasions.get(x) instanceof Event) {
 					String timeFrom = ((Event) occasions.get(x)).getDurationFrom().substring(11,16);
 					String[] timeFromPart = timeFrom.split(":");

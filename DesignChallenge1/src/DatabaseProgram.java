@@ -26,6 +26,42 @@ public class DatabaseProgram implements Database{
 		
 	}	
 
+	public boolean readOccasion(String monthFilter) {
+		//Create empty list of contacts
+		List<Occasion>occasions = new ArrayList <Occasion>();
+		//get connection from db
+		Connection cnt = connection.getConnection();
+		
+		//create string query
+		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+monthFilter+" 00:00:00' AND dateTo >= '"+monthFilter+" 23:59:59'"+" ORDER BY dateFrom";
+		
+		try {
+			//create prepared statement
+			PreparedStatement ps = cnt.prepareStatement(query);
+			
+			//get result and store in result set
+			ResultSet rs = ps.executeQuery();
+			
+			//transform set into list
+			while(rs.next()) {
+				occasions.add(toOccasion(rs));
+			}
+			
+			//close all the resources
+			ps.close();
+			rs.close();
+			cnt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		if(occasions.size() > 0)
+			return true;
+		else
+			return false;
+	}		
+	
 	public List<Occasion> getOccasions(String dateFilter) {
 		//Create empty list of contacts
 		List<Occasion>occasions = new ArrayList <Occasion>();
@@ -34,7 +70,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions WHERE dateFrom like \""+dateFilter+"%\""+" ORDER BY dateFrom";
+		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+dateFilter+" 00:00:00' AND dateTo >= '"+dateFilter+" 23:59:59'"+" ORDER BY dateFrom";
 
 		try {
 			//create prepared statement
@@ -68,7 +104,7 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
-		String query = "SELECT * FROM occasions WHERE dateFrom like \""+dateFilter+"%\""+"AND type = '"+typeFilter+"' ORDER BY dateFrom";
+		String query = "SELECT * FROM occasions WHERE dateFrom < '"+dateFilter+" 00:00:00' AND dateTo > '"+dateFilter+" 23:59:59'"+" AND type = '"+typeFilter+"' ORDER BY dateFrom";
 
 		try {
 			//create prepared statement

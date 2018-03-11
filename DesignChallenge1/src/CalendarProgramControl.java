@@ -96,8 +96,8 @@ public class CalendarProgramControl implements CalendarControl{
 		month = month + (monthToday+1);
 		if(monthToday < 10)
 			month = "0" + month;
-		String dateFilter = yearToday + "-" + month;
-		cm.notifyCalendar(monthToday, yearToday, dateFilter);
+		String monthFilter = yearToday + "-" + month;
+		cm.notifyCalendar(monthToday, yearToday, monthFilter);
 	}
 	
 }

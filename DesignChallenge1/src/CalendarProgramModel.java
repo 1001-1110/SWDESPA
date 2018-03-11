@@ -49,6 +49,10 @@ public class CalendarProgramModel implements CalendarModel{
 		isFiltered = true;
 		return d.getOccasions(dateFilter, typeFilter);
 	}	
+
+	private boolean readMonthDatabase(String monthFilter) {
+		return d.readOccasion(monthFilter);
+	}		
 	
 	public void updateDatabase(int occasionID, boolean isDone) {
 		d.updateIsDone(occasionID, isDone);
@@ -97,13 +101,16 @@ public class CalendarProgramModel implements CalendarModel{
 		this.monthToday = monthToday;
 		this.yearToday = yearToday;
 		this.monthFilter = monthFilter;
-		List<Occasion>occasions = readDatabase(dateFilter);
 		List<Integer>days = new ArrayList<>();
-		for(int i = 0 ; i < occasions.size() ; i++) {
-			if(occasions.get(i) instanceof Event)
-				days.add(Integer.parseInt(((Event) occasions.get(i)).getDurationFrom().substring(8,10)));
-			else if(occasions.get(i) instanceof Task)
-				days.add(Integer.parseInt(((Task) occasions.get(i)).getDurationFrom().substring(8,10)));
+		for(int i = 0 ; i <= 31 ; i++) {
+			String day;
+			if(i < 10)
+				day = "0" + i;
+			else
+				day = Integer.toString(i);
+			if(readMonthDatabase(monthFilter+"-"+day)) {
+				days.add(i);				
+			}
 		}
 		cv.refreshCalendar(monthToday, yearToday, (ArrayList<Integer>) days);
 	}
@@ -127,7 +134,7 @@ public class CalendarProgramModel implements CalendarModel{
 		        		else
 		        			notifyObservers(dateFilter);	        			
 	        		}
-	        		
+        		
 	        		notifyCalendar(monthToday,yearToday,monthFilter);
 		        	try {
 						sleep(1000);
