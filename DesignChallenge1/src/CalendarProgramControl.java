@@ -3,7 +3,7 @@ public class CalendarProgramControl implements CalendarControl{
 
 	CalendarModel cm;
 	
-	public void addOccasion(String info, String date, String timeFrom, String timeTo, boolean isEvent, boolean isTask) {
+	public boolean addOccasion(String info, String date, String timeFrom, String timeTo, boolean isEvent, boolean isTask) {
 		String[] splitDate = date.split("/");
 		date = splitDate[2]+"-"+splitDate[0]+"-"+splitDate[1];
 		
@@ -12,11 +12,22 @@ public class CalendarProgramControl implements CalendarControl{
 		info = info.replaceAll("<s>", "");
 		info = info.replaceAll("</s>", "");
 		
+		date = date.trim();
+		timeFrom = timeFrom.trim();
+		timeTo = timeTo.trim();
+		
+		if(info.equals("") || timeFrom.equals("") || timeTo.equals("") || date.equals("") || timeFrom.equals(timeTo)) 
+			return false;			
+	
 		if(isEvent) {
-			cm.writeDatabase(new Event(info,date+" "+timeFrom,date+" "+timeTo,false));
+			cm.writeDatabase(new Event(0,info,date+" "+timeFrom,date+" "+timeTo,false));
 		}else if(isTask) {
-			cm.writeDatabase(new Task(info,date+" "+timeFrom+":00",date+" "+timeTo+":00",false));
+			cm.writeDatabase(new Task(0,info,date+" "+timeFrom+":00",date+" "+timeTo+":00",false));
 		}
+		
+		return true;			
+		
+
 	}	
 	
 	public void attachModel(CalendarModel cm) {

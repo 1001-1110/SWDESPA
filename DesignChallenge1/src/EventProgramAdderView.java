@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -35,10 +36,13 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		clearInputs();
 	}
 	
+	public void updateInvalidInput() {
+		JOptionPane.showMessageDialog(this,"Invalid input.","Invalid", JOptionPane.ERROR_MESSAGE);
+	}
+	
 	public void clearInputs() {
 		info.setText(null);
 		durationFrom.setText(null);
-		//date.setText(null);
 		durationTo.setText(null);
 	}
 	
@@ -48,7 +52,9 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cc.addOccasion(info.getText(), date.getText(), durationFrom.getText(), durationTo.getText(), rdbtnEvent.isSelected(), rdbtnTask.isSelected());
+				if(!cc.addOccasion(info.getText(), date.getText(), durationFrom.getText(), durationTo.getText(), rdbtnEvent.isSelected(), rdbtnTask.isSelected())) {
+					updateInvalidInput();
+				}
 			}
 		});
 		

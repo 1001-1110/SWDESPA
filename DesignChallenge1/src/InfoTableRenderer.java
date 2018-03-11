@@ -12,11 +12,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class InfoTableRenderer extends DefaultTableCellRenderer{
-	List<Occasion>occasions;
+
 	int selectedRow;
 	
-	public InfoTableRenderer(int row, List<Occasion>occasions) {
-		this.occasions = occasions;
+	public InfoTableRenderer(int row) {
 		this.selectedRow = row;
 	}
 	
@@ -27,19 +26,6 @@ public class InfoTableRenderer extends DefaultTableCellRenderer{
             setBorder(null);
             setBackground(Color.WHITE);
             setForeground(Color.black);
-
-            for(int i = 0 ; i < occasions.size(); i++) {
-            	if(occasions.get(i) instanceof Event) {
-                	if(this.getText().contains(((Event) occasions.get(i)).getDurationFrom())) {
-                		setForeground(Color.BLUE);
-                	}
-
-            	}else if(occasions.get(i) instanceof Task) {
-                	if(((Task) occasions.get(i)).getDurationFrom().equals(this.getText())) {
-                		setForeground(Color.GREEN);                    		
-                	}
-            	}
-            }
             
             if(this.getText().contains("<s>")) {
             	setBackground(Color.LIGHT_GRAY);
@@ -48,7 +34,7 @@ public class InfoTableRenderer extends DefaultTableCellRenderer{
  
             if(selectedRow == row) {
             	//setBorder(BorderFactory.createLineBorder(Color.RED));
-            	setBackground(Color.MAGENTA);
+            	setBackground(Color.pink);
             }else {
             	setBorder(null);
             }

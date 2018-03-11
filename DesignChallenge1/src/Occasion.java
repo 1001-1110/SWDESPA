@@ -1,40 +1,26 @@
-import java.awt.Color;
 
 public abstract class Occasion {
 
+	int id;
 	private String info;
-	private Color color;
 	private String colorString;
 	
-	public Occasion(String info, Color color) {
+	public Occasion(String info, String colorString, int id) {
 		this.info = info;
-		this.color = color;
-	}
-	
-	public Occasion(String info, String colorString) {
-		this.info = info;
-		colorString = colorString.toLowerCase();
-		
-		if(colorString.equals("blue"))
-			this.color = Color.BLUE;
-		else if(colorString.equals("gray"))
-			this.color = Color.GRAY;
-		else if(colorString.equals("green"))
-			this.color = Color.GREEN;
-		
 		this.colorString = colorString;
+		this.id = id;
 	}
 
 	public String getInfo() {
 		return info;
 	}
 	
-	public Color getColor() {
-		return color;
+	public int getID() {
+		return id;
 	}
-
+	
 	public String getColorString() {
-			return colorString;
-	}	
+		return colorString;
+	}
 	
 }

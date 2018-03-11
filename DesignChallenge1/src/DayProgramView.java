@@ -5,23 +5,25 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
 
 public class DayProgramView extends JPanel implements DayView{
 	
-	CalendarControl cc;
+	CalendarView cv;
 	JScrollPane scrollCalendarTable;    
 	
         /**** Calendar Table Components ***/
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
 
-	public DayProgramView(CalendarControl cc){
+	public DayProgramView(CalendarView cv, List<Occasion>occasions){
 		
 		setBounds(0,0,620,440);
 		
-		this.cc = cc;
+		this.cv = cv;
 		
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

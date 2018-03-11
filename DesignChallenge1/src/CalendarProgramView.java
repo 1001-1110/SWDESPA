@@ -136,8 +136,8 @@ public class CalendarProgramView implements CalendarView{
     
     public void updateViews(List<Occasion>occasions) {
     	ea = new EventProgramAdderView(cc,currentSelectedMonth, currentSelectedDay, currentSelectedYear);
-    	dv = new DayProgramView(cc);
-    	av = new AgendaProgramView(this,occasions);
+    	dv = new DayProgramView(this,occasions);
+    	av.refreshInfoTable(occasions);
     	disableSelectButtons();
     	if(infoPanel.getComponentCount() > 0) {
     		Component comp = infoPanel.getComponent(0);
@@ -159,7 +159,7 @@ public class CalendarProgramView implements CalendarView{
 			JOptionPane.showMessageDialog((Component) ea,type+" added successfully."); 	
 			ea.clearInputs();
 		}else {
-			JOptionPane.showMessageDialog((Component) ea,type+" overlaps with existing schedule.","Inane error", JOptionPane.ERROR_MESSAGE);			
+			JOptionPane.showMessageDialog((Component) ea,type+" overlaps with existing schedule.","Overlap", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
     
@@ -245,6 +245,8 @@ public class CalendarProgramView implements CalendarView{
         
 	public CalendarProgramView()
         {
+		
+    	av = new AgendaProgramView(this);
 		
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

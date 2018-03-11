@@ -21,9 +21,42 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 	public JTable calendarTable;
     public DefaultTableModel modelCalendarTable;
     
-    private void refreshInfoTable(List<Occasion>occasions) {
-    	calendarTable.repaint();
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow(),occasions));
+    public void refreshInfoTable(List<Occasion>occasions) {
+
+    	currentRow = -1;
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
+    	
+		modelCalendarTable.setColumnCount(2);
+		modelCalendarTable.setRowCount(occasions.size());
+    	
+		for(int i = 0 ; i < occasions.size() ; i++) {
+			if(occasions.get(i) instanceof Event) {
+				if(((Event) occasions.get(i)).getIsDone()) {
+					modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo()+"</s></html>", i, 0);	
+				}else {
+					modelCalendarTable.setValueAt(((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo(), i, 0);
+				}
+				
+				if(((Event) occasions.get(i)).getIsDone()) {
+					modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(i)).getInfo()+"</s></html>", i, 1);					
+				}else {
+					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Event)occasions.get(i)).getInfo(), i, 1);					
+				}
+			}else if (occasions.get(i) instanceof Task) {
+				if(((Task) occasions.get(i)).getIsDone()) {
+					modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(i)).getDurationFrom()+"</s></html>", i, 0);
+				}else {
+					modelCalendarTable.setValueAt(((Task)occasions.get(i)).getDurationFrom(), i, 0);
+				}
+				
+				if(((Task) occasions.get(i)).getIsDone()) {
+					modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(i)).getInfo()+"</s></html>", i, 1);
+				}else {
+					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Task)occasions.get(i)).getInfo(), i, 1);	
+				}
+			}
+		}    	
+
     }
     
     public String getSelectedOccasion() {
@@ -35,7 +68,7 @@ public class AgendaProgramView extends JPanel implements AgendaView{
     	return dateFrom.substring(0,18);
     }
     
-	public AgendaProgramView(CalendarView cv, List<Occasion>occasions){
+	public AgendaProgramView(CalendarView cv){
 		
 		setBounds(0,0,620,440);
 		
@@ -58,10 +91,11 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 		calendarTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				refreshInfoTable(occasions);
-				cv.enableSelectButtons();
 				currentRow = (int) calendarTable.getSelectedRow();
+				calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
+				cv.enableSelectButtons();
 				calendarTable.clearSelection();
+				calendarTable.repaint();
 			}
 		});
                 
@@ -99,37 +133,7 @@ public class AgendaProgramView extends JPanel implements AgendaView{
 		setLayout(groupLayout);
 		modelCalendarTable.addColumn("Time");
 		modelCalendarTable.addColumn("Event / Task");
-		
-		modelCalendarTable.setColumnCount(2);
-		modelCalendarTable.setRowCount(occasions.size());
-		
-		for(int i = 0 ; i < occasions.size() ; i++) {
-			if(occasions.get(i) instanceof Event) {
-				if(((Event) occasions.get(i)).getIsDone()) {
-					modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo()+"</s></html>", i, 0);	
-				}else {
-					modelCalendarTable.setValueAt(((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo(), i, 0);
-				}
-				
-				if(((Event) occasions.get(i)).getIsDone()) {
-					modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(i)).getInfo()+"</s></html>", i, 1);					
-				}else {
-					modelCalendarTable.setValueAt(((Event)occasions.get(i)).getInfo(), i, 1);					
-				}
-			}else if (occasions.get(i) instanceof Task) {
-				if(((Task) occasions.get(i)).getIsDone()) {
-					modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(i)).getDurationFrom()+"</s></html>", i, 0);
-				}else {
-					modelCalendarTable.setValueAt(((Task)occasions.get(i)).getDurationFrom(), i, 0);
-				}
-				
-				if(((Task) occasions.get(i)).getIsDone()) {
-					modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(i)).getInfo()+"</s></html>", i, 1);
-				}else {
-					modelCalendarTable.setValueAt(((Task)occasions.get(i)).getInfo(), i, 1);	
-				}
-			}
-		}
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow(), occasions));
+
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
 	}
 }

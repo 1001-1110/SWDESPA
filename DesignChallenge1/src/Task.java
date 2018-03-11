@@ -6,8 +6,8 @@ public class Task extends Occasion{
 	String durationTo;
 	boolean isDone;
 	
-	public Task(String info, String durationFrom, String durationTo, boolean isDone) {
-		super(info, Color.BLUE);
+	public Task(int id, String info, String durationFrom, String durationTo, boolean isDone) {
+		super(info,"green",id);
 		this.durationFrom = durationFrom;
 		this.durationTo = durationTo;
 		this.isDone = isDone;

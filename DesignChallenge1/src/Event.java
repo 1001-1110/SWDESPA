@@ -6,8 +6,8 @@ public class Event extends Occasion{
 	String durationTo;
 	boolean isDone;
 	
-	public Event(String info, String durationFrom, String durationTo, boolean isDone) {
-		super(info, Color.BLUE);
+	public Event(int id, String info, String durationFrom, String durationTo, boolean isDone) {
+		super(info,"blue",id);
 		this.durationFrom = durationFrom;
 		this.durationTo = durationTo;
 		this.isDone = isDone;

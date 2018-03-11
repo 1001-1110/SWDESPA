@@ -12,6 +12,18 @@ public class DatabaseProgram implements Database{
 	
 	public DatabaseProgram(DatabaseConnector connection) {
 		this.connection = connection;
+
+		//CREATE TABLE IF NOT EXISTS
+		String query = "CREATE TABLE IF NOT EXISTS occasions (id int NOT NULL AUTO_INCREMENT PRIMARY KEY,type varchar(255), info varchar(255), dateFrom DATETIME, dateTo DATETIME, isDone boolean);";
+		try {
+
+			PreparedStatement ps = connection.getConnection().prepareStatement(query);
+			ps.execute();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} 	
+		
 	}	
 
 	public List<Occasion> getOccasions(String dateFilter) {
@@ -90,11 +102,13 @@ public class DatabaseProgram implements Database{
 				String query2 = new String();
 				if(occ instanceof Event)
 					query2 = "SELECT * FROM occasions WHERE (dateFrom >= '"+((Event) occ).getDurationFrom()+"' AND dateFrom < '"+((Event) occ).getDurationTo()+"')"
+							+ " OR (dateFrom = '"+((Event) occ).getDurationFrom()+"')"
 							+ " OR (dateTo > '"+((Event) occ).getDurationFrom()+"' AND dateTo <= '"+((Event) occ).getDurationTo()+"')"
 							+  " OR (dateFrom < '"+((Event) occ).getDurationTo()+"' AND dateTo > '"+((Event) occ).getDurationFrom()+"')"
 							+  " OR (dateTo > '"+((Event) occ).getDurationFrom()+"' AND dateFrom < '"+((Event) occ).getDurationTo()+"')";
 				else if(occ instanceof Task)
 					query2 = "SELECT * FROM occasions WHERE (dateFrom >= '"+((Task) occ).getDurationFrom()+"' AND dateFrom < '"+((Task) occ).getDurationTo()+"')"
+							+ " OR (dateFrom = '"+((Task) occ).getDurationFrom()+"')"
 							+ " OR (dateTo > '"+((Task) occ).getDurationFrom()+"' AND dateTo < '"+((Task) occ).getDurationTo()+"')"
 							+  " OR (dateFrom < '"+((Task) occ).getDurationTo()+"' AND dateTo > '"+((Task) occ).getDurationFrom()+"')"
 							+  " OR (dateTo > '"+((Task) occ).getDurationFrom()+"' AND dateFrom < '"+((Task) occ).getDurationTo()+"')";
@@ -121,8 +135,16 @@ public class DatabaseProgram implements Database{
 				if(occasions.size() > 0)
 					return false;
 				
+				//reset auto-increment
+				String query = "ALTER TABLE occasions auto_increment = 1";
+				
+				try {
+					PreparedStatement ps = cnt.prepareStatement(query);
+					ps.executeUpdate();
+				} catch (SQLException e1) {}
+				
 				//create a query
-				String query = "INSERT INTO occasions VALUES (?, ?, ?, ?, ?)";
+				query = "INSERT INTO occasions VALUES (?, ?, ?, ?, ?, ?)";
 				
 				try {
 					//create a prepared statement
@@ -130,17 +152,19 @@ public class DatabaseProgram implements Database{
 					
 					//prepare the values
 					if(occ instanceof Event) {
-						ps.setString(1, "Event");
-						ps.setString(2, occ.getInfo());
-						ps.setString(3, ((Event) occ).getDurationFrom());
-						ps.setString(4, ((Event) occ).getDurationTo());
-						ps.setBoolean(5, ((Event) occ).getIsDone());						
+						ps.setInt(1,occ.getID());
+						ps.setString(2, "Event");
+						ps.setString(3, occ.getInfo());
+						ps.setString(4, ((Event) occ).getDurationFrom());
+						ps.setString(5, ((Event) occ).getDurationTo());
+						ps.setBoolean(6, ((Event) occ).getIsDone());						
 					}else if(occ instanceof Task) {
-						ps.setString(1, "Task");
-						ps.setString(2, occ.getInfo());
-						ps.setString(3, ((Task) occ).getDurationFrom());
-						ps.setString(4, ((Task) occ).getDurationTo());
-						ps.setBoolean(5, ((Task) occ).getIsDone());						
+						ps.setInt(1,occ.getID());
+						ps.setString(2, "Task");
+						ps.setString(3, occ.getInfo());
+						ps.setString(4, ((Task) occ).getDurationFrom());
+						ps.setString(5, ((Task) occ).getDurationTo());
+						ps.setBoolean(6, ((Task) occ).getIsDone());						
 					}
 					
 					//execute the update
@@ -192,6 +216,7 @@ public class DatabaseProgram implements Database{
 		
 		Occasion occ = null;
 		
+		int id = rs.getInt("id");
 		String type = rs.getString("type");
 		String info = rs.getString("info");
 		String dateFrom = rs.getString("dateFrom");
@@ -201,9 +226,9 @@ public class DatabaseProgram implements Database{
 		boolean isDone = rs.getBoolean("isDone");
 		
 		if(type.equals("Event")) {
-			occ = new Event(info,dateFrom,dateTo,isDone);			
+			occ = new Event(id,info,dateFrom,dateTo,isDone);			
 		}else if(type.equals("Task")) {
-		    occ = new Task(info,dateFrom,dateTo,isDone);	
+		    occ = new Task(id,info,dateFrom,dateTo,isDone);	
 		}
 		
 		return occ;
