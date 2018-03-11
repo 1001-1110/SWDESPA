@@ -3,26 +3,45 @@ public class CalendarProgramControl implements CalendarControl{
 
 	CalendarModel cm;
 	
-	public boolean addOccasion(String info, String date, String timeFrom, String timeTo, boolean isEvent, boolean isTask) {
-		String[] splitDate = date.split("/");
-		date = splitDate[2]+"-"+splitDate[0]+"-"+splitDate[1];
+	public boolean addOccasion(String info, String dateFrom, String dateTo, String timeFrom, String timeTo, boolean isEvent, boolean isTask) {
+		String[] splitDate = dateFrom.split("/");
+		dateFrom = splitDate[2]+"-"+splitDate[0]+"-"+splitDate[1];
+
+		splitDate = dateTo.split("/");
+		dateTo = splitDate[2]+"-"+splitDate[0]+"-"+splitDate[1];		
 		
 		info = info.replaceAll("<html>", "");
 		info = info.replaceAll("</html>", "");
 		info = info.replaceAll("<s>", "");
 		info = info.replaceAll("</s>", "");
 		
-		date = date.trim();
+		dateFrom = dateFrom.trim();
 		timeFrom = timeFrom.trim();
-		timeTo = timeTo.trim();
+		timeTo = timeTo.trim();		
 		
-		if(info.equals("") || timeFrom.equals("") || timeTo.equals("") || date.equals("") || timeFrom.equals(timeTo)) 
-			return false;			
-	
 		if(isEvent) {
-			cm.writeDatabase(new Event(0,info,date+" "+timeFrom,date+" "+timeTo,false));
+			String[] splitTime = timeFrom.split(":");
+			if(Integer.parseInt(splitTime[0]) >= 24 || (!splitTime[1].equals("00") && !splitTime[1].equals("30")))
+				return false;
+
+			splitTime = timeTo.split(":");
+			if(Integer.parseInt(splitTime[0]) >= 24 || (!splitTime[1].equals("00") && !splitTime[1].equals("30")))
+				return false;		
+			if(info.equals("") || timeFrom.equals("") || timeTo.equals("") || dateFrom.equals("") || dateTo.equals("") || timeFrom.equals(timeTo)) 
+				return false;	
+			cm.writeDatabase(new Event(0,info,dateFrom+" "+timeFrom,dateTo+" "+timeTo,false));
 		}else if(isTask) {
-			cm.writeDatabase(new Task(0,info,date+" "+timeFrom+":00",date+" "+timeTo+":00",false));
+			if(info.equals("") || timeFrom.equals("") || dateFrom.equals("")) 
+				return false;	
+			String[] splitTime = timeFrom.split(":");
+			if(Integer.parseInt(splitTime[0]) >= 24 || (!splitTime[1].equals("00") && !splitTime[1].equals("30")))
+				return false;
+			String newTime = new String();
+			if(splitTime[1].equals("30"))
+				newTime = (Integer.parseInt(splitTime[0])+1) +":"+ "00";
+			else
+				newTime = splitTime[0] +":"+ "30";
+			cm.writeDatabase(new Task(0,info,dateFrom+" "+timeFrom+":00",dateFrom+" "+newTime+":00",false));
 		}
 		
 		return true;			

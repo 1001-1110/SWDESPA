@@ -17,6 +17,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class EventProgramAdderView extends JPanel implements EventAdderView{
 	
@@ -24,10 +28,13 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 	
 	private JTextField info;
 	private JTextField durationFrom;
-	private JTextField date;
+	private JTextField dateFrom;
 	private JTextField durationTo;
 	private JRadioButton rdbtnEvent;
 	private JRadioButton rdbtnTask;
+	private JTextField dateTo;
+	private JLabel lblDateTo;
+	private JLabel lblTimeTo;
 
 	public EventProgramAdderView(CalendarControl cc, int currentSelectedMonth, int currentSelectedDay, int currentSelectedYear) {
 		this.cc = cc;
@@ -52,7 +59,7 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!cc.addOccasion(info.getText(), date.getText(), durationFrom.getText(), durationTo.getText(), rdbtnEvent.isSelected(), rdbtnTask.isSelected())) {
+				if(!cc.addOccasion(info.getText(), dateFrom.getText(), dateTo.getText(), durationFrom.getText(), durationTo.getText(), rdbtnEvent.isSelected(), rdbtnTask.isSelected())) {
 					updateInvalidInput();
 				}
 			}
@@ -101,13 +108,13 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		info = new JTextField();
 		info.setColumns(10);
 		
-		date = new JTextField();
-		date.setColumns(10);
+		dateFrom = new JTextField();
+		dateFrom.setColumns(10);
 		
 		durationFrom = new JTextField();
 		durationFrom.setColumns(10);
 		
-		JLabel lblTo = new JLabel("to");
+		lblTimeTo = new JLabel("to");
 		
 		durationTo = new JTextField();
 		durationTo.setColumns(10);
@@ -115,12 +122,36 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 		ButtonGroup type = new ButtonGroup();
 		
 		rdbtnEvent = new JRadioButton("Event");
+		rdbtnEvent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblDateTo.setEnabled(true);
+				dateTo.setEnabled(true);
+				lblTimeTo.setEnabled(true);
+				durationTo.setEnabled(true);
+			}
+		});
+		
 		rdbtnTask = new JRadioButton("Task");
+		rdbtnTask.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblDateTo.setEnabled(false);
+				dateTo.setEnabled(false);
+				lblTimeTo.setEnabled(false);
+				durationTo.setEnabled(false);
+			}
+		});
+		
 		
 		type.add(rdbtnEvent);
 		type.add(rdbtnTask);
 
 		rdbtnEvent.setSelected(true);
+		
+		lblDateTo = new JLabel("to");
+		
+		dateTo = new JTextField();
+		dateTo.setText("1/0/0");
+		dateTo.setColumns(10);
 		
 		GroupLayout gl_inputPanel = new GroupLayout(inputPanel);
 		gl_inputPanel.setHorizontalGroup(
@@ -129,28 +160,33 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 					.addContainerGap()
 					.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_inputPanel.createSequentialGroup()
+							.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_inputPanel.createSequentialGroup()
+									.addComponent(lblInfo)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(info))
+								.addGroup(gl_inputPanel.createSequentialGroup()
+									.addComponent(lblDate)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(dateFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(lblDateTo)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(dateTo, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)))
+							.addGap(47)
+							.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(rdbtnTask)
+								.addComponent(rdbtnEvent))
+							.addGap(52))
+						.addGroup(gl_inputPanel.createSequentialGroup()
 							.addComponent(lblTime)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(durationFrom, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblTo)
+							.addComponent(lblTimeTo)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_inputPanel.createSequentialGroup()
-							.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_inputPanel.createSequentialGroup()
-									.addComponent(lblInfo)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(info, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_inputPanel.createSequentialGroup()
-									.addComponent(lblDate)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(date, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-							.addGap(18)
-							.addGroup(gl_inputPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(rdbtnTask)
-								.addComponent(rdbtnEvent))))
-					.addContainerGap(120, Short.MAX_VALUE))
+							.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(228, Short.MAX_VALUE))))
 		);
 		gl_inputPanel.setVerticalGroup(
 			gl_inputPanel.createParallelGroup(Alignment.LEADING)
@@ -163,20 +199,23 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_inputPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblDate)
-						.addComponent(date, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(dateFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblDateTo)
+						.addComponent(dateTo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(rdbtnTask))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_inputPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTime)
 						.addComponent(durationFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTo)
+						.addComponent(lblTimeTo)
 						.addComponent(durationTo, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(13, Short.MAX_VALUE))
 		);
 		inputPanel.setLayout(gl_inputPanel);
 		this.setLayout(groupLayout);
 		
-		date.setText(currentSelectedMonth+"/"+currentSelectedDay+"/"+currentSelectedYear);
+		dateFrom.setText(currentSelectedMonth+"/"+currentSelectedDay+"/"+currentSelectedYear);
+		dateTo.setText(currentSelectedMonth+"/"+currentSelectedDay+"/"+currentSelectedYear);
 		
 		setVisible(true);
 	}

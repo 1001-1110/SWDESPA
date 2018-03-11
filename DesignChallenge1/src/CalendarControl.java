@@ -6,7 +6,7 @@ public interface CalendarControl {
 	
 	public abstract void attachModel(CalendarModel cm);
 	
-	public abstract boolean addOccasion(String info, String date, String timeFrom, String timeTo, boolean isEvent, boolean isTask);
+	public abstract boolean addOccasion(String info, String dateFrom, String dateTo, String timeFrom, String timeTo, boolean isEvent, boolean isTask);
 
     public abstract void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
     
