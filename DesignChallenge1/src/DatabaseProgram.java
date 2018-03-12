@@ -24,9 +24,9 @@ public class DatabaseProgram implements Database{
 			e.printStackTrace();
 		} 	
 		
-	}	
-
-	public List<Occasion> readOccasion(String monthFilter) {
+	}		
+	
+	public List<Occasion> getMonthOccasion(String monthFilter) {
 		//Create empty list of contacts
 		List<Occasion>occasions = new ArrayList <Occasion>();
 				
@@ -35,7 +35,7 @@ public class DatabaseProgram implements Database{
 		
 		//create string query
 		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+monthFilter+"-31 23:59:00' AND dateTo >= '"+monthFilter+"-1 00:00:00'"+" ORDER BY dateFrom";
-		//System.out.println(query);
+
 		try {
 			//create prepared statement
 			PreparedStatement ps = cnt.prepareStatement(query);
@@ -60,6 +60,76 @@ public class DatabaseProgram implements Database{
 		return occasions;
 
 	}		
+
+	public List<Occasion> getWeekOccasion(String firstFilter, String secondFilter) {
+		//Create empty list of contacts
+		List<Occasion>occasions = new ArrayList <Occasion>();
+		
+		//get connection from db
+		Connection cnt = connection.getConnection();
+		
+		//create string query
+		
+		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+secondFilter+" 23:59:00' AND dateTo >= '"+firstFilter+" 00:00:00'"+" ORDER BY dateFrom";
+		
+		try {
+			//create prepared statement
+			PreparedStatement ps = cnt.prepareStatement(query);
+			
+			//get result and store in result set
+			ResultSet rs = ps.executeQuery();
+			
+			//transform set into list
+			while(rs.next()) {
+				occasions.add(toOccasion(rs));
+			}
+			
+			//close all the resources
+			ps.close();
+			rs.close();
+			cnt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		return occasions;
+	}		
+
+	public List<Occasion> getWeekOccasion(String firstFilter, String secondFilter, String typeFilter) {
+		//Create empty list of contacts
+		List<Occasion>occasions = new ArrayList <Occasion>();
+		
+		//get connection from db
+		Connection cnt = connection.getConnection();
+		
+		//create string query
+		
+		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+secondFilter+" 23:59:00' AND dateTo >= '"+firstFilter+" 00:00:00'"+" AND type = '"+typeFilter+"' ORDER BY dateFrom";
+		
+		try {
+			//create prepared statement
+			PreparedStatement ps = cnt.prepareStatement(query);
+			
+			//get result and store in result set
+			ResultSet rs = ps.executeQuery();
+			
+			//transform set into list
+			while(rs.next()) {
+				occasions.add(toOccasion(rs));
+			}
+			
+			//close all the resources
+			ps.close();
+			rs.close();
+			cnt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		return occasions;
+	}		
 	
 	public List<Occasion> getOccasions(String dateFilter) {
 		//Create empty list of contacts
@@ -69,8 +139,9 @@ public class DatabaseProgram implements Database{
 		Connection cnt = connection.getConnection();
 		
 		//create string query
+		
 		String query = "SELECT * FROM occasions WHERE dateFrom <= '"+dateFilter+" 23:59:00' AND dateTo >= '"+dateFilter+" 00:00:00'"+" ORDER BY dateFrom";
-
+		
 		try {
 			//create prepared statement
 			PreparedStatement ps = cnt.prepareStatement(query);

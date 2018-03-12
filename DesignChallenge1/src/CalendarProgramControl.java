@@ -1,3 +1,4 @@
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CalendarProgramControl implements CalendarControl{
@@ -13,9 +14,6 @@ public class CalendarProgramControl implements CalendarControl{
 		
 		String[] splitFromTime = timeFrom.split(":");
 		String[] splitToTime = timeTo.split(":");
-		
-		if(new GregorianCalendar(Integer.parseInt(splitToDate[2]),Integer.parseInt(splitToDate[0]),Integer.parseInt(splitToDate[1]),Integer.parseInt(splitToTime[0]),Integer.parseInt(splitToTime[1])).compareTo(new GregorianCalendar(Integer.parseInt(splitFromDate[2]),Integer.parseInt(splitFromDate[0]),Integer.parseInt(splitFromDate[1]),Integer.parseInt(splitFromTime[0]),Integer.parseInt(splitFromTime[1]))) < 0)
-			return false;
 		
 		info = info.replaceAll("<html>", "");
 		info = info.replaceAll("</html>", "");
@@ -36,6 +34,8 @@ public class CalendarProgramControl implements CalendarControl{
 			splitTime = timeTo.split(":");
 			if(Integer.parseInt(splitTime[0]) >= 24 || (!splitTime[1].equals("00") && !splitTime[1].equals("30")))
 				return false;		
+			if(new GregorianCalendar(Integer.parseInt(splitToDate[2]),Integer.parseInt(splitToDate[0]),Integer.parseInt(splitToDate[1]),Integer.parseInt(splitToTime[0]),Integer.parseInt(splitToTime[1])).compareTo(new GregorianCalendar(Integer.parseInt(splitFromDate[2]),Integer.parseInt(splitFromDate[0]),Integer.parseInt(splitFromDate[1]),Integer.parseInt(splitFromTime[0]),Integer.parseInt(splitFromTime[1]))) < 0)
+				return false;
 			cm.writeDatabase(new Event(0,info,dateFrom+" "+timeFrom,dateTo+" "+timeTo,false));
 		}else if(isTask) {
 			if(info.equals("") || timeFrom.equals("") || dateFrom.equals("")) 
@@ -68,28 +68,46 @@ public class CalendarProgramControl implements CalendarControl{
 		cm.deleteDatabase(occasionID);
 	}
 	
-	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay, boolean isEvent, boolean isTask) {
-		String dateFilter = new String();
-		dateFilter += currentSelectedYear+"-";
+	public void updateViews(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay, boolean isEvent, boolean isTask, boolean viewDay, boolean viewWeek) {
+		
+		Calendar c = new GregorianCalendar(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+		
+		String firstFilter = new String();
+		firstFilter += currentSelectedYear+"-";
 		
 		if(currentSelectedMonth < 10)
-			dateFilter += "0"+(currentSelectedMonth+1)+"-";
+			firstFilter += "0"+(currentSelectedMonth+1)+"-";
 		else
-			dateFilter += (currentSelectedMonth+1)+"-";
+			firstFilter += (currentSelectedMonth+1)+"-";
 		
 		if(currentSelectedDay < 10)
-			dateFilter += "0"+currentSelectedDay;
+			firstFilter += "0"+currentSelectedDay;
 		else
-			dateFilter += currentSelectedDay;
+			firstFilter += currentSelectedDay;
+		
+		c.add(Calendar.DATE, 6);
+
+		String secondFilter = new String();
+		secondFilter += c.get(Calendar.YEAR)+"-";
+		
+		if(currentSelectedMonth < 10)
+			secondFilter += "0"+(c.get(Calendar.MONTH)+1)+"-";
+		else
+			secondFilter += (c.get(Calendar.MONTH)+1)+"-";
+		
+		if(currentSelectedDay < 10)
+			secondFilter += "0"+c.get(Calendar.DATE);
+		else
+			secondFilter += c.get(Calendar.DATE);		
 		
 		if(isEvent && isTask)
-			cm.notifyObservers(dateFilter);
+			cm.notifyObservers(firstFilter, secondFilter, viewWeek);
 		else if(!isEvent && isTask)
-			cm.notifyObservers(dateFilter,"Task");
+			cm.notifyObservers(firstFilter, secondFilter, "Task", viewWeek);
 		else if(isEvent && !isTask)
-			cm.notifyObservers(dateFilter,"Event");
+			cm.notifyObservers(firstFilter, secondFilter, "Event", viewWeek);
 		else
-			cm.notifyObservers(dateFilter,"");
+			cm.notifyObservers(firstFilter, secondFilter, "", viewWeek);
 		
 		cm.notifyDeselect();
 	}	

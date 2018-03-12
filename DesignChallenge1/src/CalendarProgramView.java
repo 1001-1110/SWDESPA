@@ -4,6 +4,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.GroupLayout.Alignment;
@@ -79,40 +80,41 @@ public class CalendarProgramView implements CalendarView{
 				refreshCalendar();
 				cc.updateDateTitle(yearToday,monthToday,dayToday);
 				refreshCalendar();
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 			}
 		});
 		taskFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 			}
 		});
 		
 		eventFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 			}
 		}); 
 		
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.deleteIsDone(av.getSelectedOccasion());
+				cc.refreshCalendarDays();
 				cc.refreshCalendar(monthToday, yearToday);
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 			}
 		});
 		
 		btnMarkDone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.updateIsDone(av.getSelectedOccasion(),true);
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 			}
 		});
 
 		btnMarkUndone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cc.updateIsDone(av.getSelectedOccasion(),false);
-				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 			}
 		});		
 		
@@ -129,16 +131,30 @@ public class CalendarProgramView implements CalendarView{
 					    refreshCalendar();
 				        cc.updateDateTitle(yearToday,monthToday,Integer.parseInt(day));
 					    refreshCalendar();		
-					    cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+					    cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 			        }		        	
 		        }catch(Exception e){}
 		    }
 		});
+
+		rdbtnDay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
+				cc.refreshCalendar(monthToday, yearToday);
+			}
+		});
+
+		rdbtnWeek.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
+				cc.refreshCalendar(monthToday, yearToday);
+			}
+		});		
 		
     	refreshCalendar();
 		cc.updateDateTitle(yearToday, monthToday, dayToday);
 		refreshCalendar();
-		cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+		cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 		showAgendaView();
 		frmMain.setVisible(true);
     }
@@ -169,7 +185,7 @@ public class CalendarProgramView implements CalendarView{
     }
     
     public void showDayView() {
-    	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+    	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 		infoPanel.removeAll();
 		infoPanel.add((Component) dv);
 		infoPanel.revalidate();
@@ -177,7 +193,7 @@ public class CalendarProgramView implements CalendarView{
     }
     
     public void showAgendaView() {
-    	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected());
+    	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
     	infoPanel.removeAll();
 		infoPanel.add((Component) av);
 		infoPanel.revalidate();
@@ -242,8 +258,17 @@ public class CalendarProgramView implements CalendarView{
 			if(!isMarked)
 				modelCalendarTable.setValueAt("  "+i, row, column);
         }
-
-		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(month, year, currentSelectedMonth, currentSelectedDay, currentSelectedYear));
+		Calendar c = new GregorianCalendar(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+		List<String> selectedDates = new ArrayList<>();
+		if(rdbtnWeek.isSelected())
+			for(int x = 0 ; x < 7 ; x++) {
+				selectedDates.add(c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+" "+c.get(Calendar.DATE));
+				c.add(Calendar.DATE, 1);
+			}
+		else if(rdbtnDay.isSelected())
+			selectedDates.add(currentSelectedYear+"-"+currentSelectedMonth+" "+currentSelectedDay);
+		System.out.println(selectedDates.get(0));
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(month, year, selectedDates));
 		calendarTable.clearSelection();
     }
         
@@ -324,7 +349,6 @@ public class CalendarProgramView implements CalendarView{
 		selectView.add(rdbtnWeek);
 		
 		rdbtnDay.setSelected(true);
-		rdbtnWeek.setEnabled(false);
 		
 		GroupLayout gl_interactPanel = new GroupLayout(interactPanel);
 		gl_interactPanel.setHorizontalGroup(

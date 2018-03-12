@@ -66,6 +66,8 @@ public class EventProgramAdderView extends JPanel implements EventAdderView{
 			public void actionPerformed(ActionEvent e) {
 				if(!cc.addOccasion(info.getText(), dateFrom.getText(), dateTo.getText(), durationFrom.getText(), durationTo.getText(), rdbtnEvent.isSelected(), rdbtnTask.isSelected())) {
 					updateInvalidInput();
+				}else {
+					cc.refreshCalendarDays();
 				}
 			}
 		});

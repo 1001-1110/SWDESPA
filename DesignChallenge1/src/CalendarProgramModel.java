@@ -5,8 +5,8 @@ import java.util.List;
 
 public class CalendarProgramModel implements CalendarModel{
 
-	String dateFilter, typeFilter, monthFilter;
-	boolean isFiltered;
+	String firstFilter, secondFilter, typeFilter, monthFilter;
+	boolean isFiltered, viewType;
 	int monthToday, yearToday;
 	List<Integer>days;
 	
@@ -52,8 +52,18 @@ public class CalendarProgramModel implements CalendarModel{
 	}	
 
 	private List<Occasion> readMonthDatabase(String monthFilter) {
-		return d.readOccasion(monthFilter);
+		return d.getMonthOccasion(monthFilter);
 	}		
+	
+	private List<Occasion> readWeekDatabase(String firstFilter, String secondFilter){
+		isFiltered = false;
+		return d.getWeekOccasion(firstFilter, secondFilter);
+	}
+
+	private List<Occasion> readWeekDatabase(String firstFilter, String secondFilter, String typeFilter){
+		isFiltered = true;
+		return d.getWeekOccasion(firstFilter, secondFilter, typeFilter);
+	}	
 	
 	public void updateDatabase(int occasionID, boolean isDone) {
 		d.updateIsDone(occasionID, isDone);
@@ -75,17 +85,32 @@ public class CalendarProgramModel implements CalendarModel{
 		observers.add(ov);
 	}
 
-	public void notifyObservers(String dateFilter) {
-		this.dateFilter = dateFilter;
-		for(int i = 0 ; i < observers.size() ; i++)
-			observers.get(i).update(readDatabase(dateFilter));
-	}
-
-	public void notifyObservers(String dateFilter, String typeFilter) {
-		this.dateFilter = dateFilter;
+	public void notifyObservers(String firstFilter, String secondFilter, boolean viewType) {
+		this.firstFilter = firstFilter;
+		this.secondFilter = secondFilter;
+		this.viewType = viewType;
+		if(viewType) {
+			for(int i = 0 ; i < observers.size() ; i++)
+				observers.get(i).update(readWeekDatabase(firstFilter, secondFilter));				
+		}else {
+			for(int i = 0 ; i < observers.size() ; i++)
+				observers.get(i).update(readDatabase(firstFilter));			
+		}
+	}	
+	
+	public void notifyObservers(String firstFilter, String secondFilter, String typeFilter, boolean viewType) {
+		this.firstFilter = firstFilter;
+		this.secondFilter = secondFilter;
 		this.typeFilter = typeFilter;
-		for(int i = 0 ; i < observers.size() ; i++)
-			observers.get(i).update(readDatabase(dateFilter,typeFilter));
+		this.viewType = viewType;
+		if(viewType) {
+			for(int i = 0 ; i < observers.size() ; i++)
+				observers.get(i).update(readWeekDatabase(firstFilter,secondFilter,typeFilter));		
+		}else {
+			for(int i = 0 ; i < observers.size() ; i++)
+				observers.get(i).update(readDatabase(firstFilter,typeFilter));			
+		}
+
 	}
 	
 	public void notifyDeselect() {
@@ -151,10 +176,10 @@ public class CalendarProgramModel implements CalendarModel{
 	        			currentDateTime += ":"+cal.get(Calendar.MINUTE)+":00";
 
 	        		if(updateEventDatabase(currentDateTime)) {
-		        		if(isFiltered)
-		        			notifyObservers(dateFilter, typeFilter);
-		        		else
-		        			notifyObservers(dateFilter);	        			
+			        	if(isFiltered)
+			        		notifyObservers(firstFilter, secondFilter, typeFilter, viewType);
+			        	else
+			        		notifyObservers(firstFilter, secondFilter, viewType);
 	        		}
         		
 	        		refreshDays();

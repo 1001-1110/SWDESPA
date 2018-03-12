@@ -16,9 +16,9 @@ public interface CalendarModel {
 	
 	public abstract void notifyDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);
 	
-	public abstract void notifyObservers(String dateFilter);
+	public abstract void notifyObservers(String firstFilter, String secondFilter, boolean viewType);
 	
-	public abstract void notifyObservers(String dateFilter, String typeFilter);
+	public abstract void notifyObservers(String firstFilter, String secondFilter, String typeFilter, boolean viewType);
 	
 	public abstract void notifyDeselect();
 	

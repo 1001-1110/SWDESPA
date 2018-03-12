@@ -41,9 +41,9 @@ public class AgendaProgramView extends JPanel implements AgendaView, ObserverVie
 			
 			if(occasions.get(i) instanceof Event) {
 				if(((Event) occasions.get(i)).getIsDone()) {
-					modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo()+"</s></html>", i, 0);	
+					modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(i)).getDurationFrom().substring(0,16)+" to "+((Event)occasions.get(i)).getDurationTo().substring(0,16)+"</s></html>", i, 0);	
 				}else {
-					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Event)occasions.get(i)).getDurationFrom()+" to "+((Event)occasions.get(i)).getDurationTo(), i, 0);
+					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Event)occasions.get(i)).getDurationFrom().substring(0,16)+" to "+((Event)occasions.get(i)).getDurationTo().substring(0,16), i, 0);
 				}
 				
 				if(((Event) occasions.get(i)).getIsDone()) {
@@ -53,9 +53,9 @@ public class AgendaProgramView extends JPanel implements AgendaView, ObserverVie
 				}
 			}else if (occasions.get(i) instanceof Task) {
 				if(((Task) occasions.get(i)).getIsDone()) {
-					modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(i)).getDurationFrom()+"</s></html>", i, 0);
+					modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(i)).getDurationFrom().substring(0,16)+"</s></html>", i, 0);
 				}else {
-					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Task)occasions.get(i)).getDurationFrom(), i, 0);
+					modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(i).getColorString()+"\">"+((Task)occasions.get(i)).getDurationFrom().substring(0,16), i, 0);
 				}
 				
 				if(((Task) occasions.get(i)).getIsDone()) {

@@ -4,7 +4,11 @@ public interface Database {
 
 	public abstract List<Occasion> getOccasions(String dateFilter);
 
-	public abstract List<Occasion> readOccasion(String monthFilter);	
+	public abstract List<Occasion> getMonthOccasion(String monthFilter);	
+
+	public abstract List<Occasion> getWeekOccasion(String firstFilter, String secondFilter);		
+	
+	public abstract List<Occasion> getWeekOccasion(String firstFilter, String secondFilter, String typeFilter);
 	
 	public abstract List<Occasion> getOccasions(String dateFilter, String typeFilter);
 	
