@@ -14,8 +14,9 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
 	
 	CalendarView cv;
 	
-	List<Integer> rowAssignment;
-	int currentRow;	
+	private int currentSelectedMonth, currentSelectedDay, currentSelectedYear;
+	private List<Integer> rowAssignment;
+	private int currentRow;	
 	
 	JScrollPane scrollCalendarTable;    
 	
@@ -27,87 +28,90 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
     	
     }
     
+    public void updateCurrent(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay) {
+    	this.currentSelectedYear = currentSelectedYear;
+    	this.currentSelectedMonth = currentSelectedMonth;
+    	this.currentSelectedDay = currentSelectedDay;
+    }
+    
     public void update(List<Occasion>occasions) {
     	
 		modelCalendarTable.setColumnCount(2);
 		modelCalendarTable.setRowCount(48);
 		
-		for(int i = 0, j = 0 ; i < 48 ; i++) {
-			if(i % 2 == 0) {
-				if(j >= 1000) {
-					String time = Integer.toString(j);
-					time = time.substring(0,2) + ":" + time.substring(2,4);
-					modelCalendarTable.setValueAt(time, i, 0);
-				}else if (j >= 100){
-					String time = Integer.toString(j);
-					time = "0" + time.charAt(0) + ":" + time.substring(1,3);
-					modelCalendarTable.setValueAt(time, i, 0);					
-				}else {
-					modelCalendarTable.setValueAt("00:00", i, 0);	
-				}
-				j += 100;
-			}
-		}    	
-    	
-		for(int i = 0, j = 0, k = 0; i < 48 ; i++) {
-			
-			int compare;
-			
-			if(i % 2 == 0) {
-				compare = j;
-			}else {
-				compare = k;
-			}
-			
+		for(int i = 0, j = 0, k = 0 ; i < 48 ; i++) {
 			modelCalendarTable.setValueAt(null, i, 1);
-			
-			for(int x = 0 ; x < occasions.size() ; x ++) {
-				
-				if(occasions.get(x) instanceof Event) {
-					String timeFrom = ((Event) occasions.get(x)).getDurationFrom().substring(11,16);
-					String[] timeFromPart = timeFrom.split(":");
-					int intTimeFrom = (Integer.parseInt(timeFromPart[0])*100) + Integer.parseInt(timeFromPart[1]);
-					
-					String timeTo = ((Event) occasions.get(x)).getDurationTo().substring(11,16);
-					String[] timeToPart = timeTo.split(":");
-					int intTimeTo = (Integer.parseInt(timeToPart[0])*100) + Integer.parseInt(timeToPart[1]);
-					
-					if(intTimeFrom <= compare && intTimeTo > compare) {
-						if(((Event) occasions.get(x)).getIsDone()) {
-							modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(x)).getInfo()+"</s></html>", i, 1);					
-						}else {
-							modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(x).getColorString()+"\">"+((Event)occasions.get(x)).getInfo(), i, 1);					
-						}
-					}
-					
-				}else if(occasions.get(x) instanceof Task) {
-					String timeFrom = ((Task) occasions.get(x)).getDurationFrom().substring(11,16);
-					String[] timeFromPart = timeFrom.split(":");
-					int intTimeFrom = (Integer.parseInt(timeFromPart[0])*100) + Integer.parseInt(timeFromPart[1]);
-					
-					String timeTo = ((Task) occasions.get(x)).getDurationTo().substring(11,16);
-					String[] timeToPart = timeTo.split(":");
-					int intTimeTo = (Integer.parseInt(timeToPart[0])*100) + Integer.parseInt(timeToPart[1]);
-
-					if(intTimeFrom <= compare && intTimeTo > compare) {
-						if(((Task) occasions.get(x)).getIsDone()) {
-							modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(x)).getInfo()+"</s></html>", i, 1);
-						}else {
-							modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(x).getColorString()+"\">"+((Task)occasions.get(x)).getInfo(), i, 1);	
-						}
-					}
-				
-				}
-
-			}
+			String time;
 			
 			if(i % 2 == 0) {
-				j += 100;				
+				time = Integer.toString(j);
+				if(j >= 1000) {
+					time = time.substring(0,2) + ":" + time.substring(2,4);
+				}else if (j >= 100){
+					time = "0" + time.charAt(0) + ":" + time.substring(1,3);				
+				}else {
+					time = "00:00";
+				}	
+				modelCalendarTable.setValueAt(time, i, 0);	
 			}else {
-				k = j + 30;
-			}
+				time = Integer.toString(k);
+				if(k >= 1000) {
+					time = time.substring(0,2) + ":" + time.substring(2,4);
+				}else if (k >= 100){
+					time = "0" + time.charAt(0) + ":" + time.substring(1,3);				
+				}else {
+					time = "00:30";
+				}
+			}				
 
-		}
+				String[] splitTime = time.split(":");
+				Calendar c1 = new GregorianCalendar(currentSelectedYear, currentSelectedMonth, currentSelectedDay, Integer.parseInt(splitTime[0]), Integer.parseInt(splitTime[1]));
+
+				for(int x = 0 ; x < occasions.size(); x++) {
+					if(occasions.get(x) instanceof Event) {
+						String[] durationSplit = ((Event) occasions.get(x)).getDurationFrom().split(" ");
+						String[] dateSplit = durationSplit[0].split("-");
+						String[] timeSplit = durationSplit[1].split(":");
+						int year = Integer.parseInt(dateSplit[0]); 
+						int month = Integer.parseInt(dateSplit[1]); 
+						int day = Integer.parseInt(dateSplit[2]); 
+						int hour = Integer.parseInt(timeSplit[0]); 
+						int minute = Integer.parseInt(timeSplit[1]); 
+						Calendar c2 = new GregorianCalendar(year,month-1,day,hour,minute);
+						durationSplit = ((Event) occasions.get(x)).getDurationTo().split(" ");
+						dateSplit = durationSplit[0].split("-");
+						timeSplit = durationSplit[1].split(":");
+						year = Integer.parseInt(dateSplit[0]); 
+						month = Integer.parseInt(dateSplit[1]); 
+						day = Integer.parseInt(dateSplit[2]); 
+						hour = Integer.parseInt(timeSplit[0]); 
+						minute = Integer.parseInt(timeSplit[1]); 
+						Calendar c3 = new GregorianCalendar(year,month-1,day,hour,minute);
+						if(c1.compareTo(c2) >= 0 && c3.compareTo(c1) > 0)
+							if(((Event) occasions.get(x)).getIsDone()) {
+								modelCalendarTable.setValueAt("<html><s>"+((Event)occasions.get(x)).getInfo()+"</s></html>", i, 1);					
+							}else {
+								modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(x).getColorString()+"\">"+((Event)occasions.get(x)).getInfo(), i, 1);					
+							}
+					}else if(occasions.get(x) instanceof Task) {
+						String[] durationSplit = ((Task) occasions.get(x)).getDurationFrom().split(" ");
+						String[] dateSplit = durationSplit[0].split("-");
+						if(Integer.parseInt(dateSplit[0]) == currentSelectedYear && Integer.parseInt(dateSplit[1]) == (currentSelectedMonth+1) && Integer.parseInt(dateSplit[2]) == currentSelectedDay)
+							if(time.equals(durationSplit[1].substring(0,5)))
+								if(((Task) occasions.get(x)).getIsDone()) {
+									modelCalendarTable.setValueAt("<html><s>"+((Task)occasions.get(x)).getInfo()+"</s></html>", i, 1);
+								}else {
+									modelCalendarTable.setValueAt("<html><font color=\""+occasions.get(x).getColorString()+"\">"+((Task)occasions.get(x)).getInfo(), i, 1);	
+								}
+					}
+				}
+
+			if(i % 2 == 1)
+				j += 100;
+			else
+				k = j + 30;
+				
+		}    	
 		
     }
     

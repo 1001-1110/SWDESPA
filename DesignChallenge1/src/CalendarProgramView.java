@@ -208,6 +208,7 @@ public class CalendarProgramView implements CalendarView{
     	this.currentSelectedYear = currentSelectedYear;
     	this.currentSelectedMonth = currentSelectedMonth;
     	this.currentSelectedDay = currentSelectedDay;
+    	dv.updateCurrent(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
     	String currentDate = new String();
     	currentDate += monthLabel.getText();
     	currentDate += " "+currentSelectedDay;
@@ -267,7 +268,6 @@ public class CalendarProgramView implements CalendarView{
 			}
 		else if(rdbtnDay.isSelected())
 			selectedDates.add(currentSelectedYear+"-"+currentSelectedMonth+" "+currentSelectedDay);
-		System.out.println(selectedDates.get(0));
 		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new TableRenderer(month, year, selectedDates));
 		calendarTable.clearSelection();
     }
