@@ -17,6 +17,8 @@ public interface CalendarView {
 	
 	public abstract void attachDayView(DayView dv);	
 	
+	public abstract void attachWeekView(WeekView dv);	
+	
 	public abstract void update();
 	
     public abstract void updateDateTitle(int currentSelectedYear, int currentSelectedMonth, int currentSelectedDay);

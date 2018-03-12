@@ -9,9 +9,10 @@ import java.util.List;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 public class DayProgramView extends JPanel implements DayView, ObserverView{
-	
+
 	CalendarView cv;
 	
 	private int currentSelectedMonth, currentSelectedDay, currentSelectedYear;
@@ -32,6 +33,9 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
     	this.currentSelectedYear = currentSelectedYear;
     	this.currentSelectedMonth = currentSelectedMonth;
     	this.currentSelectedDay = currentSelectedDay;
+    	String[] dayNames = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+    	Calendar c = new GregorianCalendar(currentSelectedYear,currentSelectedMonth,currentSelectedDay);
+		this.setBorder(new TitledBorder(null, dayNames[c.get(Calendar.DAY_OF_WEEK)-1], TitledBorder.LEADING, TitledBorder.TOP, null, null));
     }
     
     public void update(List<Occasion>occasions) {
@@ -118,7 +122,7 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
 	public DayProgramView(CalendarView cv){
 		
 		setBounds(0,0,620,440);
-		
+
 		this.cv = cv;
 		
 		try {
@@ -139,15 +143,11 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
 		scrollCalendarTable = new JScrollPane(calendarTable);
 		scrollCalendarTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		this.setBorder(new LineBorder(new Color(0, 0, 0)));
-		
 		calendarTable.getParent().setBackground(calendarTable.getBackground()); //Set background
 
 		calendarTable.getTableHeader().setResizingAllowed(false);
 		calendarTable.getTableHeader().setReorderingAllowed(false);
-
-		calendarTable.setColumnSelectionAllowed(true);
-		calendarTable.setRowSelectionAllowed(true);
+		calendarTable.setRowSelectionAllowed(false);
 		calendarTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		calendarTable.setRowHeight(20);
@@ -171,6 +171,6 @@ public class DayProgramView extends JPanel implements DayView, ObserverView{
 		modelCalendarTable.addColumn("Time");
 		modelCalendarTable.addColumn("Event / Task");
 		
-		//calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
+		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
 	}
 }

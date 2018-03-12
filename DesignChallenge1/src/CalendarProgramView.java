@@ -19,6 +19,7 @@ public class CalendarProgramView implements CalendarView{
 	CalendarControl cc;
 	EventAdderView ea;
 	DayView dv;
+	WeekView wv;
 	AgendaView av;
 	
         /**** Swing Components ****/
@@ -141,6 +142,10 @@ public class CalendarProgramView implements CalendarView{
 			public void actionPerformed(ActionEvent e) {
 				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 				cc.refreshCalendar(monthToday, yearToday);
+				if(infoPanel.getComponent(0) instanceof AgendaView)
+					showAgendaView();
+				else if(infoPanel.getComponent(0) instanceof DayView || infoPanel.getComponent(0) instanceof WeekView)
+					showTimeView();
 			}
 		});
 
@@ -148,6 +153,10 @@ public class CalendarProgramView implements CalendarView{
 			public void actionPerformed(ActionEvent e) {
 				cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 				cc.refreshCalendar(monthToday, yearToday);
+				if(infoPanel.getComponent(0) instanceof AgendaView)
+					showAgendaView();
+				else if(infoPanel.getComponent(0) instanceof DayView || infoPanel.getComponent(0) instanceof WeekView)
+					showTimeView();
 			}
 		});		
 		
@@ -184,10 +193,13 @@ public class CalendarProgramView implements CalendarView{
 		refreshView();
     }
     
-    public void showDayView() {
+    public void showTimeView() {
     	cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 		infoPanel.removeAll();
-		infoPanel.add((Component) dv);
+		if(rdbtnWeek.isSelected())
+			infoPanel.add((Component) wv);
+		else if(rdbtnDay.isSelected())
+			infoPanel.add((Component) dv);
 		infoPanel.revalidate();
 		refreshView();    	
     }
@@ -209,6 +221,7 @@ public class CalendarProgramView implements CalendarView{
     	this.currentSelectedMonth = currentSelectedMonth;
     	this.currentSelectedDay = currentSelectedDay;
     	dv.updateCurrent(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
+    	wv.updateCurrent(currentSelectedYear, currentSelectedMonth, currentSelectedDay);
     	String currentDate = new String();
     	currentDate += monthLabel.getText();
     	currentDate += " "+currentSelectedDay;
@@ -325,7 +338,7 @@ public class CalendarProgramView implements CalendarView{
 		btnTime = new JButton("Time");
 		btnTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showDayView();
+				showTimeView();
 			}
 		});
 		
@@ -647,6 +660,10 @@ public class CalendarProgramView implements CalendarView{
        	this.dv = dv;
 	}
 
+	public void attachWeekView(WeekView wv) {
+       	this.wv = wv;
+	}	
+	
 	public void attachAgendaView(AgendaView av) {
        	this.av = av;
 	}	
