@@ -51,7 +51,7 @@ public class CalendarProgramModel implements CalendarModel{
 		return d.getOccasions(dateFilter, typeFilter);
 	}	
 
-	private boolean readMonthDatabase(String monthFilter) {
+	private List<Occasion> readMonthDatabase(String monthFilter) {
 		return d.readOccasion(monthFilter);
 	}		
 	
@@ -108,17 +108,33 @@ public class CalendarProgramModel implements CalendarModel{
 	}
 	
 	public void refreshDays() {
+		List<Occasion>occasions = readMonthDatabase(monthFilter);
 		days = new ArrayList<>();
-		for(int i = 0 ; i <= 31 ; i++) {
-			String day;
-			if(i < 10)
-				day = "0" + i;
-			else
-				day = Integer.toString(i);
-			if(readMonthDatabase(monthFilter+"-"+day)) {
-				days.add(i);				
+		for(int i = 0 ; i < occasions.size(); i ++) {
+			if(occasions.get(i) instanceof Event) {
+				String splitFrom[] = ((Event) occasions.get(i)).getDurationFrom().split(" ");
+				String splitTo[] = ((Event) occasions.get(i)).getDurationTo().split(" ");
+				String dateSplitFrom[] = splitFrom[0].split("-");
+				String dateSplitTo[] = splitTo[0].split("-");
+				if(splitFrom[0].equals(splitTo[0])) {
+					days.add(Integer.parseInt(dateSplitFrom[2]));
+				}else {
+					Calendar c1 = new GregorianCalendar(Integer.parseInt(dateSplitFrom[0]),Integer.parseInt(dateSplitFrom[1]),Integer.parseInt(dateSplitFrom[2]));
+					Calendar c2 = new GregorianCalendar(Integer.parseInt(dateSplitTo[0]),Integer.parseInt(dateSplitTo[1]),Integer.parseInt(dateSplitTo[2]));
+					while(c2.compareTo(c1) >= 0) {
+						days.add(c2.get(Calendar.DATE));
+						c2.add(Calendar.DATE, -1);
+					}
+				}
+					
+			}else if(occasions.get(i) instanceof Task) {
+				String splitFrom[] = ((Task) occasions.get(i)).getDurationFrom().split(" ");
+				String dateSplitFrom[] = splitFrom[0].split("-");
+				days.add(Integer.parseInt(dateSplitFrom[2]));
 			}
+			
 		}
+
 	}
 	
 	public void timeCheck() {
