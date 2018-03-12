@@ -236,6 +236,7 @@ public class DatabaseProgram implements Database{
 					
 				} catch (SQLException e) {
 					e.printStackTrace();
+					return false;
 				} 				
 				
 				if(occasions.size() > 0)
