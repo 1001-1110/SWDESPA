@@ -1,7 +1,7 @@
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class DesignChallenge2 {
+public class DoctorModule {
 
     public static void main(String[] args) {
         // TODO code application logic here
@@ -15,7 +15,7 @@ public class DesignChallenge2 {
         cpv.attachAgendaView(apv);
         cpv.attachDayView(dpv);
         cpv.attachWeekView(wpv);
-        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
+        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://192.168.43.217:3306/","superuser","sophia","SWDESPA");
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
         cpm.attachObserver((ObserverView) apv);
