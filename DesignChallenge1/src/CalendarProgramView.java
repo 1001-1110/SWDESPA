@@ -391,7 +391,7 @@ public class CalendarProgramView implements CalendarView{
 		interactPanel.setBounds(10, 11, 974, 81);
 		frmMain.getContentPane().add(interactPanel);
 		
-		lblTitle = new JLabel("Pr0ductivity t00Lz");
+		lblTitle = new JLabel();
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		
 		btnToday = new JButton("Go to Today");
