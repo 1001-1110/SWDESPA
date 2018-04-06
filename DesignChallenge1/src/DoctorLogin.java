@@ -17,7 +17,6 @@ public class DoctorLogin extends JFrame {
 	private JPanel contentPane;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private String password;
 
 	/**
 	 * Launch the application.
@@ -40,7 +39,7 @@ public class DoctorLogin extends JFrame {
 	 */
 	public DoctorLogin() {
 		super("Doctor Login");
-		password = "1234";
+		String password = "1234";
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 392, 234);
 		contentPane = new JPanel();

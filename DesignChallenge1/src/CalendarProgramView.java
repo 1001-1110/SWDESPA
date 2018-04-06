@@ -171,7 +171,8 @@ public class CalendarProgramView implements CalendarView{
 		refreshCalendar();
 		cc.updateViews(currentSelectedYear, currentSelectedMonth, currentSelectedDay, eventFilter.isSelected(), taskFilter.isSelected(), rdbtnDay.isSelected(), rdbtnWeek.isSelected());
 		showAgendaView();
-		frmMain.setVisible(true);
+		frmMain.setVisible(false);
+		loginField.setVisible(true);
     }
     
     public void update() {
@@ -292,6 +293,7 @@ public class CalendarProgramView implements CalendarView{
     }
         
 	public CalendarProgramView(){
+		loginField = new JFrame("Doctor Login");
 		String password = "1234";
 		loginField.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginField.setBounds(100, 100, 392, 234);
@@ -310,6 +312,9 @@ public class CalendarProgramView implements CalendarView{
 			public void actionPerformed(ActionEvent e) {
 				if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
 					//login
+					loginField.setVisible(false);
+					frmMain.setVisible(true);
+					lblTitle.setText(usernameField.getText());
 					JOptionPane.showMessageDialog(null, "Login Successful");
 				}else {
 					JOptionPane.showMessageDialog(null, "Login Unsuccessful");
@@ -334,6 +339,9 @@ public class CalendarProgramView implements CalendarView{
 			public void actionPerformed(ActionEvent e) {
 				if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
 					//login
+					loginField.setVisible(false);
+					frmMain.setVisible(true);
+					lblTitle.setText(usernameField.getText());
 					JOptionPane.showMessageDialog(null, "Login Successful");
 				}else {
 					JOptionPane.showMessageDialog(null, "Login Unsuccessful");
@@ -342,6 +350,7 @@ public class CalendarProgramView implements CalendarView{
 		});
 		btnLogin.setBounds(136, 161, 89, 23);
 		contentPane.add(btnLogin);
+		
 		
 		
 		try {
