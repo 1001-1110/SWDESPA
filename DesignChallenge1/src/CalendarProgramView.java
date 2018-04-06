@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class CalendarProgramView implements CalendarView{
@@ -53,6 +54,11 @@ public class CalendarProgramView implements CalendarView{
     private JButton btnDelete;
     private JRadioButton rdbtnDay;
     private JRadioButton rdbtnWeek;
+    
+    private JPanel contentPane;
+	private JTextField usernameField;
+	private JPasswordField passwordField;
+	private JFrame loginField;
     
     public void attachController(CalendarControl cc) {
     	this.cc = cc;
@@ -285,8 +291,58 @@ public class CalendarProgramView implements CalendarView{
 		calendarTable.clearSelection();
     }
         
-	public CalendarProgramView()
-        {
+	public CalendarProgramView(){
+		String password = "1234";
+		loginField.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginField.setBounds(100, 100, 392, 234);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		loginField.setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		usernameField = new JTextField();
+		usernameField.setBounds(101, 55, 237, 20);
+		contentPane.add(usernameField);
+		usernameField.setColumns(10);
+		
+		passwordField = new JPasswordField();
+		passwordField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
+					//login
+					JOptionPane.showMessageDialog(null, "Login Successful");
+				}else {
+					JOptionPane.showMessageDialog(null, "Login Unsuccessful");
+				}
+			}
+		});
+		passwordField.setBounds(101, 102, 237, 20);
+		contentPane.add(passwordField);
+		
+		JLabel lblUsername = new JLabel("Username: ");
+		lblUsername.setBounds(10, 57, 81, 17);
+		contentPane.add(lblUsername);
+		
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(10, 105, 81, 14);
+		contentPane.add(lblPassword);
+		
+		
+		
+		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
+					//login
+					JOptionPane.showMessageDialog(null, "Login Successful");
+				}else {
+					JOptionPane.showMessageDialog(null, "Login Unsuccessful");
+				}
+			}
+		});
+		btnLogin.setBounds(136, 161, 89, 23);
+		contentPane.add(btnLogin);
+		
 		
 		try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
