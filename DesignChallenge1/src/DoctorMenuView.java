@@ -308,13 +308,9 @@ public class DoctorMenuView extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		setVisible(false);
 		
-		ButtonGroup bg = new ButtonGroup();
-		
-		rdbtnDay = new JRadioButton("View by day");
-		rdbtnWeek = new JRadioButton("View by week");
 		
 		
-		rdbtnDay.setSelected(true);
+		
 		
 	}
 }
