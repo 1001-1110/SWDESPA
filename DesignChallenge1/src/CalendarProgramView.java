@@ -294,7 +294,6 @@ public class CalendarProgramView implements CalendarView{
         
 	public CalendarProgramView(){
 		loginField = new JFrame("Doctor Login");
-		String password = "1234";
 		loginField.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginField.setBounds(100, 100, 392, 234);
 		contentPane = new JPanel();
@@ -486,7 +485,7 @@ public class CalendarProgramView implements CalendarView{
 		infoBorderPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		infoBorderPanel.setBounds(338, 98, 646, 468);
 		frmMain.getContentPane().add(infoBorderPanel);
-		
+		  
 		infoPanel = new JPanel();
 		infoPanel.setLayout(null);
 		GroupLayout gl_infoBorderPanel = new GroupLayout(infoBorderPanel);
