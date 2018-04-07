@@ -17,7 +17,7 @@ public class DoctorModule {
         cpv.attachDayView(dpv);
         cpv.attachWeekView(wpv);
 //        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://192.168.43.217:3306/","superuser","sophia","SWDESPA");
-        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://localhost:3306/","root","1234","swdespa");
+        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://192.168.0.7:3306/","superuser1","12345","swdespa");
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
         cpm.attachObserver((ObserverView) apv);
