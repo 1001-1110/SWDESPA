@@ -48,6 +48,17 @@ public class DoctorLogin extends JFrame {
 		contentPane.setLayout(null);
 		
 		usernameField = new JTextField();
+		usernameField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if("DoctorPau".equalsIgnoreCase(usernameField.getText()) || "DoctorJoanne".equalsIgnoreCase(usernameField.getText())) {
+					//login
+					System.out.println("Tst");
+					JOptionPane.showMessageDialog(null, "Login Successful");
+				}else {
+					JOptionPane.showMessageDialog(null, "Doctor not identified, please try again.");
+				}
+			}
+		});
 		usernameField.setBounds(101, 55, 237, 20);
 		contentPane.add(usernameField);
 		usernameField.setColumns(10);
@@ -59,7 +70,7 @@ public class DoctorLogin extends JFrame {
 					//login
 					JOptionPane.showMessageDialog(null, "Login Successful");
 				}else {
-					JOptionPane.showMessageDialog(null, "Login Unsuccessful");
+					JOptionPane.showMessageDialog(null, "Wrong Password, please try again.");
 				}
 			}
 		});
@@ -79,13 +90,17 @@ public class DoctorLogin extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
+				if(("password".equalsIgnoreCase(new String(passwordField.getPassword()))) && ("DoctorPau".equalsIgnoreCase(usernameField.getText()))) {
 					//login
 					JOptionPane.showMessageDialog(null, "Login Successful");
-				}else {
-					JOptionPane.showMessageDialog(null, "Login Unsuccessful");
 				}
-			}
+				else if(("password".equalsIgnoreCase(new String(passwordField.getPassword()))) && ("DoctorJoanne".equalsIgnoreCase(usernameField.getText()))) {
+					//login
+					JOptionPane.showMessageDialog(null, "Login Successful");
+					}else {
+						JOptionPane.showMessageDialog(null, "Login Unsuccessful");
+						}
+				}
 		});
 		btnLogin.setBounds(136, 161, 89, 23);
 		contentPane.add(btnLogin);
