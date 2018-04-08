@@ -1,3 +1,4 @@
+package DoctorView;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -23,15 +24,15 @@ import javax.swing.JTable;
 import javax.swing.JComboBox;
 import java.awt.Dimension;
 
-public class DoctorMenuView extends JFrame {
+public class DoctorMenuProgramView extends JFrame {
 
 	private JPanel contentPane;
 	
 //	private DoctorProgramModel dpm;
 //	private DoctorProgramControl dpc;
 	
-	private DoctorLoginView dlv;
-	private DoctorSlotAdderView dsav;
+	private DoctorLoginProgramView dlv;
+	private DoctorSlotAdderProgramView dsav;
 	
     private JRadioButton rdbtnDay;
     private JRadioButton rdbtnWeek;
@@ -64,7 +65,7 @@ public class DoctorMenuView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DoctorMenuView frame = new DoctorMenuView();
+					DoctorMenuProgramView frame = new DoctorMenuProgramView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -76,7 +77,7 @@ public class DoctorMenuView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DoctorMenuView() {
+	public DoctorMenuProgramView() {
 		setTitle("Doctor Menu");
 		
 		
@@ -319,11 +320,15 @@ public class DoctorMenuView extends JFrame {
 		
 		
 	}
-	public void attachDoctorLoginView(DoctorLoginView dlv) {
+	public void attachDoctorLoginView(DoctorLoginProgramView dlv) {
 		this.dlv = dlv;
 	}
 	
-	public void attachDoctorSlotAdderView(DoctorSlotAdderView dsav) {
+	public void attachDoctorSlotAdderView(DoctorSlotAdderProgramView dsav) {
 		this.dsav = dsav;
+	}
+
+	public JLabel getLblName() {
+		return lblName;
 	}
 }

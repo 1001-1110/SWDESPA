@@ -1,3 +1,4 @@
+package DoctorModule;
 
 public abstract class EntryFactory {
 	

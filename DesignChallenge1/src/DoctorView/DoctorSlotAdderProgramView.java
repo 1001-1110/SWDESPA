@@ -1,3 +1,4 @@
+package DoctorView;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -14,11 +15,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DoctorSlotAdderView extends JFrame {
+public class DoctorSlotAdderProgramView extends JFrame {
 
 //	private DoctorProgramModel dpm;
 //	private DoctorProgramControl dpc;
-	private DoctorMenuView dmv;
+	private DoctorMenuProgramView dmv;
 	
 	private JPanel contentPane;
 	private JButton btnSave;
@@ -43,8 +44,8 @@ public class DoctorSlotAdderView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DoctorMenuView testdmv = new DoctorMenuView();
-					DoctorSlotAdderView frame = new DoctorSlotAdderView(testdmv);
+					DoctorMenuProgramView testdmv = new DoctorMenuProgramView();
+					DoctorSlotAdderProgramView frame = new DoctorSlotAdderProgramView(testdmv);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,7 +57,7 @@ public class DoctorSlotAdderView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DoctorSlotAdderView(DoctorMenuView dmv) {
+	public DoctorSlotAdderProgramView(DoctorMenuProgramView dmv) {
 		this.dmv = dmv;
 		setTitle("Doctor Slot Adder");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

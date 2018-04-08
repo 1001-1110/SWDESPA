@@ -1,3 +1,4 @@
+package DoctorView;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -12,12 +13,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DoctorLoginView extends JFrame {
+public class DoctorLoginProgramView extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private DoctorMenuView dmv;
+	private DoctorMenuProgramView dmv;
 //	private DoctorProgramModel dpm;
 //	private DoctorProgramControl dpc;
 	/**
@@ -27,8 +28,8 @@ public class DoctorLoginView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DoctorMenuView dv = new DoctorMenuView();
-					DoctorLoginView frame = new DoctorLoginView(dv);
+					DoctorMenuProgramView dv = new DoctorMenuProgramView();
+					DoctorLoginProgramView frame = new DoctorLoginProgramView(dv);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,7 +41,7 @@ public class DoctorLoginView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DoctorLoginView(DoctorMenuView dmv) {
+	public DoctorLoginProgramView(DoctorMenuProgramView dmv) {
 		super("Doctor Login");
 		this.dmv = dmv;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,6 +75,8 @@ public class DoctorLoginView extends JFrame {
 					setVisible(false);
 					JOptionPane.showMessageDialog(null, "Login Successful");
 					dmv.setVisible(true);
+					dmv.getLblName().setText(usernameField.getText());
+					//send name to control/ model
 				}else {
 					JOptionPane.showMessageDialog(null, "Wrong Password, please try again.");
 				}
@@ -99,6 +102,8 @@ public class DoctorLoginView extends JFrame {
 					setVisible(false);
 					JOptionPane.showMessageDialog(null, "Login Successful");
 					dmv.setVisible(true);
+					dmv.getLblName().setText(usernameField.getText());
+					//send name to control/ model
 				}else {
 					JOptionPane.showMessageDialog(null, "Wrong Password. Please Try Again.");
 				}
