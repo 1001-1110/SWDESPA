@@ -16,6 +16,10 @@ import java.awt.event.ActionEvent;
 
 public class DoctorSlotAdderView extends JFrame {
 
+//	private DoctorProgramModel dpm;
+//	private DoctorProgramControl dpc;
+	private DoctorMenuView dmv;
+	
 	private JPanel contentPane;
 	private JButton btnSave;
 	private JButton btnDiscard;
@@ -31,7 +35,7 @@ public class DoctorSlotAdderView extends JFrame {
 	private JRadioButton rdbtnRepeating;
 	private JRadioButton rdbtnSingle;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -39,7 +43,8 @@ public class DoctorSlotAdderView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DoctorSlotAdderView frame = new DoctorSlotAdderView();
+					DoctorMenuView testdmv = new DoctorMenuView();
+					DoctorSlotAdderView frame = new DoctorSlotAdderView(testdmv);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,9 +56,10 @@ public class DoctorSlotAdderView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DoctorSlotAdderView() {
+	public DoctorSlotAdderView(DoctorMenuView dmv) {
+		this.dmv = dmv;
 		setTitle("Doctor Slot Adder");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,11 +67,30 @@ public class DoctorSlotAdderView extends JFrame {
 		contentPane.setLayout(null);
 		
 		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//send input to control
+				txtDateStart.setText(null);
+				txtDateEnd.setText(null);
+				txtTimeStart.setText(null);
+				txtTimeEnd.setText(null);
+				
+			}
+		});
 		btnSave.setBounds(132, 183, 67, 23);
 		contentPane.add(btnSave);
 		
 		btnDiscard = new JButton("Discard");
-		btnDiscard.setBounds(229, 183, 67, 23);
+		btnDiscard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtDateStart.setText(null);
+				txtDateEnd.setText(null);
+				txtTimeStart.setText(null);
+				txtTimeEnd.setText(null);
+				setVisible(false);
+			}
+		});
+		btnDiscard.setBounds(229, 183, 79, 23);
 		contentPane.add(btnDiscard);
 		
 		txtDateStart = new JTextField();
@@ -75,7 +100,7 @@ public class DoctorSlotAdderView extends JFrame {
 		
 		txtDateEnd = new JTextField();
 		txtDateEnd.setEnabled(false);
-		txtDateEnd.setBounds(229, 77, 67, 20);
+		txtDateEnd.setBounds(229, 77, 79, 20);
 		contentPane.add(txtDateEnd);
 		txtDateEnd.setColumns(10);
 		
@@ -86,7 +111,7 @@ public class DoctorSlotAdderView extends JFrame {
 		
 		txtTimeEnd = new JTextField();
 		txtTimeEnd.setEnabled(false);
-		txtTimeEnd.setBounds(229, 122, 67, 20);
+		txtTimeEnd.setBounds(229, 122, 79, 20);
 		contentPane.add(txtTimeEnd);
 		txtTimeEnd.setColumns(10);
 		
@@ -117,16 +142,6 @@ public class DoctorSlotAdderView extends JFrame {
 				txtTimeEnd.setEnabled(true);
 			}
 		});
-		rdbtnRepeating.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				lblToDate.setEnabled(true);
-				lblToTime.setEnabled(true);
-				txtDateEnd.setEnabled(true);
-				txtTimeEnd.setEnabled(true);
-				
-			}
-		});
 		buttonGroup.add(rdbtnRepeating);
 		rdbtnRepeating.setBounds(229, 47, 109, 23);
 		contentPane.add(rdbtnRepeating);
@@ -140,15 +155,7 @@ public class DoctorSlotAdderView extends JFrame {
 				txtTimeEnd.setEnabled(false);
 			}
 		});
-		rdbtnSingle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				lblToDate.setEnabled(false);
-				lblToTime.setEnabled(false);
-				txtDateEnd.setEnabled(false);
-				txtTimeEnd.setEnabled(false);
-			}
-		});
+
 		rdbtnSingle.setSelected(true);
 		buttonGroup.add(rdbtnSingle);
 		rdbtnSingle.setBounds(132, 47, 67, 23);

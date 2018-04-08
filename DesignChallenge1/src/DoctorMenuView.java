@@ -27,6 +27,11 @@ public class DoctorMenuView extends JFrame {
 
 	private JPanel contentPane;
 	
+//	private DoctorProgramModel dpm;
+//	private DoctorProgramControl dpc;
+	
+	private DoctorLoginView dlv;
+	private DoctorSlotAdderView dsav;
 	
     private JRadioButton rdbtnDay;
     private JRadioButton rdbtnWeek;
@@ -142,6 +147,7 @@ public class DoctorMenuView extends JFrame {
 		btnAddNewTimeSlot = new JButton("Add New Time Slot");
 		btnAddNewTimeSlot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dsav.setVisible(true);
 			}
 		});
 		
@@ -312,5 +318,12 @@ public class DoctorMenuView extends JFrame {
 		
 		
 		
+	}
+	public void attachDoctorLoginView(DoctorLoginView dlv) {
+		this.dlv = dlv;
+	}
+	
+	public void attachDoctorSlotAdderView(DoctorSlotAdderView dsav) {
+		this.dsav = dsav;
 	}
 }

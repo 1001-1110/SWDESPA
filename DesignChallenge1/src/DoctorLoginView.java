@@ -18,6 +18,8 @@ public class DoctorLoginView extends JFrame {
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private DoctorMenuView dmv;
+//	private DoctorProgramModel dpm;
+//	private DoctorProgramControl dpc;
 	/**
 	 * Launch the application.
 	 */
@@ -104,5 +106,7 @@ public class DoctorLoginView extends JFrame {
 		});
 		btnLogin.setBounds(136, 161, 89, 23);
 		contentPane.add(btnLogin);
+		
+		setVisible(true);
 	}
 }
