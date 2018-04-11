@@ -15,7 +15,7 @@ public class DesignChallenge2 {
         cpv.attachAgendaView(apv);
         cpv.attachDayView(dpv);
         cpv.attachWeekView(wpv);
-        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/","root","july","SWDESPA");
+        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://112.211.95.65:3306/","superuser","kathyemir","swdespa");
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
         cpm.attachObserver((ObserverView) apv);
