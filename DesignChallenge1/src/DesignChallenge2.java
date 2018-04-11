@@ -1,5 +1,17 @@
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+
+import Controller.CalendarControl;
+import Controller.CalendarProgramControl;
+import Model.CalendarModel;
+import Model.CalendarProgramModel;
+import View.AgendaProgramView;
+import View.AgendaView;
+import View.CalendarProgramView;
+import View.CalendarView;
+import View.DayProgramView;
+import View.DayView;
+import View.ObserverView;
+import View.WeekProgramView;
+import View.WeekView;
 
 public class DesignChallenge2 {
 
@@ -15,7 +27,6 @@ public class DesignChallenge2 {
         cpv.attachAgendaView(apv);
         cpv.attachDayView(dpv);
         cpv.attachWeekView(wpv);
-        cpm.connectDatabase("com.mysql.jdbc.Driver","jdbc:mysql://112.211.95.65:3306/","superuser","kathyemir","swdespa");
         cpm.attachView(cpv);
         cpc.attachModel(cpm);
         cpm.attachObserver((ObserverView) apv);
