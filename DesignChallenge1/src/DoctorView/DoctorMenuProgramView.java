@@ -320,6 +320,9 @@ public class DoctorMenuProgramView extends JFrame {
 		
 		
 	}
+	public void initialize() {
+		dsav.initialize();
+	}
 	public void attachDoctorLoginView(DoctorLoginProgramView dlv) {
 		this.dlv = dlv;
 	}

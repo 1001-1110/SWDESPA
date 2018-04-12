@@ -59,6 +59,9 @@ public class DoctorSlotAdderProgramView extends JFrame {
 	 */
 	public DoctorSlotAdderProgramView(DoctorMenuProgramView dmv) {
 		this.dmv = dmv;
+	}
+	
+	public void initialize() {
 		setTitle("Doctor Slot Adder");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -163,5 +166,17 @@ public class DoctorSlotAdderProgramView extends JFrame {
 		contentPane.add(rdbtnSingle);
 		
 		
+	}
+	
+	public void clearInputs() {
+		txtDateStart.setText(null);
+		txtDateEnd.setText(null);
+		txtTimeStart.setText(null);
+		txtTimeEnd.setText(null);
+	}
+	
+	public void updateCurrentDate(int currentSelectedYear,int currentSelectedMonth, int currentSelectedDay) {
+		txtDateStart.setText(currentSelectedMonth+1+"/"+currentSelectedDay+"/"+currentSelectedYear);
+		txtDateEnd.setText(currentSelectedMonth+1+"/"+currentSelectedDay+"/"+currentSelectedYear);
 	}
 }

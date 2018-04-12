@@ -12,6 +12,7 @@ public class DoctorModule {
 		DoctorSlotAdderProgramView dsav = new DoctorSlotAdderProgramView(dmv);
 		dmv.attachDoctorLoginView(dlv);
 		dmv.attachDoctorSlotAdderView(dsav);
+		dmv.initialize();
 	}
 
 }
