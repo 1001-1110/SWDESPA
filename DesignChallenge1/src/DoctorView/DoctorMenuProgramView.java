@@ -24,15 +24,12 @@ import javax.swing.JTable;
 import javax.swing.JComboBox;
 import java.awt.Dimension;
 
-public class DoctorMenuProgramView extends JFrame {
+public class DoctorMenuProgramView extends JFrame implements DoctorMenuView{
 
 	private JPanel contentPane;
 	
-//	private DoctorProgramModel dpm;
-//	private DoctorProgramControl dpc;
-	
-	private DoctorLoginProgramView dlv;
-	private DoctorSlotAdderProgramView dsav;
+	private DoctorLoginView dlv;
+	private DoctorSlotAdderView dsav;
 	
     private JRadioButton rdbtnDay;
     private JRadioButton rdbtnWeek;
@@ -58,6 +55,8 @@ public class DoctorMenuProgramView extends JFrame {
     private JPanel panelMonthButton;
     private JButton btnPrevMonth;
     private JButton btnNextMonth;
+    
+    private String doctorName;
 	/**
 	 * Launch the application.
 	 */
@@ -148,7 +147,7 @@ public class DoctorMenuProgramView extends JFrame {
 		btnAddNewTimeSlot = new JButton("Add New Time Slot");
 		btnAddNewTimeSlot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dsav.setVisible(true);
+				((DoctorSlotAdderProgramView)dsav).setVisible(true);
 			}
 		});
 		
@@ -323,15 +322,19 @@ public class DoctorMenuProgramView extends JFrame {
 	public void initialize() {
 		dsav.initialize();
 	}
-	public void attachDoctorLoginView(DoctorLoginProgramView dlv) {
+	public void attachDoctorLoginView(DoctorLoginView dlv) {
 		this.dlv = dlv;
 	}
 	
-	public void attachDoctorSlotAdderView(DoctorSlotAdderProgramView dsav) {
+	public void attachDoctorSlotAdderView(DoctorSlotAdderView dsav) {
 		this.dsav = dsav;
 	}
 
 	public JLabel getLblName() {
 		return lblName;
+	}
+	
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
 	}
 }

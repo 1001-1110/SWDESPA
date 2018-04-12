@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DoctorLoginProgramView extends JFrame {
+public class DoctorLoginProgramView extends JFrame implements DoctorLoginView{
 
 	private JPanel contentPane;
 	private JTextField usernameField;
@@ -70,15 +70,20 @@ public class DoctorLoginProgramView extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
-					//login
-					setVisible(false);
-					JOptionPane.showMessageDialog(null, "Login Successful");
-					dmv.setVisible(true);
-					dmv.getLblName().setText(usernameField.getText());
-					//send name to control/ model
+				if(!usernameField.getText().trim().equals("")) {
+					if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
+						//login
+						setVisible(false);
+						JOptionPane.showMessageDialog(null, "Login Successful");
+						dmv.setVisible(true);
+						dmv.getLblName().setText(usernameField.getText());
+						dmv.setDoctorName(usernameField.getText());
+						//send name to control/ model
+					}else {
+						JOptionPane.showMessageDialog(null, "Wrong Password, please try again.");
+					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Wrong Password, please try again.");
+					JOptionPane.showMessageDialog(null, "Username cannot be empty.");
 				}
 			}
 		});
@@ -98,14 +103,20 @@ public class DoctorLoginProgramView extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
-					setVisible(false);
-					JOptionPane.showMessageDialog(null, "Login Successful");
-					dmv.setVisible(true);
-					dmv.getLblName().setText(usernameField.getText());
-					//send name to control/ model
+				if(!usernameField.getText().trim().equals("")) {
+					if("password".equalsIgnoreCase(new String(passwordField.getPassword()))) {
+						//login
+						setVisible(false);
+						JOptionPane.showMessageDialog(null, "Login Successful");
+						dmv.setVisible(true);
+						dmv.getLblName().setText(usernameField.getText());
+						dmv.setDoctorName(usernameField.getText());
+						//send name to control/ model
+					}else {
+						JOptionPane.showMessageDialog(null, "Wrong Password, please try again.");
+					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Wrong Password. Please Try Again.");
+					JOptionPane.showMessageDialog(null, "Username cannot be empty.");
 				}
 			}
 		});

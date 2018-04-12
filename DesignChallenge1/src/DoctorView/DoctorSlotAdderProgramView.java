@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DoctorSlotAdderProgramView extends JFrame {
+public class DoctorSlotAdderProgramView extends JFrame implements DoctorSlotAdderView{
 
 //	private DoctorProgramModel dpm;
 //	private DoctorProgramControl dpc;
@@ -25,12 +25,10 @@ public class DoctorSlotAdderProgramView extends JFrame {
 	private JButton btnSave;
 	private JButton btnDiscard;
 	private JTextField txtDateStart;
-	private JTextField txtDateEnd;
 	private JTextField txtTimeStart;
 	private JTextField txtTimeEnd;
 	private JLabel lblDateMm;
 	private JLabel lblNewLabel;
-	private JLabel lblToDate;
 	private JLabel lblToTime;
 	private ButtonGroup btnTypeGroup;
 	private JRadioButton rdbtnRepeating;
@@ -59,6 +57,7 @@ public class DoctorSlotAdderProgramView extends JFrame {
 	 */
 	public DoctorSlotAdderProgramView(DoctorMenuProgramView dmv) {
 		this.dmv = dmv;
+		initialize();
 	}
 	
 	public void initialize() {
@@ -75,7 +74,6 @@ public class DoctorSlotAdderProgramView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//send input to control
 				txtDateStart.setText(null);
-				txtDateEnd.setText(null);
 				txtTimeStart.setText(null);
 				txtTimeEnd.setText(null);
 				
@@ -88,7 +86,6 @@ public class DoctorSlotAdderProgramView extends JFrame {
 		btnDiscard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtDateStart.setText(null);
-				txtDateEnd.setText(null);
 				txtTimeStart.setText(null);
 				txtTimeEnd.setText(null);
 				setVisible(false);
@@ -98,23 +95,16 @@ public class DoctorSlotAdderProgramView extends JFrame {
 		contentPane.add(btnDiscard);
 		
 		txtDateStart = new JTextField();
-		txtDateStart.setBounds(132, 77, 67, 20);
+		txtDateStart.setBounds(132, 77, 176, 20);
 		contentPane.add(txtDateStart);
 		txtDateStart.setColumns(10);
 		
-		txtDateEnd = new JTextField();
-		txtDateEnd.setEnabled(false);
-		txtDateEnd.setBounds(229, 77, 79, 20);
-		contentPane.add(txtDateEnd);
-		txtDateEnd.setColumns(10);
-		
 		txtTimeStart = new JTextField();
-		txtTimeStart.setBounds(132, 122, 67, 20);
+		txtTimeStart.setBounds(132, 122, 72, 20);
 		contentPane.add(txtTimeStart);
 		txtTimeStart.setColumns(10);
 		
 		txtTimeEnd = new JTextField();
-		txtTimeEnd.setEnabled(false);
 		txtTimeEnd.setBounds(229, 122, 79, 20);
 		contentPane.add(txtTimeEnd);
 		txtTimeEnd.setColumns(10);
@@ -127,22 +117,14 @@ public class DoctorSlotAdderProgramView extends JFrame {
 		lblNewLabel.setBounds(37, 125, 93, 14);
 		contentPane.add(lblNewLabel);
 		
-		lblToDate = new JLabel("to:");
-		lblToDate.setEnabled(false);
-		lblToDate.setBounds(209, 80, 20, 14);
-		contentPane.add(lblToDate);
-		
 		lblToTime = new JLabel("to:");
-		lblToTime.setEnabled(false);
 		lblToTime.setBounds(210, 125, 20, 14);
 		contentPane.add(lblToTime);
 		
 		rdbtnRepeating = new JRadioButton("Repeating");
 		rdbtnRepeating.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lblToDate.setEnabled(true);
 				lblToTime.setEnabled(true);
-				txtDateEnd.setEnabled(true);
 				txtTimeEnd.setEnabled(true);
 			}
 		});
@@ -153,10 +135,7 @@ public class DoctorSlotAdderProgramView extends JFrame {
 		rdbtnSingle = new JRadioButton("Single");
 		rdbtnSingle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lblToDate.setEnabled(false);
-				lblToTime.setEnabled(false);
-				txtDateEnd.setEnabled(false);
-				txtTimeEnd.setEnabled(false);
+				
 			}
 		});
 
@@ -170,13 +149,11 @@ public class DoctorSlotAdderProgramView extends JFrame {
 	
 	public void clearInputs() {
 		txtDateStart.setText(null);
-		txtDateEnd.setText(null);
 		txtTimeStart.setText(null);
 		txtTimeEnd.setText(null);
 	}
 	
 	public void updateCurrentDate(int currentSelectedYear,int currentSelectedMonth, int currentSelectedDay) {
 		txtDateStart.setText(currentSelectedMonth+1+"/"+currentSelectedDay+"/"+currentSelectedYear);
-		txtDateEnd.setText(currentSelectedMonth+1+"/"+currentSelectedDay+"/"+currentSelectedYear);
 	}
 }
