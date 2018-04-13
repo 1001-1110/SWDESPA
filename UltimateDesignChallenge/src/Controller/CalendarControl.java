@@ -1,4 +1,3 @@
-<<<<<<< HEAD:UltimateDesignChallenge/src/Controller/CalendarControl.java
 package Controller;
 
 import Model.CalendarModel;
@@ -47,4 +46,3 @@ public interface CalendarControl {
     public abstract void refreshCalendarDays();
     
 }
->>>>>>> 85e49b341343ded5ad428f55d4bc4ffcc5b50edc:DesignChallenge1/src/Controller/CalendarControl.java

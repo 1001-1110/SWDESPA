@@ -1,4 +1,3 @@
-<<<<<<< HEAD:UltimateDesignChallenge/src/View/CalendarProgramView.java
 package View;
 
 import javax.swing.*;
@@ -1411,4 +1410,3 @@ public class CalendarProgramView implements CalendarView{
 		}
 	}
 }
->>>>>>> 85e49b341343ded5ad428f55d4bc4ffcc5b50edc:DesignChallenge1/src/View/CalendarProgramView.java

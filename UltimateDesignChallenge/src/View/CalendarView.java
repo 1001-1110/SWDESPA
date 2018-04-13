@@ -1,4 +1,3 @@
-<<<<<<< HEAD:UltimateDesignChallenge/src/View/CalendarView.java
 package View;
 import java.util.ArrayList;
 
@@ -65,4 +64,4 @@ public interface CalendarView {
     public abstract void enableSelectButtons();
     
 }
->>>>>>> 85e49b341343ded5ad428f55d4bc4ffcc5b50edc:DesignChallenge1/src/View/CalendarView.java
+

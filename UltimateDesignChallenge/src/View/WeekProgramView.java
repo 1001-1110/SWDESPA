@@ -1,4 +1,3 @@
-<<<<<<< HEAD:UltimateDesignChallenge/src/View/WeekProgramView.java
 package View;
 
 import javax.swing.*;
@@ -177,4 +176,3 @@ public class WeekProgramView extends JPanel implements WeekView, ObserverView{
 		
 	}
 }
->>>>>>> 85e49b341343ded5ad428f55d4bc4ffcc5b50edc:DesignChallenge1/src/View/WeekProgramView.java

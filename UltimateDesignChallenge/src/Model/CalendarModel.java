@@ -1,4 +1,3 @@
-<<<<<<< HEAD:UltimateDesignChallenge/src/Model/CalendarModel.java
 package Model;
 
 import Entry.Entries;
@@ -71,4 +70,3 @@ public interface CalendarModel {
 	public abstract void timeCheck();
 	
 }
->>>>>>> 85e49b341343ded5ad428f55d4bc4ffcc5b50edc:DesignChallenge1/src/Model/CalendarModel.java

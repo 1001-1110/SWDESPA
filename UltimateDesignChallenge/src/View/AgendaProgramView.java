@@ -1,4 +1,3 @@
-<<<<<<< HEAD:UltimateDesignChallenge/src/View/AgendaProgramView.java
 package View;
 
 import javax.swing.*;
@@ -279,4 +278,3 @@ public class AgendaProgramView extends JPanel implements AgendaView, ObserverVie
 		calendarTable.setDefaultRenderer(calendarTable.getColumnClass(0), new InfoTableRenderer(calendarTable.getSelectedRow()));
 	}
 }
->>>>>>> 85e49b341343ded5ad428f55d4bc4ffcc5b50edc:DesignChallenge1/src/View/AgendaProgramView.java
